@@ -55,6 +55,7 @@ const App = (): ReactElement => {
 
   const printRankEntry = async (): Promise<void> => {
     const rankData = await getRankEntry();
+    console.log(rankData);
   }
 
   console.log(getSummoner());  
