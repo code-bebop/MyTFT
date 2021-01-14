@@ -1,10 +1,10 @@
-import React, { useCallback } from "react";
+import React, { ReactElement, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Search from "../components/Search";
 import { RootState } from "../modules";
 import { changeQuery, summonerAsync } from "../modules/summoner";
 
-const SearchContainer = () => {
+const SearchContainer = ():ReactElement => {
   const { query } = useSelector((state: RootState) => ({
     query: state.summoner.query
   }));

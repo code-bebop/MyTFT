@@ -62,6 +62,10 @@ module.exports = {
       "/tft": {
         target: "https://kr.api.riotgames.com",
         changeOrigin: true
+      },
+      "/cdn": {
+        target: "http://ddragon.leagueoflegends.com",
+        changeOrigin: true
       }
     }
   },
