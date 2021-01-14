@@ -11,7 +11,7 @@ const SummonerInfoContainer = (): ReactElement => {
   const summonerName: string = summoner?.name as string;
   const profileIconId: number = summoner?.profileIconId as number;
 
-  if (!summoner) {
+  if (!summoner || summoner.name === "Error") {
     return (
       <p>데이터 없음</p>
     ) 
