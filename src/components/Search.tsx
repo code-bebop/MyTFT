@@ -5,11 +5,11 @@ const HeaderBlock = styled.div`
   width: 100%;
   height: 50px;
   background-color: #0E1726;
+  position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
   form {
-
     input {
       width: 380px;
       height: 38px;

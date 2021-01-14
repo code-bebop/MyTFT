@@ -49,14 +49,14 @@ const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
     ...state,
     loading: true
   }),
-  [SUCCESS]: (state, { payload }) => ({
+  [SUCCESS]: (state, { payload: response }) => ({
     ...state,
-    response: payload,
+    response,
     loading: false
   }),
-  [FAILURE]: (state, { payload }) => ({
+  [FAILURE]: (state, { payload: response }) => ({
     ...state,
-    response: payload,
+    response,
     loading: false
   })
 });

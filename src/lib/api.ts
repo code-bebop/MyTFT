@@ -1,21 +1,21 @@
 import axios from "axios";
 
 import { API_KEY } from "../config";
-import { RankEntryResponseT, SummonerPayloadT, SummonerResponseT } from "../types/types";
+import { RankEntryPayloadT, RankEntryResponseT, SummonerPayloadT, SummonerResponseT } from "../types/types";
 
 export const getSummoner = ( summonerPayload: SummonerPayloadT ): Promise<SummonerResponseT> => {
+  const { summonerName } = summonerPayload;
+
   return new Promise((resolve, reject) => {
       axios
-        .get(`/tft/summoner/v1/summoners/by-name/${summonerPayload.summonerName}?api_key=${API_KEY}`)
+        .get(`/tft/summoner/v1/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
         .then((res) => resolve(res.data))
         .catch((err) => reject(err));
   });
 }
 
-export const getRankEntry = async ( summonerName: SummonerPayloadT ): Promise<Array<RankEntryResponseT>> => {
-  const encryptedSummonerId = await getSummoner(summonerName)
-    .then((res) => res.id)
-    .catch((err) => err);
+export const getRankEntry = async ( GetRankEntryPayload: RankEntryPayloadT ): Promise<RankEntryResponseT> => {
+  const { encryptedSummonerId } = GetRankEntryPayload;
 
   return new Promise((resolve, reject) => {
     axios

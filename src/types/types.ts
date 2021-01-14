@@ -2,6 +2,10 @@ export interface SummonerPayloadT {
   summonerName: string
 }
 
+export interface RankEntryPayloadT {
+  encryptedSummonerId: string
+}
+
 export interface SummonerResponseT {
   accountId: string,
   id: string,
