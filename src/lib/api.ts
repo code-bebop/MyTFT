@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 import { API_KEY } from "../config";
-import { RankEntryPayloadT, RankEntryResponseT, SummonerPayloadT, SummonerResponseT } from "../types/types";
+import { RankEntryResponseT, SummonerPayloadT, SummonerInfoResponseT, SummonerResponseT } from "../types/types";
 
 export const getSummoner = ( summonerPayload: SummonerPayloadT ): Promise<SummonerResponseT> => {
   const { summonerName } = summonerPayload;
@@ -9,18 +9,22 @@ export const getSummoner = ( summonerPayload: SummonerPayloadT ): Promise<Summon
   return new Promise((resolve, reject) => {
       axios
         .get(`/tft/summoner/v1/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
-        .then((res) => resolve(res.data))
+        .then((summonerInfoResponse: AxiosResponse<Promise<SummonerInfoResponseT>>): Promise<SummonerInfoResponseT> => {
+          return new Promise((resolve, reject) => {
+            resolve(summonerInfoResponse.data);
+          })
+        })
+        .then((summonerInfoResponseData: SummonerInfoResponseT) => {
+          const encryptedSummonerId = summonerInfoResponseData.id;
+          axios
+            .get(`/tft/league/v1/entries/by-summoner/${encryptedSummonerId}?api_key=${API_KEY}`)
+            .then((rankEntryResponse: AxiosResponse<RankEntryResponseT>) => {
+              resolve({
+                summonerInfo: summonerInfoResponseData,
+                rankEntry: rankEntryResponse.data
+              })
+            })
+        })
         .catch((err) => reject(err));
-  });
-}
-
-export const getRankEntry = async ( GetRankEntryPayload: RankEntryPayloadT ): Promise<RankEntryResponseT> => {
-  const { encryptedSummonerId } = GetRankEntryPayload;
-
-  return new Promise((resolve, reject) => {
-    axios
-      .get(`/tft/league/v1/entries/by-summoner/${encryptedSummonerId}?api_key=${API_KEY}`)
-      .then((res) => resolve(res.data))
-      .catch((err) => reject(err));
   });
 }

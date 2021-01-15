@@ -6,7 +6,7 @@ import { changeQuery, summonerAsync } from "../modules/summoner";
 
 const SearchContainer = ():ReactElement => {
   const { query } = useSelector((state: RootState) => ({
-    query: state.summoner.query
+    query: state.summoner.query,    
   }));
   const dispatch = useDispatch();
 
@@ -17,6 +17,7 @@ const SearchContainer = ():ReactElement => {
     },
     [dispatch],
   )
+
   const requestSummoner = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
@@ -25,6 +26,7 @@ const SearchContainer = ():ReactElement => {
     },
     [dispatch, query],
   )
+  
 
   return (
     <>

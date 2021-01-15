@@ -5,13 +5,13 @@ import SummonerInfo from "../components/SummonerInfo";
 import { RootState } from "../modules";
 
 const SummonerInfoContainer = (): ReactElement => {
-  const { summoner } = useSelector((state: RootState) => ({
-    summoner: state.summoner.response
+  const { summonerInfo } = useSelector((state: RootState) => ({
+    summonerInfo: state.summoner.summonerInfo
   }))
-  const summonerName: string = summoner?.name as string;
-  const profileIconId: number = summoner?.profileIconId as number;
+  const summonerName: string = summonerInfo?.name as string;
+  const profileIconId: number = summonerInfo?.profileIconId as number;
 
-  if (!summoner || summoner.name === "Error") {
+  if (!summonerInfo || summonerInfo.name === "Error") {
     return (
       <p>데이터 없음</p>
     ) 

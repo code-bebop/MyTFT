@@ -6,7 +6,7 @@ export interface RankEntryPayloadT {
   encryptedSummonerId: string
 }
 
-export interface SummonerResponseT {
+export interface SummonerInfoResponseT {
   accountId: string,
   id: string,
   name: string,
@@ -30,4 +30,9 @@ export interface RankEntryResponseT {
   tier: string,
   veteran: false,
   wins: number
+}
+
+export interface SummonerResponseT {
+  summonerInfo: SummonerInfoResponseT,
+  rankEntry: RankEntryResponseT
 }

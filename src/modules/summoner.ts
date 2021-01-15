@@ -4,7 +4,7 @@ import { ActionType, createAction, createAsyncAction, createReducer } from "type
 import { getSummoner } from "../lib/api";
 import { createAsyncActionType } from "../lib/createAsnycActionType";
 import createAsyncSaga from "../lib/createAsyncSaga";
-import { SummonerPayloadT, SummonerResponseT } from "../types/types";
+import { SummonerPayloadT, SummonerResponseT, SummonerInfoResponseT, RankEntryResponseT } from "../types/types";
 
 const CHANGE_QUERY = 'search/CHANGE_QUERY' as const;
 
@@ -30,13 +30,17 @@ type SummonerActions = ActionType<typeof actions>;
 
 type SummonerState = {
   query: string,
-  response: SummonerResponseT | null,
+  summonerInfo: SummonerInfoResponseT | null,
+  rankEntry: RankEntryResponseT | null,
+  error: AxiosError | null
   loading: boolean
 }
 
 const initialState: SummonerState = {
   query: "",
-  response: null,
+  summonerInfo: null,
+  rankEntry: null,
+  error: null,
   loading: false
 }
 
@@ -49,14 +53,15 @@ const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
     ...state,
     loading: true
   }),
-  [SUCCESS]: (state, { payload: response }) => ({
+  [SUCCESS]: (state, { payload: { summonerInfo, rankEntry }}) => ({
     ...state,
-    response,
+    summonerInfo,
+    rankEntry,
     loading: false
   }),
-  [FAILURE]: (state, { payload: response }) => ({
+  [FAILURE]: (state, { payload: error }) => ({
     ...state,
-    response,
+    error,
     loading: false
   })
 });
