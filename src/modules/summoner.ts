@@ -31,7 +31,7 @@ type SummonerActions = ActionType<typeof actions>;
 type SummonerState = {
   query: string,
   summonerInfo: SummonerInfoResponseT | null,
-  rankEntry: RankEntryResponseT | null,
+  rankEntry: RankEntryResponseT[] | null,
   error: AxiosError | null
   loading: boolean
 }

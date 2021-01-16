@@ -23,10 +23,10 @@ export const getSummoner = ( summonerPayload: SummonerPayloadT ): Promise<Summon
         })
         .then((summonerInfoResponseData: SummonerInfoResponseT) => {
           const encryptedSummonerId = summonerInfoResponseData.id;
-          
+
           TFT_API
             .get(`/league/v1/entries/by-summoner/${encryptedSummonerId}`)
-            .then((rankEntryResponse: AxiosResponse<RankEntryResponseT>) => {
+            .then((rankEntryResponse: AxiosResponse<RankEntryResponseT[]>) => {
               resolve({
                 summonerInfo: summonerInfoResponseData,
                 rankEntry: rankEntryResponse.data

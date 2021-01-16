@@ -34,5 +34,5 @@ export interface RankEntryResponseT {
 
 export interface SummonerResponseT {
   summonerInfo: SummonerInfoResponseT,
-  rankEntry: RankEntryResponseT
+  rankEntry: RankEntryResponseT[]
 }

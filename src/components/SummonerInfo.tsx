@@ -9,15 +9,21 @@ const SummonerInfoBlock = styled.div`
 `;
 
 interface SummonerInfoProps {
-  summonerName: string,
-  profileIconId: number
+  summonerInfoProps: {
+    summonerName: string,
+    profileIconId: number
+    summonerTier: string,
+    summonerRank: string
+  }
 }
 
-const SummonerInfo = ({ summonerName, profileIconId }: SummonerInfoProps): ReactElement => {
+const SummonerInfo = ({ summonerInfoProps: {summonerName, profileIconId, summonerRank, summonerTier} }: SummonerInfoProps): ReactElement => {
   return (
     <SummonerInfoBlock>
       <img src={`http://ddragon.leagueoflegends.com/cdn/11.1.1/img/profileicon/${profileIconId}.png`} />
       <p>{summonerName}</p>
+      <p>{summonerTier}</p>
+      <p>{summonerRank}</p>
     </SummonerInfoBlock>
   )
 }
