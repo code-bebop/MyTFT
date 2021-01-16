@@ -6,18 +6,26 @@ import { RankEntryResponseT, SummonerPayloadT, SummonerInfoResponseT, SummonerRe
 export const getSummoner = ( summonerPayload: SummonerPayloadT ): Promise<SummonerResponseT> => {
   const { summonerName } = summonerPayload;
 
+  const TFT_API = axios.create({
+    baseURL: `/tft`,
+    headers: {
+      "X-Riot-Token": API_KEY
+    }
+  })
+
   return new Promise((resolve, reject) => {
-      axios
-        .get(`/tft/summoner/v1/summoners/by-name/${summonerName}?api_key=${API_KEY}`)
+      TFT_API
+        .get(`/summoner/v1/summoners/by-name/${summonerName}`)
         .then((summonerInfoResponse: AxiosResponse<Promise<SummonerInfoResponseT>>): Promise<SummonerInfoResponseT> => {
-          return new Promise((resolve, reject) => {
+          return new Promise((resolve) => {
             resolve(summonerInfoResponse.data);
           })
         })
         .then((summonerInfoResponseData: SummonerInfoResponseT) => {
           const encryptedSummonerId = summonerInfoResponseData.id;
-          axios
-            .get(`/tft/league/v1/entries/by-summoner/${encryptedSummonerId}?api_key=${API_KEY}`)
+          
+          TFT_API
+            .get(`/league/v1/entries/by-summoner/${encryptedSummonerId}`)
             .then((rankEntryResponse: AxiosResponse<RankEntryResponseT>) => {
               resolve({
                 summonerInfo: summonerInfoResponseData,
