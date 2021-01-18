@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import { hot } from "react-hot-loader";
 
 import SearchContainer from "../containers/SearchContainer";
 import SummonerInfoContainer from "../containers/SummonerInfoContainer";
@@ -19,4 +20,4 @@ const App = (): ReactElement => {
   );
 };
 
-export default App;
+export default hot(module)(App);

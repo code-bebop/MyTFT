@@ -2,6 +2,7 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const webpack = require("webpack");
 
 module.exports = {
   entry: ["./src/index.tsx"],
@@ -50,12 +51,14 @@ module.exports = {
       template: path.resolve(__dirname, "src", "index.html")
     }),
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({ filename: "css/style.css" })
+    new MiniCssExtractPlugin({ filename: "css/style.css" }),
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     port: 8000,
     overlay: true,
     open: true,
+    hot: true,
     proxy: {
       "/tft": {
         target: "https://kr.api.riotgames.com",
