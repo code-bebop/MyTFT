@@ -12,33 +12,31 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(ts|tsx)$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         include: [path.resolve(__dirname, "src")],
         exclude: /node_modules/,
-        use: ["ts-loader"]
-      },
-      {
-        test: /\.(js|jsx)$/,
-        include: [path.resolve(__dirname, "src")],
-        exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            presets: [
-              [
-                "@babel/preset-env",
-                {
-                  useBuiltIns: "usage",
-                  corejs: "3.6.4",
-                  targets: {
-                    chrome: "87"
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: [
+                [
+                  "@babel/preset-env",
+                  {
+                    useBuiltIns: "usage",
+                    corejs: "3.6.4",
+                    targets: {
+                      chrome: "87"
+                    }
                   }
-                }
+                ],
+                "@babel/preset-react"
               ],
-              "@babel/preset-react"
-            ]
-          }
-        }
+              plugins: ["babel-plugin-styled-components"]
+            }
+          },
+          "ts-loader"
+        ]
       },
       {
         test: /\.(scss|css)$/,
