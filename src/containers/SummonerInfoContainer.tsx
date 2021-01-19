@@ -14,15 +14,18 @@ const SummonerInfoContainer = (): ReactElement => {
   
   useEffect(() => {
     if (summonerInfo && rankEntry) {
-      const { name: summonerName, profileIconId, summonerLevel } = summonerInfo!;
-      const { tier: summonerTier, rank: summonerRank, wins, losses } = rankEntry!;
-      const winRate = wins / (wins + losses) * 100;
+      const { name: summonerName, profileIconId, summonerLevel, revisionDate } = summonerInfo!;
+      const { tier: summonerTier, rank: summonerRank, leaguePoints, wins, losses } = rankEntry!;
+      const dateDiff = Math.ceil((new Date().getTime() - new Date(revisionDate).getTime())/(1000*3600*24))
+      const winRate = Number((wins / (wins + losses) * 100).toFixed(2));
       const temp: SummonerInfoT = {
           summonerName,
           profileIconId,
           summonerLevel,
+          dateDiff,
           summonerTier,
           summonerRank,
+          leaguePoints,
           wins,
           losses,
           winRate

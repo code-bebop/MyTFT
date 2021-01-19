@@ -9,12 +9,12 @@ const SummonerInfoBlock = styled.div`
   padding: 23px 20px;
 `;
 
-const SummonerInfoBlockInner = styled.div`
+const BundleBlock = styled.div`
   display: flex;
-    height: 58px;
+  margin-bottom: 40px;
 `;
 
-const SummonerProfileIcon = styled.div`
+const SummonerIconWrapper = styled.div`
   width: 56px;
   height: 56px;
   border-radius: 28px;
@@ -45,9 +45,10 @@ const SummonerLevel = styled.p`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin: 0;
 `;
 
-const SummonerProfileName = styled.div`
+const ColumnFlexBlock = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -66,12 +67,50 @@ const SummonerDate = styled.p`
   letter-spacing: .01em;
 `;
 
+const SummonerRankWrapper = styled(ColumnFlexBlock)`
+  justify-content: space-between;
+  padding-top: 15px;
+  padding-bottom: 25px;
+  box-sizing: border-box;
+  height: 106px;
+  p {
+      font-size: 12px;
+      font-weight: bolder;
+      color: #89A0B5; 
+  }
+`;
+
+const SummonerRankEmblem = styled.img`
+  width: 50px;
+  height: 50px;
+`;
+
+const SummonerRankEmblemWrapper = styled.div`
+  width: 106px;
+  height: 106px;
+  border-radius: 106px;
+  border: 4px solid #333E56;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+`;
+
+const SummonerRankWithTier = styled.h2`
+  font-size: 20px;
+  font-weight: bold;
+  color: #63B7B4;
+  margin: 0px;
+`;
+
 export interface SummonerInfoT {
   summonerName: string,
   profileIconId: number,
   summonerLevel: number,
+  dateDiff: number,
   summonerTier: string,
   summonerRank: string,
+  leaguePoints: number,
   wins: number,
   losses: number,
   winRate: number
@@ -81,24 +120,29 @@ interface SummonerInfoPropsT {
   summonerInfoProps: SummonerInfoT
 }
 
-const SummonerInfo = ({ summonerInfoProps: {summonerName, profileIconId, summonerLevel, summonerRank, summonerTier, wins, losses, winRate} }: SummonerInfoPropsT): ReactElement => {
+const SummonerInfo = ({ summonerInfoProps: {summonerName, profileIconId, summonerLevel, dateDiff, summonerRank, summonerTier, leaguePoints, wins, losses, winRate} }: SummonerInfoPropsT): ReactElement => {
   return (
     <SummonerInfoBlock>
-      <SummonerInfoBlockInner>
-        <SummonerProfileIcon>
+      <BundleBlock>
+        <SummonerIconWrapper>
           <SummonerIcon src={`http://ddragon.leagueoflegends.com/cdn/11.1.1/img/profileicon/${profileIconId}.png`} />
           <SummonerLevel>{summonerLevel}</SummonerLevel>
-        </SummonerProfileIcon>
-        <SummonerProfileName>
+        </SummonerIconWrapper>
+        <ColumnFlexBlock>
           <SummonerName>{summonerName}</SummonerName>
-          <SummonerDate>최근 플레이 날짜: 6일 전</SummonerDate>
-        </SummonerProfileName>
-      </SummonerInfoBlockInner>
-      <p>{summonerTier}</p>
-      <p>{summonerRank}</p>
-      <p>{wins}</p>
-      <p>{losses}</p>
-      <p>{winRate}</p>
+          <SummonerDate>최근 플레이 날짜: {dateDiff}일 전</SummonerDate>
+        </ColumnFlexBlock>
+      </BundleBlock>
+      <BundleBlock>
+        <SummonerRankEmblemWrapper>
+          <SummonerRankEmblem src={`../public/img/Emblem_${summonerTier}.png`}/>
+        </SummonerRankEmblemWrapper>
+        <SummonerRankWrapper>
+          <SummonerRankWithTier>{summonerTier} {summonerRank}</SummonerRankWithTier>
+          <p>{leaguePoints} LP</p>
+          <p>{wins}승 {losses}패 {winRate}%</p>
+        </SummonerRankWrapper>
+      </BundleBlock>
     </SummonerInfoBlock>
   )
 }

@@ -21,7 +21,7 @@ export interface RankEntryResponseT {
   hotStreak: boolean,
   inactive: boolean,
   leagueId: string,
-  leaguePints: number,
+  leaguePoints: number,
   losses: number,
   queueType: string,
   rank: string,
