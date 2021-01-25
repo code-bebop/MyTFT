@@ -10,23 +10,27 @@ export interface SummonerInfoResponseT {
   accountId: string;
   id: string;
   name: string;
-  profile_icon_id: number;
+  profileIconId: number;
   puuid: string;
-  revision_date: number;
-  summoner_level: number;
+  revisionDate: number;
+  summonerLevel: number;
 }
 
 export interface RankEntryResponseT {
-  fresh_blood: boolean;
-  hot_streak: boolean;
+  RankEntryList: RankEntryT[];
+}
+
+export interface RankEntryT {
+  freshBlood: boolean;
+  hotStreak: boolean;
   inactive: boolean;
-  league_id: string;
-  league_points: number;
+  leagueId: string;
+  leaguePoints: number;
   losses: number;
-  queue_type: string;
+  queueType: string;
   rank: string;
-  summoner_id: string;
-  summoner_name: string;
+  summonerId: string;
+  summonerName: string;
   tier: string;
   veteran: false;
   wins: number;
@@ -34,7 +38,8 @@ export interface RankEntryResponseT {
 
 export interface SummonerResponseT {
   summonerInfo: SummonerInfoResponseT;
-  rankEntry: RankEntryResponseT[];
+  rankEntry: RankEntryResponseT;
+  matchIds: MatchsResponseT;
 }
 
 export interface MatchsResponseT {

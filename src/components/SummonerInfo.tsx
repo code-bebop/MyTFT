@@ -125,7 +125,7 @@ const SummonerInfo = ({ summonerInfoProps: {summonerName, profileIconId, summone
     <SummonerInfoBlock>
       <BundleBlock>
         <SummonerIconWrapper>
-          <SummonerIcon src={`http://ddragon.leagueoflegends.com/cdn/11.1.1/img/profileicon/${profileIconId}.png`} />
+          <SummonerIcon src={`http://ddragon.leagueoflegends.com/cdn/11.2.1/img/profileicon/${profileIconId}.png`} />
           <SummonerLevel>{summonerLevel}</SummonerLevel>
         </SummonerIconWrapper>
         <ColumnFlexBlock>

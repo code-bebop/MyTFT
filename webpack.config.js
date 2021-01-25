@@ -59,16 +59,23 @@ module.exports = {
     overlay: true,
     open: true,
     hot: true,
-    proxy: {
-      "/tft": {
+    proxy: [
+      {
+        context: ["/tft/summoner", "/tft/league"],
         target: "https://kr.api.riotgames.com",
         changeOrigin: true
       },
-      "/cdn": {
+      {
+        context: ["/tft/match"],
+        target: "https://asia.api.riotgames.com",
+        changeOrigin: true
+      },
+      {
+        context: ["/cdn"],
         target: "http://ddragon.leagueoflegends.com",
         changeOrigin: true
       }
-    }
+    ]
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"]
