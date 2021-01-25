@@ -42,11 +42,13 @@ export interface SummonerResponseT {
   matchIds: MatchsResponseT;
 }
 
-export interface MatchsResponseT {
-  match_id_list: number[];
-}
+export type MatchsResponseT = string[];
 
-export interface MatchResponseT {
+export type MatchPayloadT = string[];
+
+export type MatchResponseT = MatchInfoT[];
+
+export interface MatchInfoT {
   metadata: Metadata;
   info: Info;
 }

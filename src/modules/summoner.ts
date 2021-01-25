@@ -54,7 +54,7 @@ type SummonerState = {
   query: string;
   summonerInfo: SummonerInfoResponseT | null;
   rankEntry: RankEntryResponseT | null;
-  matchIds: MatchsResponseT | null;
+  matchIds: MatchsResponseT;
   error: AxiosError | null;
   loading: boolean;
 };
@@ -63,7 +63,7 @@ const initialState: SummonerState = {
   query: "",
   summonerInfo: null,
   rankEntry: null,
-  matchIds: null,
+  matchIds: [""],
   error: null,
   loading: false
 };
