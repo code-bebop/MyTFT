@@ -5,7 +5,11 @@ import MatchListItem from "../components/MatchListItem";
 import { RootState } from "../modules";
 import { matchAsync } from "../modules/match";
 
-const MatchListContainerBlock = styled.ul``;
+const MatchListContainerBlock = styled.ul`
+  button {
+    color: black;
+  }
+`;
 
 const MatchListContainer = (): ReactElement => {
   const { summonerInfo, matchIds, matchInfoList } = useSelector(

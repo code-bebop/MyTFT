@@ -48,22 +48,18 @@ const MatchListItem = ({
     <MatchListItemBlock>
       <p>{searchedSummoner?.placement}위</p>
       <TraitList>
-        <TraitsBox>
-          <div className="traitBg" />
-          <img
-            src={`../public/img/traits/${searchedSummoner?.traits[0].name}.svg`}
-            alt="조율자"
-            className="traitImg"
-          />
-        </TraitsBox>
-        <TraitsBox>
-          <div className="traitBg" />
-          <img
-            src="../public/img/traits/assassin.svg"
-            alt="조율자"
-            className="traitImg"
-          />
-        </TraitsBox>
+        {searchedSummoner?.traits.map((trait, index) => {
+          return (
+            <TraitsBox key={index}>
+              <div className="traitBg" />
+              <img
+                src={`../public/img/traits/${trait.name}.svg`}
+                alt={`${trait.name}`}
+                className="traitImg"
+              />
+            </TraitsBox>
+          );
+        })}
       </TraitList>
     </MatchListItemBlock>
   );
