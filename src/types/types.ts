@@ -46,7 +46,7 @@ export type MatchsResponseT = string[];
 
 export type MatchPayloadT = string[];
 
-export type MatchResponseT = MatchInfoT[];
+export type MatchResponseT = MatchInfoT;
 
 export interface MatchInfoT {
   metadata: Metadata;
