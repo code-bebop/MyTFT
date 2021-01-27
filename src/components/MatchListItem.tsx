@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { MatchInfoT } from "../types/types";
+import { MatchInfoT, Trait } from "../types/types";
 
 const MatchListItemBlock = styled.li``;
 
@@ -20,16 +20,41 @@ const TraitsBox = styled.div`
     width: 12px;
     height: 15px;
   }
-  .traitBg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: no-repeat url(../public/img/traits/bg.png) -85px 0;
-    background-size: auto 22px;
-    width: 20px;
-    height: 22px;
-  }
 `;
+
+const TraitBg = styled.div<{ traitStyle: number }>`
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: no-repeat url(../public/img/traits/bg.png);
+  background-size: auto 22px;
+  width: 20px;
+  height: 22px;
+
+  background-position: ${props => {
+    return `${(props.traitStyle - 1) * -20}px`;
+  }};
+`;
+//
+interface TraitListItem {
+  trait: Trait;
+}
+
+const TraitListItem = React.memo(
+  ({ trait }: TraitListItem): ReactElement => {
+    return (
+      <TraitsBox>
+        <TraitBg className="traitBg" traitStyle={trait.style} />
+        <img
+          src={`../public/img/traits/${trait.name}.svg`}
+          alt={`${trait.name}`}
+          className="traitImg"
+        />
+      </TraitsBox>
+    );
+  }
+);
+TraitListItem.displayName = "TraitListItem";
 
 export interface MatchListItemPropsT {
   matchInfo: MatchInfoT;
@@ -44,22 +69,15 @@ const MatchListItem = ({
     return participant.puuid === puuid;
   });
 
+  const activatedTraits = searchedSummoner?.traits.filter(trait => trait.style);
+
   return (
     <MatchListItemBlock>
       <p>{searchedSummoner?.placement}위</p>
       <TraitList>
-        {searchedSummoner?.traits.map((trait, index) => {
-          return (
-            <TraitsBox key={index}>
-              <div className="traitBg" />
-              <img
-                src={`../public/img/traits/${trait.name}.svg`}
-                alt={`${trait.name}`}
-                className="traitImg"
-              />
-            </TraitsBox>
-          );
-        })}
+        {activatedTraits?.map((trait, index) => (
+          <TraitListItem trait={trait} key={index} />
+        ))}
       </TraitList>
     </MatchListItemBlock>
   );
