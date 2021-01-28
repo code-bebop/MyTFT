@@ -67,10 +67,41 @@ const UnitList = styled.ul`
   padding: 0;
 `;
 
-const UnitBox = styled.li`
+interface UnitBoxProps {
+  rarity: number;
+  chosen?: string;
+}
+
+const UnitBox = styled.li<UnitBoxProps>`
   width: 34px;
   height: 34px;
   list-style-type: none;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 2px;
+  border-color: ${props => {
+    if (props.chosen) {
+      return "#ECF0F6";
+    }
+    switch (props.rarity) {
+      case 0:
+        return "#2F455B";
+      case 1:
+        return "#0C9152";
+      case 2:
+        return "#3E8DBF";
+      case 3:
+        return "#CB11B1";
+      case 4:
+        return "#D9A929";
+      default:
+        break;
+    }
+  }};
+  & + & {
+    margin-left: 2px;
+  }
   img {
     width: 34px;
     height: 34px;
@@ -84,7 +115,7 @@ interface UnitListItemPropsT {
 const UnitListItem = React.memo(
   ({ unit }: UnitListItemPropsT): ReactElement => {
     return (
-      <UnitBox>
+      <UnitBox rarity={unit.rarity} chosen={unit.chosen}>
         <img
           src={`../public/img/champions/${unit.character_id}.png`}
           alt={`${unit.character_id}`}
