@@ -1,14 +1,16 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { MatchInfoT, Trait } from "../types/types";
+import { MatchInfoT, Trait, Unit } from "../types/types";
 
 const MatchListItemBlock = styled.li``;
+
+// Trait 관련 컴포넌트 시작
 
 const TraitList = styled.div`
   display: flex;
 `;
 
-const TraitsBox = styled.div`
+const TraitBox = styled.div`
   position: relative;
   display: flex;
   justify-content: center;
@@ -36,25 +38,62 @@ const TraitBg = styled.div<{ traitStyle: number }>`
   }};
 `;
 //
-interface TraitListItem {
+interface TraitListItemPropsT {
   trait: Trait;
 }
 
 const TraitListItem = React.memo(
-  ({ trait }: TraitListItem): ReactElement => {
+  ({ trait }: TraitListItemPropsT): ReactElement => {
     return (
-      <TraitsBox>
+      <TraitBox>
         <TraitBg className="traitBg" traitStyle={trait.style} />
         <img
           src={`../public/img/traits/${trait.name}.svg`}
           alt={`${trait.name}`}
           className="traitImg"
         />
-      </TraitsBox>
+      </TraitBox>
     );
   }
 );
 TraitListItem.displayName = "TraitListItem";
+
+// Trait 관련 컴포넌트 종료
+
+// Unit 관련 컴포넌트 시작
+
+const UnitList = styled.ul`
+  display: flex;
+  padding: 0;
+`;
+
+const UnitBox = styled.li`
+  width: 34px;
+  height: 34px;
+  list-style-type: none;
+  img {
+    width: 34px;
+    height: 34px;
+  }
+`;
+
+interface UnitListItemPropsT {
+  unit: Unit;
+}
+
+const UnitListItem = React.memo(
+  ({ unit }: UnitListItemPropsT): ReactElement => {
+    return (
+      <UnitBox>
+        <img
+          src={`../public/img/champions/${unit.character_id}.png`}
+          alt={`${unit.character_id}`}
+        />
+      </UnitBox>
+    );
+  }
+);
+UnitListItem.displayName = " UnitListItem";
 
 export interface MatchListItemPropsT {
   matchInfo: MatchInfoT;
@@ -79,6 +118,11 @@ const MatchListItem = ({
           <TraitListItem trait={trait} key={index} />
         ))}
       </TraitList>
+      <UnitList>
+        {searchedSummoner?.units.map((unit, index) => (
+          <UnitListItem unit={unit} key={index} />
+        ))}
+      </UnitList>
     </MatchListItemBlock>
   );
 };
