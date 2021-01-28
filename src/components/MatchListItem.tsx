@@ -2,7 +2,14 @@ import React, { ReactElement } from "react";
 import styled from "styled-components";
 import { MatchInfoT, Trait, Unit } from "../types/types";
 
-const MatchListItemBlock = styled.li``;
+const MatchListItemBlock = styled.li`
+  display: flex;
+  align-items: center;
+  width: 624px;
+  height: 68px;
+  background-color: #182338;
+  margin-bottom: 8px;
+`;
 
 // Trait 관련 컴포넌트 시작
 
@@ -73,6 +80,7 @@ interface UnitBoxProps {
 }
 
 const UnitBox = styled.li<UnitBoxProps>`
+  position: relative;
   width: 34px;
   height: 34px;
   list-style-type: none;
@@ -116,6 +124,7 @@ const UnitListItem = React.memo(
   ({ unit }: UnitListItemPropsT): ReactElement => {
     return (
       <UnitBox rarity={unit.rarity} chosen={unit.chosen}>
+        <UnitTiers tier={unit.tier} />
         <img
           src={`../public/img/champions/${unit.character_id}.png`}
           alt={`${unit.character_id}`}
@@ -125,6 +134,56 @@ const UnitListItem = React.memo(
   }
 );
 UnitListItem.displayName = " UnitListItem";
+
+const UnitTiersBlock = styled.div`
+  display: flex;
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  img {
+    width: 10px;
+    height: 10px;
+  }
+`;
+
+const UnitTiers = ({ tier }: { tier: number }): ReactElement | null => {
+  if (tier === 2) {
+    return (
+      <UnitTiersBlock>
+        <img
+          src="../public/img/champions/TFT-StarSilver.svg"
+          alt="TFT-StarSilver"
+        />
+        <img
+          src="../public/img/champions/TFT-StarSilver.svg"
+          alt="TFT-StarSilver"
+        />
+      </UnitTiersBlock>
+    );
+  }
+  if (tier === 3) {
+    return (
+      <UnitTiersBlock>
+        <img
+          src="../public/img/champions/TFT-StarGold.svg"
+          alt="TFT-StarGold"
+        />
+        <img
+          src="../public/img/champions/TFT-StarGold.svg"
+          alt="TFT-StarGold"
+        />
+        <img
+          src="../public/img/champions/TFT-StarGold.svg"
+          alt="TFT-StarGold"
+        />
+      </UnitTiersBlock>
+    );
+  }
+  return null;
+};
+
+// Unit 관련 컴포넌트 종료
 
 export interface MatchListItemPropsT {
   matchInfo: MatchInfoT;
