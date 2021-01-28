@@ -129,6 +129,7 @@ const UnitListItem = React.memo(
           src={`../public/img/champions/${unit.character_id}.png`}
           alt={`${unit.character_id}`}
         />
+        <UnitItemList items={unit.items} />
       </UnitBox>
     );
   }
@@ -178,6 +179,36 @@ const UnitTiers = ({ tier }: { tier: number }): ReactElement | null => {
           alt="TFT-StarGold"
         />
       </UnitTiersBlock>
+    );
+  }
+  return null;
+};
+
+const UnitItemListBlock = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  width: 34px;
+  img {
+    width: 12px;
+    height: 12px;
+  }
+`;
+
+const UnitItemList = ({ items }: { items?: number[] }): ReactElement | null => {
+  if (items) {
+    return (
+      <UnitItemListBlock>
+        {items.map((item, index) => {
+          return (
+            <img
+              src={`../public/img/items/${item}.png`}
+              alt={`${item}`}
+              key={index}
+            />
+          );
+        })}
+      </UnitItemListBlock>
     );
   }
   return null;
