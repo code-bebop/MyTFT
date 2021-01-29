@@ -3,7 +3,7 @@ import styled from "styled-components";
 import ensure from "../lib/ensure";
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 
-const MatchListItemBlock = styled.li`
+const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;
   align-items: center;
   width: 624px;
@@ -11,7 +11,20 @@ const MatchListItemBlock = styled.li`
   background-color: #182338;
   margin-bottom: 8px;
   padding-left: 4px;
-  border-left: 3px solid #7d91a3;
+  border-left-width: 3px;
+  border-left-style: solid;
+  border-left-color: ${props => {
+    switch (props.placement) {
+      case 1:
+        return "#E7B767";
+      case 2:
+        return "#9DA2B1";
+      case 3:
+        return "#AD8866";
+      default:
+        return "#576480";
+    }
+  }};
   border-radius: 5px;
   box-sizing: border-box;
 `;
@@ -280,7 +293,7 @@ const MatchListItem = ({
     });
 
   return (
-    <MatchListItemBlock>
+    <MatchListItemBlock placement={searchedSummoner.placement}>
       <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
       <MatchSummary>
         <Placement placement={searchedSummoner.placement}>
