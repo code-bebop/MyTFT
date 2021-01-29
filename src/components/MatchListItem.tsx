@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
-import { MatchInfoT, Trait, Unit } from "../types/types";
+import ensure from "../lib/ensure";
+import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 
 const MatchListItemBlock = styled.li`
   display: flex;
@@ -9,6 +10,10 @@ const MatchListItemBlock = styled.li`
   height: 68px;
   background-color: #182338;
   margin-bottom: 8px;
+  padding-left: 4px;
+  border-left: 3px solid #7d91a3;
+  border-radius: 5px;
+  box-sizing: border-box;
 `;
 
 // Trait 관련 컴포넌트 시작
@@ -88,6 +93,7 @@ const UnitBox = styled.li<UnitBoxProps>`
   border-style: solid;
   border-radius: 5px;
   padding: 2px;
+  box-sizing: border-box;
   border-color: ${props => {
     if (props.chosen) {
       return "#ECF0F6";
@@ -111,8 +117,8 @@ const UnitBox = styled.li<UnitBoxProps>`
     margin-left: 2px;
   }
   img {
-    width: 34px;
-    height: 34px;
+    width: 100%;
+    height: 100%;
   }
 `;
 
@@ -216,6 +222,42 @@ const UnitItemList = ({ items }: { items?: number[] }): ReactElement | null => {
 
 // Unit 관련 컴포넌트 종료
 
+const LittleLegendImg = styled.img`
+  width: 60px;
+  height: 100%;
+  object-fit: cover;
+`;
+
+const MatchSummary = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    font-size: 13px;
+    &:nth-child(2) {
+      color: #6a7e92;
+    }
+  }
+`;
+
+const Placement = styled.p<{ placement: number }>`
+  margin-bottom: 7px;
+  color: ${props => {
+    switch (props.placement) {
+      case 1:
+        return "#E7B767";
+      case 2:
+        return "#9DA2B1";
+      case 3:
+        return "#AD8866";
+      default:
+        return "#576480";
+    }
+  }};
+`;
+
 export interface MatchListItemPropsT {
   matchInfo: MatchInfoT;
   puuid: string;
@@ -225,9 +267,11 @@ const MatchListItem = ({
   matchInfo,
   puuid
 }: MatchListItemPropsT): ReactElement => {
-  const searchedSummoner = matchInfo.info.participants.find(participant => {
-    return participant.puuid === puuid;
-  });
+  const searchedSummoner: Participant = ensure<Participant>(
+    matchInfo.info.participants.find(participant => {
+      return participant.puuid === puuid;
+    })
+  );
 
   const activatedTraits = searchedSummoner?.traits
     .filter(trait => trait.style)
@@ -237,7 +281,13 @@ const MatchListItem = ({
 
   return (
     <MatchListItemBlock>
-      <p>{searchedSummoner?.placement}위</p>
+      <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
+      <MatchSummary>
+        <Placement placement={searchedSummoner.placement}>
+          {searchedSummoner.placement}위
+        </Placement>
+        <p>{matchInfo.info.queue_id === 1100 ? "랭크" : "일반"}</p>
+      </MatchSummary>
       <TraitList>
         {activatedTraits?.map((trait, index) => (
           <TraitListItem trait={trait} key={index} />
