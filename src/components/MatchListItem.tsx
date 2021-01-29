@@ -229,7 +229,11 @@ const MatchListItem = ({
     return participant.puuid === puuid;
   });
 
-  const activatedTraits = searchedSummoner?.traits.filter(trait => trait.style);
+  const activatedTraits = searchedSummoner?.traits
+    .filter(trait => trait.style)
+    .sort((a, b) => {
+      return a.style < b.style ? 1 : a.style > b.style ? -1 : 0;
+    });
 
   return (
     <MatchListItemBlock>
