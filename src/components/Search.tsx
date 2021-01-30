@@ -4,11 +4,12 @@ import styled from "styled-components";
 const HeaderBlock = styled.div`
   width: 100%;
   height: 50px;
-  background-color: #0E1726;
+  background-color: #0e1726;
   position: fixed;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 2;
   form {
     input {
       width: 380px;
@@ -25,8 +26,8 @@ const HeaderBlock = styled.div`
 `;
 
 interface SearchPropsT {
-  requestSummoner: (e: React.FormEvent<HTMLFormElement>) => void,
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  requestSummoner: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const Search = ({ requestSummoner, onChange }: SearchPropsT): ReactElement => {
@@ -36,7 +37,7 @@ const Search = ({ requestSummoner, onChange }: SearchPropsT): ReactElement => {
         <input placeholder="소환사 검색" onChange={onChange} />
       </form>
     </HeaderBlock>
-  )
-}
+  );
+};
 
 export default Search;

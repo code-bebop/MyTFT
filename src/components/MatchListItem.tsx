@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import ensure from "../lib/ensure";
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 
@@ -34,6 +34,8 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
 
 const TraitList = styled.div`
   display: flex;
+  margin-left: auto;
+  margin-right: 8px;
 `;
 
 const TraitBox = styled.div`
@@ -91,6 +93,7 @@ TraitListItem.displayName = "TraitListItem";
 const UnitList = styled.ul`
   display: flex;
   padding: 0;
+  margin: 0;
 `;
 
 interface UnitBoxProps {
@@ -127,6 +130,22 @@ const UnitBox = styled.li<UnitBoxProps>`
         break;
     }
   }};
+  ${props => {
+    if (props.chosen) {
+      return css`
+        &::before {
+          display: block;
+          position: absolute;
+          right: 0;
+          top: -5px;
+          content: "";
+          width: 12px;
+          height: 13px;
+          background: url(../public/img/champions/TFT_Chosen_icon.svg);
+        }
+      `;
+    }
+  }}
   & + & {
     margin-left: 2px;
   }
@@ -157,7 +176,7 @@ const UnitListItem = React.memo(
     );
   }
 );
-UnitListItem.displayName = " UnitListItem";
+UnitListItem.displayName = "UnitListItem";
 
 const UnitTiersBlock = styled.div`
   display: flex;
@@ -293,17 +312,15 @@ const MatchListItem = ({
     );
 
     useEffect(() => {
-      setSearchedSummoner(
-        ensure<Participant>(
-          matchInfo.info.participants.find(participant => {
-            return participant.puuid === puuid;
-          })
-        )
+      const summoner = ensure<Participant>(
+        matchInfo.info.participants.find(participant => {
+          return participant.puuid === puuid;
+        })
       );
 
-      if (searchedSummoner.units.length < 9) {
-        for (let i = searchedSummoner.units.length; i < 9; i++) {
-          searchedSummoner.units.push({
+      if (summoner.units.length < 9) {
+        for (let i = summoner.units.length; i < 9; i++) {
+          summoner.units.push({
             character_id: "",
             items: [],
             name: "",
@@ -312,7 +329,13 @@ const MatchListItem = ({
           });
         }
       }
-    });
+
+      summoner.units.sort((a, b) => {
+        return a.rarity < b.rarity ? 1 : a.rarity > b.rarity ? -1 : 0;
+      });
+
+      setSearchedSummoner(summoner);
+    }, [searchedSummoner, setSearchedSummoner, matchInfo]);
 
     return searchedSummoner;
   };
@@ -331,7 +354,7 @@ const MatchListItem = ({
         .slice(0, 4);
 
       setActivatedTraits(activatedTraits);
-    });
+    }, [searchedSummoner, matchInfo]);
 
     return activatedTraits;
   };
