@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 import ensure from "../lib/ensure";
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
@@ -11,6 +11,7 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   background-color: #182338;
   margin-bottom: 8px;
   padding-left: 4px;
+  padding-right: 16px;
   border-left-width: 3px;
   border-left-style: solid;
   border-left-color: ${props => {
@@ -62,7 +63,7 @@ const TraitBg = styled.div<{ traitStyle: number }>`
     return `${(props.traitStyle - 1) * -20}px`;
   }};
 `;
-//
+
 interface TraitListItemPropsT {
   trait: Trait;
 }
@@ -141,6 +142,9 @@ interface UnitListItemPropsT {
 
 const UnitListItem = React.memo(
   ({ unit }: UnitListItemPropsT): ReactElement => {
+    if (unit.character_id === "") {
+      return <UnitBox rarity={unit.rarity} />;
+    }
     return (
       <UnitBox rarity={unit.rarity} chosen={unit.chosen}>
         <UnitTiers tier={unit.tier} />
@@ -205,12 +209,14 @@ const UnitTiers = ({ tier }: { tier: number }): ReactElement | null => {
 
 const UnitItemListBlock = styled.div`
   position: absolute;
+  left: 0;
   display: flex;
   justify-content: center;
   width: 34px;
   img {
-    width: 12px;
+    width: 11px;
     height: 12px;
+    border-radius: 2px;
   }
 `;
 
@@ -239,6 +245,7 @@ const LittleLegendImg = styled.img`
   width: 60px;
   height: 100%;
   object-fit: cover;
+  margin-right: 20px;
 `;
 
 const MatchSummary = styled.div`
@@ -280,17 +287,57 @@ const MatchListItem = ({
   matchInfo,
   puuid
 }: MatchListItemPropsT): ReactElement => {
-  const searchedSummoner: Participant = ensure<Participant>(
-    matchInfo.info.participants.find(participant => {
-      return participant.puuid === puuid;
-    })
-  );
+  const searchedSummonerHook = () => {
+    const [searchedSummoner, setSearchedSummoner] = useState(
+      matchInfo.info.participants[0]
+    );
 
-  const activatedTraits = searchedSummoner?.traits
-    .filter(trait => trait.style)
-    .sort((a, b) => {
-      return a.style < b.style ? 1 : a.style > b.style ? -1 : 0;
+    useEffect(() => {
+      setSearchedSummoner(
+        ensure<Participant>(
+          matchInfo.info.participants.find(participant => {
+            return participant.puuid === puuid;
+          })
+        )
+      );
+
+      if (searchedSummoner.units.length < 9) {
+        for (let i = searchedSummoner.units.length; i < 9; i++) {
+          searchedSummoner.units.push({
+            character_id: "",
+            items: [],
+            name: "",
+            rarity: 0,
+            tier: 0
+          });
+        }
+      }
     });
+
+    return searchedSummoner;
+  };
+
+  const traitHook = () => {
+    const [activatedTraits, setActivatedTraits] = useState(
+      searchedSummoner.traits
+    );
+
+    useEffect(() => {
+      const activatedTraits = searchedSummoner.traits
+        .filter(trait => trait.style)
+        .sort((a, b) => {
+          return a.style < b.style ? 1 : a.style > b.style ? -1 : 0;
+        })
+        .slice(0, 4);
+
+      setActivatedTraits(activatedTraits);
+    });
+
+    return activatedTraits;
+  };
+
+  const searchedSummoner = searchedSummonerHook();
+  const activatedTraits = traitHook();
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>
@@ -302,12 +349,12 @@ const MatchListItem = ({
         <p>{matchInfo.info.queue_id === 1100 ? "랭크" : "일반"}</p>
       </MatchSummary>
       <TraitList>
-        {activatedTraits?.map((trait, index) => (
+        {activatedTraits.map((trait, index) => (
           <TraitListItem trait={trait} key={index} />
         ))}
       </TraitList>
       <UnitList>
-        {searchedSummoner?.units.map((unit, index) => (
+        {searchedSummoner.units.map((unit, index) => (
           <UnitListItem unit={unit} key={index} />
         ))}
       </UnitList>
