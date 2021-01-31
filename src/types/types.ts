@@ -16,9 +16,7 @@ export interface SummonerInfoResponseT {
   summonerLevel: number;
 }
 
-export interface RankEntryResponseT {
-  RankEntryList: RankEntryT[];
-}
+export type RankEntryResponseT = RankEntryT[];
 
 export interface RankEntryT {
   freshBlood: boolean;

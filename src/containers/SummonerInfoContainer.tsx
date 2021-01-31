@@ -13,7 +13,7 @@ const SummonerInfoContainer = (): ReactElement => {
 
   const { summonerInfo, rankEntry } = useSelector((state: RootState) => ({
     summonerInfo: state.summoner.summonerInfo,
-    rankEntry: state.summoner.rankEntry?.[0]
+    rankEntry: state.summoner.rankEntry
   }));
 
   useEffect(() => {
@@ -24,31 +24,42 @@ const SummonerInfoContainer = (): ReactElement => {
         summonerLevel,
         revisionDate
       } = ensure(summonerInfo);
-      const {
-        tier: summonerTier,
-        rank: summonerRank,
-        leaguePoints,
-        wins,
-        losses
-      } = ensure(rankEntry);
       const dateDiff = Math.ceil(
         (new Date().getTime() - new Date(revisionDate).getTime()) /
           (1000 * 3600 * 24)
       );
-      const winRate = Number(((wins / (wins + losses)) * 100).toFixed(2));
-      const temp: SummonerInfoT = {
-        summonerName,
-        profileIconId,
-        summonerLevel,
-        dateDiff,
-        summonerTier,
-        summonerRank,
-        leaguePoints,
-        wins,
-        losses,
-        winRate
-      };
-      setSummonerInfoProps(temp);
+
+      if (rankEntry?.length !== 0) {
+        const {
+          tier: summonerTier,
+          rank: summonerRank,
+          leaguePoints,
+          wins,
+          losses
+        } = ensure(rankEntry[0]);
+        const winRate = Number(((wins / (wins + losses)) * 100).toFixed(2));
+        const temp: SummonerInfoT = {
+          summonerName,
+          profileIconId,
+          summonerLevel,
+          dateDiff,
+          summonerTier,
+          summonerRank,
+          leaguePoints,
+          wins,
+          losses,
+          winRate
+        };
+        setSummonerInfoProps(temp);
+      } else {
+        const temp: SummonerInfoT = {
+          summonerName,
+          profileIconId,
+          summonerLevel,
+          dateDiff
+        };
+        setSummonerInfoProps(temp);
+      }
     }
   }, [summonerInfo, rankEntry]);
 

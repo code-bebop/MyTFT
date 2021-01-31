@@ -108,12 +108,12 @@ export interface SummonerInfoT {
   profileIconId: number;
   summonerLevel: number;
   dateDiff: number;
-  summonerTier: string;
-  summonerRank: string;
-  leaguePoints: number;
-  wins: number;
-  losses: number;
-  winRate: number;
+  summonerTier?: string;
+  summonerRank?: string;
+  leaguePoints?: number;
+  wins?: number;
+  losses?: number;
+  winRate?: number;
 }
 
 interface SummonerInfoPropsT {
@@ -148,22 +148,32 @@ const SummonerInfo = ({
           <SummonerDate>최근 플레이 날짜: {dateDiff}일 전</SummonerDate>
         </ColumnFlexBlock>
       </BundleBlock>
-      <BundleBlock>
-        <SummonerRankEmblemWrapper>
-          <SummonerRankEmblem
-            src={`../public/img/rank/Emblem_${summonerTier}.png`}
-          />
-        </SummonerRankEmblemWrapper>
-        <SummonerRankWrapper>
-          <SummonerRankWithTier>
-            {summonerTier} {summonerRank}
-          </SummonerRankWithTier>
-          <p>{leaguePoints} LP</p>
-          <p>
-            {wins}승 {losses}패 {winRate}%
-          </p>
-        </SummonerRankWrapper>
-      </BundleBlock>
+      {summonerRank ? (
+        <BundleBlock>
+          <SummonerRankEmblemWrapper>
+            <SummonerRankEmblem
+              src={`../public/img/rank/Emblem_${summonerTier}.png`}
+            />
+          </SummonerRankEmblemWrapper>
+          <SummonerRankWrapper>
+            <SummonerRankWithTier>
+              {summonerTier} {summonerRank}
+            </SummonerRankWithTier>
+            <p>{leaguePoints} LP</p>
+            <p>
+              {wins}승 {losses}패 {winRate}%
+            </p>
+          </SummonerRankWrapper>
+        </BundleBlock>
+      ) : (
+        <BundleBlock>
+          <SummonerRankEmblemWrapper>
+            <p>
+              랭크정보 <br /> 없음
+            </p>
+          </SummonerRankEmblemWrapper>
+        </BundleBlock>
+      )}
     </SummonerInfoBlock>
   );
 };
