@@ -3,9 +3,20 @@ import styled from "styled-components";
 
 const PlacementTribution = styled.div`
   display: flex;
+  flex-direction: column;
+  & > span {
+    font-size: 12px;
+    color: #89a0b5;
+    margin-bottom: 25px;
+  }
   p {
     margin: 0;
+    font-size: 10px;
   }
+`;
+
+const PlacementTributonTable = styled.div`
+  display: flex;
 `;
 
 const ChartAxisY = styled.div`
@@ -14,6 +25,7 @@ const ChartAxisY = styled.div`
   justify-content: space-between;
   margin-right: 20px;
   height: 100px;
+  color: #717fa0;
 `;
 
 const CahrtRight = styled.div`
@@ -60,6 +72,24 @@ const ChartAxisX = styled.div`
   display: flex;
   justify-content: space-between;
   width: 100%;
+  margin-top: 10px;
+`;
+
+const ChartAxisXEntry = styled.p<{ placement: number }>`
+  color: ${({ placement }) => {
+    switch (placement) {
+      case 1:
+        return "#E7B767";
+      case 2:
+        return "#9DA2B1";
+      case 3:
+        return "#AD8866";
+      case 4:
+        return "#778B9D";
+      default:
+        return "#576480";
+    }
+  }};
 `;
 
 export interface PlacementChartPropsT {
@@ -105,41 +135,42 @@ const PlacementChart = ({
       {frequentArray.length !== 0 && (
         <>
           <PlacementTribution>
-            <ChartAxisY>
-              <p>{Math.max.apply(null, frequentArray)}</p>
-              <p>
-                {(
-                  frequentArray.reduce((acc, val) => {
-                    return acc + val;
-                  }) / frequentArray.length
-                ).toFixed(0)}
-              </p>
-              <p>{Math.min.apply(null, frequentArray)}</p>
-            </ChartAxisY>
-            <CahrtRight>
-              <ChartBarList>
-                {frequentArray.map((frequent, index) => {
-                  return (
-                    <ChartBar
-                      key={index}
-                      frequent={frequent}
-                      frequentMax={Math.max.apply(null, frequentArray)}
-                      placement={index + 1}
-                    />
-                  );
-                })}
-              </ChartBarList>
-              <ChartAxisX>
+            <span>최근 20게임 결과 통계표</span>
+            <PlacementTributonTable>
+              <ChartAxisY>
+                <p>{Math.max.apply(null, frequentArray)}</p>
+                <p>
+                  {Math.round(
+                    Math.max.apply(null, frequentArray) +
+                      Math.min.apply(null, frequentArray)
+                  ) / 2}
+                </p>
                 <p>1</p>
-                <p>2</p>
-                <p>3</p>
-                <p>4</p>
-                <p>5</p>
-                <p>6</p>
-                <p>7</p>
-                <p>8</p>
-              </ChartAxisX>
-            </CahrtRight>
+              </ChartAxisY>
+              <CahrtRight>
+                <ChartBarList>
+                  {frequentArray.map((frequent, index) => {
+                    return (
+                      <ChartBar
+                        key={index}
+                        frequent={frequent}
+                        frequentMax={Math.max.apply(null, frequentArray)}
+                        placement={index + 1}
+                      />
+                    );
+                  })}
+                </ChartBarList>
+                <ChartAxisX>
+                  {frequentArray.map((frequent, index) => {
+                    return (
+                      <ChartAxisXEntry key={index} placement={index + 1}>
+                        {index + 1}
+                      </ChartAxisXEntry>
+                    );
+                  })}
+                </ChartAxisX>
+              </CahrtRight>
+            </PlacementTributonTable>
           </PlacementTribution>
         </>
       )}
