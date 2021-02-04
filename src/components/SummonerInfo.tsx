@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import PlacementChart from "./PlacementChart";
 
 const SummonerInfoBlock = styled.div`
   width: 328px;
@@ -114,6 +115,7 @@ export interface SummonerInfoT {
   wins?: number;
   losses?: number;
   winRate?: number;
+  placementArray: number[];
 }
 
 interface SummonerInfoPropsT {
@@ -131,7 +133,8 @@ const SummonerInfo = ({
     leaguePoints,
     wins,
     losses,
-    winRate
+    winRate,
+    placementArray
   }
 }: SummonerInfoPropsT): ReactElement => {
   return (
@@ -173,6 +176,9 @@ const SummonerInfo = ({
             </p>
           </SummonerRankEmblemWrapper>
         </BundleBlock>
+      )}
+      {placementArray.length !== 0 && (
+        <PlacementChart placementArray={placementArray} />
       )}
     </SummonerInfoBlock>
   );
