@@ -1,5 +1,6 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useEffect, useRef } from "react";
 import styled from "styled-components";
+import ensure from "../lib/ensure";
 import PlacementChart from "./PlacementChart";
 
 const SummonerInfoBlock = styled.div`
@@ -87,14 +88,23 @@ const SummonerRankEmblem = styled.img`
 `;
 
 const SummonerRankEmblemWrapper = styled.div`
-  width: 106px;
-  height: 106px;
-  border-radius: 106px;
+  width: 114px;
+  height: 114px;
+  border-radius: 114px;
   border: 4px solid #333e56;
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 15px;
+  position: relative;
+  box-sizing: border-box;
+`;
+
+const SummonerLPCanvas = styled.canvas`
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  transform: rotate(-90deg);
 `;
 
 const SummonerRankWithTier = styled.h2<{ tier: string }>`
@@ -154,6 +164,48 @@ const SummonerInfo = ({
     placementArray
   }
 }: SummonerInfoPropsT): ReactElement => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (canvasRef.current && leaguePoints && summonerTier) {
+      const ctx = ensure<CanvasRenderingContext2D>(
+        canvasRef.current.getContext("2d")
+      );
+      switch (summonerTier) {
+        case "IRON":
+          ctx.strokeStyle = "#325173";
+          break;
+        case "BRONZE":
+          ctx.strokeStyle = "#B97452";
+          break;
+        case "SILVER":
+          ctx.strokeStyle = "#9FBDC3";
+          break;
+        case "GOLD":
+          ctx.strokeStyle = "#F1A64E";
+          break;
+        case "PLATINUM":
+          ctx.strokeStyle = "#63b7b4";
+          break;
+        case "DIAMOND":
+          ctx.strokeStyle = "#6F88EE";
+          break;
+        default:
+          ctx.strokeStyle = "white";
+      }
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(
+        114 / 2,
+        114 / 2,
+        110 / 2,
+        0,
+        Math.PI * ((2 * leaguePoints) / 100)
+      );
+      ctx.stroke();
+    }
+  }, [canvasRef, leaguePoints, summonerTier]);
+
   return (
     <SummonerInfoBlock>
       <BundleBlock>
@@ -171,6 +223,7 @@ const SummonerInfo = ({
       {summonerTier ? (
         <BundleBlock>
           <SummonerRankEmblemWrapper>
+            <SummonerLPCanvas ref={canvasRef} width="114px" height="114px" />
             <SummonerRankEmblem
               src={`../public/img/rank/Emblem_${summonerTier}.png`}
             />
