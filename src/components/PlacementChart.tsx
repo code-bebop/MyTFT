@@ -69,38 +69,36 @@ export interface PlacementChartPropsT {
 const PlacementChart = ({
   placementArray
 }: PlacementChartPropsT): ReactElement => {
-  const [frequentInfo, setFrequentInfo] = useState({});
-  const [frequentArray, setFrequentArary] = useState<number[]>([]);
+  const UseFrequentArray = () => {
+    const [frequentArray, setFrequentArary] = useState<number[]>([]);
 
-  useEffect(() => {
-    const _frequentInfo = placementArray.reduce((acc, val) => {
-      if (Object.prototype.hasOwnProperty.call(acc, val)) {
-        acc[val] = acc[val] + 1;
-      } else {
-        acc[val] = 1;
+    useEffect(() => {
+      const frequentInfo = placementArray.reduce((acc, val) => {
+        if (Object.prototype.hasOwnProperty.call(acc, val)) {
+          acc[val] = acc[val] + 1;
+        } else {
+          acc[val] = 1;
+        }
+        return acc;
+      }, {});
+
+      for (let i = 1; i <= 8; i++) {
+        if (frequentInfo[i] === undefined) {
+          frequentInfo[i] = 0;
+        }
       }
-      return acc;
-    }, {});
 
-    for (let i = 1; i <= 8; i++) {
-      if (_frequentInfo[i] === undefined) {
-        _frequentInfo[i] = 0;
-      }
-    }
+      const _frequentArray: number[] = Object.keys(frequentInfo).map(
+        key => frequentInfo[key]
+      );
 
-    setFrequentInfo(_frequentInfo);
-  }, [placementArray]);
+      setFrequentArary(_frequentArray);
+    }, [placementArray]);
 
-  useEffect(() => {
-    console.log("frequentArray Effect 실행");
-    setFrequentArary([]);
+    return frequentArray;
+  };
 
-    const _frequentArray: number[] = Object.keys(frequentInfo).map(
-      key => frequentInfo[key]
-    );
-
-    setFrequentArary(_frequentArray);
-  }, [frequentInfo]);
+  const frequentArray = UseFrequentArray();
 
   return (
     <>
