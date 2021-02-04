@@ -97,10 +97,27 @@ const SummonerRankEmblemWrapper = styled.div`
   margin-right: 15px;
 `;
 
-const SummonerRankWithTier = styled.h2`
+const SummonerRankWithTier = styled.h2<{ tier: string }>`
   font-size: 20px;
   font-weight: bold;
-  color: #63b7b4;
+  color: ${({ tier }) => {
+    switch (tier) {
+      case "IRON":
+        return "#325173";
+      case "BRONZE":
+        return "#B97452";
+      case "SILVER":
+        return "#9FBDC3";
+      case "GOLD":
+        return "#F1A64E";
+      case "PLATINUM":
+        return "#63b7b4";
+      case "DIAMOND":
+        return "#6F88EE";
+      default:
+        return "white";
+    }
+  }};
   margin: 0px;
 `;
 
@@ -151,7 +168,7 @@ const SummonerInfo = ({
           <SummonerDate>최근 플레이 날짜: {dateDiff}일 전</SummonerDate>
         </ColumnFlexBlock>
       </BundleBlock>
-      {summonerRank ? (
+      {summonerTier ? (
         <BundleBlock>
           <SummonerRankEmblemWrapper>
             <SummonerRankEmblem
@@ -159,7 +176,7 @@ const SummonerInfo = ({
             />
           </SummonerRankEmblemWrapper>
           <SummonerRankWrapper>
-            <SummonerRankWithTier>
+            <SummonerRankWithTier tier={summonerTier}>
               {summonerTier} {summonerRank}
             </SummonerRankWithTier>
             <p>{leaguePoints} LP</p>
