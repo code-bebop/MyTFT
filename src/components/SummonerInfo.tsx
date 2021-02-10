@@ -1,6 +1,7 @@
-import React, { ReactElement, useEffect, useRef } from "react";
+import React, { ReactElement, useRef } from "react";
 import styled from "styled-components";
-import ensure from "../lib/ensure";
+import useSummonerInfoProps from "../hooks/useSummonerInfoProps";
+import useSummonerLpGui from "../hooks/useSummonerLpGui";
 import PlacementChart from "./PlacementChart";
 
 const SummonerInfoBlock = styled.div`
@@ -145,12 +146,9 @@ export interface SummonerInfoT {
   placementArray: number[];
 }
 
-interface SummonerInfoPropsT {
-  summonerInfoProps: SummonerInfoT;
-}
-
-const SummonerInfo = ({
-  summonerInfoProps: {
+const SummonerInfo = (): ReactElement => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const {
     summonerName,
     profileIconId,
     summonerLevel,
@@ -162,50 +160,14 @@ const SummonerInfo = ({
     losses,
     winRate,
     placementArray
+  }: SummonerInfoT = useSummonerInfoProps();
+  if (summonerTier && leaguePoints) {
+    useSummonerLpGui(canvasRef, leaguePoints, summonerTier);
   }
-}: SummonerInfoPropsT): ReactElement => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    if (canvasRef.current && leaguePoints && summonerTier) {
-      const ctx = ensure<CanvasRenderingContext2D>(
-        canvasRef.current.getContext("2d")
-      );
-      switch (summonerTier) {
-        case "IRON":
-          ctx.strokeStyle = "#325173";
-          break;
-        case "BRONZE":
-          ctx.strokeStyle = "#B97452";
-          break;
-        case "SILVER":
-          ctx.strokeStyle = "#9FBDC3";
-          break;
-        case "GOLD":
-          ctx.strokeStyle = "#F1A64E";
-          break;
-        case "PLATINUM":
-          ctx.strokeStyle = "#63b7b4";
-          break;
-        case "DIAMOND":
-          ctx.strokeStyle = "#6F88EE";
-          break;
-        default:
-          ctx.strokeStyle = "white";
-      }
-      ctx.lineWidth = 4;
-      ctx.beginPath();
-      ctx.arc(
-        114 / 2,
-        114 / 2,
-        110 / 2,
-        0,
-        Math.PI * ((2 * leaguePoints) / 100)
-      );
-      ctx.stroke();
-    }
-  }, [canvasRef, leaguePoints, summonerTier]);
-
+  if (summonerName === "" || summonerName === "Error") {
+    return <p>데이터 없음</p>;
+  }
   return (
     <SummonerInfoBlock>
       <BundleBlock>

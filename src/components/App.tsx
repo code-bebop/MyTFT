@@ -3,11 +3,11 @@ import styled from "styled-components";
 import { hot } from "react-hot-loader";
 
 import SearchContainer from "../containers/SearchContainer";
-import SummonerInfoContainer from "../containers/SummonerInfoContainer";
 import MatchListContainer from "../containers/MatchListContainer";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { matchAsync } from "../modules/match";
+import SummonerInfo from "./SummonerInfo";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -41,7 +41,7 @@ const App = (): ReactElement => {
       <SearchContainer />
       {summonerInfo && matchInfoList ? (
         <Wrapper>
-          <SummonerInfoContainer />
+          <SummonerInfo />
           <MatchListContainer />
         </Wrapper>
       ) : (
