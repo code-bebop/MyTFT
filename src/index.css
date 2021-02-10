@@ -427,3 +427,13 @@ td,
 th {
   padding: 0;
 }
+
+li {
+  list-style-type: none;
+}
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
+}
