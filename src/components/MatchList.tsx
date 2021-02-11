@@ -1,7 +1,10 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
-import MatchListItem from "../components/MatchListItem";
+import MatchListItem from "./MatchListItem";
+import useMatchDataSeparatedByDateDiff, {
+  MatchDataSeparatedByDateDiffT
+} from "../hooks/useMatchDataSeparatedByDateDiff";
 import { RootState } from "../modules";
 
 const MatchListContainerBlock = styled.ul`
@@ -37,48 +40,27 @@ const MatchListProfile = styled.div`
 
 const MatchListContainer = (): ReactElement => {
   console.log("MatchListContainer 렌더링");
-  const [matchDateDiffObject, setMatchDateDiffObject] = useState({});
 
-  const { summonerInfo, matchInfoList } = useSelector(
+  const { summonerInfo } = useSelector(
     (state: RootState) => ({
-      summonerInfo: state.summoner.summonerInfo,
-      matchInfoList: state.match.matchInfoList
+      summonerInfo: state.summoner.summonerInfo
     }),
     shallowEqual
   );
-
-  useEffect(() => {
-    const _matchDateDiffObject = {};
-    matchInfoList?.forEach(matchInfo => {
-      const matchDateDiff = Math.ceil(
-        (new Date().getTime() -
-          new Date(matchInfo.info.game_datetime).getTime()) /
-          (1000 * 3600 * 24)
-      );
-
-      if (!_matchDateDiffObject[matchDateDiff]) {
-        _matchDateDiffObject[matchDateDiff] = new Array(matchInfo);
-      } else {
-        _matchDateDiffObject[matchDateDiff] = _matchDateDiffObject[
-          matchDateDiff
-        ].concat(matchInfo);
-      }
-    });
-
-    setMatchDateDiffObject(_matchDateDiffObject);
-  }, [matchInfoList]);
+  const MatchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
+  console.log(MatchDataSeparatedByDateDiff);
 
   return (
     <MatchListContainerBlock>
-      {Object.keys(matchDateDiffObject).map(key => {
+      {Object.keys(MatchDataSeparatedByDateDiff).map(key => {
         return (
           <MatchDateDiffItem key={key}>
             <MatchListProfile>
               <p>{key}일 전</p>
-              <p>{matchDateDiffObject[key].length} 게임</p>
+              <p>{MatchDataSeparatedByDateDiff[key].length} 게임</p>
             </MatchListProfile>
             <ul>
-              {matchDateDiffObject[key].map((matchInfo, index) => {
+              {MatchDataSeparatedByDateDiff[key].map((matchInfo, index) => {
                 if (summonerInfo?.puuid !== undefined) {
                   return (
                     <li key={index}>
@@ -94,17 +76,6 @@ const MatchListContainer = (): ReactElement => {
           </MatchDateDiffItem>
         );
       })}
-      {/* {matchInfoList?.map((matchInfo, key) => {
-        if (summonerInfo?.puuid !== undefined) {
-          return (
-            <MatchListItem
-              key={key}
-              matchInfo={matchInfo}
-              puuid={summonerInfo?.puuid}
-            />
-          );
-        }
-      })} */}
     </MatchListContainerBlock>
   );
 };

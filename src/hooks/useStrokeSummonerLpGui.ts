@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import ensure from "../lib/ensure";
 
-const useSummonerLpGui = (
+const useStrokeSummonerLpGui = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
   leaguePoints: number,
   summonerTier: string
@@ -47,4 +47,4 @@ const useSummonerLpGui = (
   }, [canvasRef, leaguePoints, summonerTier]);
 };
 
-export default useSummonerLpGui;
+export default useStrokeSummonerLpGui;

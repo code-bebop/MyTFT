@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { hot } from "react-hot-loader";
 
 import SearchContainer from "../containers/SearchContainer";
-import MatchListContainer from "../containers/MatchListContainer";
+import MatchList from "./MatchList";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { matchAsync } from "../modules/match";
@@ -42,7 +42,7 @@ const App = (): ReactElement => {
       {summonerInfo && matchInfoList ? (
         <Wrapper>
           <SummonerInfo />
-          <MatchListContainer />
+          <MatchList />
         </Wrapper>
       ) : (
         <Wrapper>

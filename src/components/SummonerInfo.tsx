@@ -1,7 +1,7 @@
 import React, { ReactElement, useRef } from "react";
 import styled from "styled-components";
 import useSummonerInfoProps from "../hooks/useSummonerInfoProps";
-import useSummonerLpGui from "../hooks/useSummonerLpGui";
+import useStrokeSummonerLpGui from "../hooks/useStrokeSummonerLpGui";
 import PlacementChart from "./PlacementChart";
 
 const SummonerInfoBlock = styled.div`
@@ -161,8 +161,8 @@ const SummonerInfo = (): ReactElement => {
     winRate,
     placementArray
   }: SummonerInfoT = useSummonerInfoProps();
-  if (summonerTier && leaguePoints) {
-    useSummonerLpGui(canvasRef, leaguePoints, summonerTier);
+  if (canvasRef && summonerTier && leaguePoints) {
+    useStrokeSummonerLpGui(canvasRef, leaguePoints, summonerTier);
   }
 
   if (summonerName === "" || summonerName === "Error") {
