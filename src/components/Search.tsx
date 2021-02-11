@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
+import useSearchForm from "../hooks/useSearchForm";
 
 const HeaderBlock = styled.div`
   width: 100%;
@@ -30,7 +31,9 @@ interface SearchPropsT {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-const Search = ({ requestSummoner, onChange }: SearchPropsT): ReactElement => {
+const Search = (): ReactElement => {
+  const { onChange, requestSummoner }: SearchPropsT = useSearchForm();
+
   return (
     <HeaderBlock>
       <form onSubmit={requestSummoner}>

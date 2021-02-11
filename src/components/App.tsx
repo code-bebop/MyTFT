@@ -2,7 +2,7 @@ import React, { ReactElement, useEffect } from "react";
 import styled from "styled-components";
 import { hot } from "react-hot-loader";
 
-import SearchContainer from "../containers/SearchContainer";
+import Search from "../components/Search";
 import MatchList from "./MatchList";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
@@ -38,7 +38,7 @@ const App = (): ReactElement => {
   console.log(summonerInfo && matchInfoList ? "true" : "false");
   return (
     <>
-      <SearchContainer />
+      <Search />
       {summonerInfo && matchInfoList ? (
         <Wrapper>
           <SummonerInfo />

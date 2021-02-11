@@ -1,12 +1,14 @@
-import React, { ReactElement, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import Search from "../components/Search";
+import { useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../modules";
 import { changeQuery, summonerAsync } from "../modules/summoner";
 
-const SearchContainer = ():ReactElement => {
+const useSearchForm = (): {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  requestSummoner: (e: React.FormEvent<HTMLFormElement>) => void;
+} => {
   const { query } = useSelector((state: RootState) => ({
-    query: state.summoner.query,    
+    query: state.summoner.query
   }));
   const dispatch = useDispatch();
 
@@ -15,8 +17,8 @@ const SearchContainer = ():ReactElement => {
       const query: string = e.target.value;
       dispatch(changeQuery(query));
     },
-    [dispatch],
-  )
+    [dispatch]
+  );
 
   const requestSummoner = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
@@ -24,15 +26,10 @@ const SearchContainer = ():ReactElement => {
       const summonerName = query;
       dispatch(summonerAsync.request({ summonerName }));
     },
-    [dispatch, query],
-  )
-  
+    [dispatch, query]
+  );
 
-  return (
-    <>
-      <Search requestSummoner={requestSummoner} onChange={onChange} />
-    </>
-  )
+  return { onChange, requestSummoner };
 };
 
-export default SearchContainer;
+export default useSearchForm;
