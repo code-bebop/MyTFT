@@ -132,38 +132,89 @@ const SummonerRankWithTier = styled.h2<{ tier: string }>`
   margin: 0px;
 `;
 
-export interface SummonerInfoT {
+const RankedSummonerBlock = ({
+  rankedSummonerBlockProps
+}: {
+  rankedSummonerBlockProps: OptionalSummonerInfoPropsT;
+}): ReactElement => {
+  const {
+    summonerTier,
+    summonerRank,
+    leaguePoints,
+    wins,
+    losses,
+    winRate
+  } = rankedSummonerBlockProps;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  useStrokeSummonerLpGui(canvasRef, leaguePoints, summonerTier);
+
+  return (
+    <BundleBlock>
+      <SummonerRankEmblemWrapper>
+        <SummonerLPCanvas ref={canvasRef} width="114px" height="114px" />
+        <SummonerRankEmblem
+          src={`../public/img/rank/Emblem_${summonerTier}.png`}
+        />
+      </SummonerRankEmblemWrapper>
+      <SummonerRankWrapper>
+        <SummonerRankWithTier tier={summonerTier}>
+          {summonerTier} {summonerRank}
+        </SummonerRankWithTier>
+        <p>{leaguePoints} LP</p>
+        <p>
+          {wins}승 {losses}패 {winRate}%
+        </p>
+      </SummonerRankWrapper>
+    </BundleBlock>
+  );
+};
+
+const UnrankedSummonerBlock = (): ReactElement => {
+  return (
+    <BundleBlock>
+      <SummonerRankEmblemWrapper>
+        <p>
+          랭크정보 <br /> 없음
+        </p>
+      </SummonerRankEmblemWrapper>
+    </BundleBlock>
+  );
+};
+
+export interface SummonerInfoPropsT {
+  requireSummonerInfoProps: RequireSummonerInfoPropsT;
+  optionalSummonerInfoProps?: OptionalSummonerInfoPropsT;
+}
+
+export interface RequireSummonerInfoPropsT {
   summonerName: string;
   profileIconId: number;
   summonerLevel: number;
   dateDiff: number;
-  summonerTier?: string;
-  summonerRank?: string;
-  leaguePoints?: number;
-  wins?: number;
-  losses?: number;
-  winRate?: number;
   placementArray: number[];
 }
 
+export interface OptionalSummonerInfoPropsT {
+  summonerTier: string;
+  summonerRank: string;
+  leaguePoints: number;
+  wins: number;
+  losses: number;
+  winRate: number;
+}
+
 const SummonerInfo = (): ReactElement => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const {
+    requireSummonerInfoProps,
+    optionalSummonerInfoProps
+  }: SummonerInfoPropsT = useSummonerInfoProps();
   const {
     summonerName,
     profileIconId,
     summonerLevel,
     dateDiff,
-    summonerRank,
-    summonerTier,
-    leaguePoints,
-    wins,
-    losses,
-    winRate,
     placementArray
-  }: SummonerInfoT = useSummonerInfoProps();
-  if (canvasRef && summonerTier && leaguePoints) {
-    useStrokeSummonerLpGui(canvasRef, leaguePoints, summonerTier);
-  }
+  } = requireSummonerInfoProps;
 
   if (summonerName === "" || summonerName === "Error") {
     return <p>데이터 없음</p>;
@@ -182,32 +233,12 @@ const SummonerInfo = (): ReactElement => {
           <SummonerDate>최근 플레이 날짜: {dateDiff}일 전</SummonerDate>
         </ColumnFlexBlock>
       </BundleBlock>
-      {summonerTier ? (
-        <BundleBlock>
-          <SummonerRankEmblemWrapper>
-            <SummonerLPCanvas ref={canvasRef} width="114px" height="114px" />
-            <SummonerRankEmblem
-              src={`../public/img/rank/Emblem_${summonerTier}.png`}
-            />
-          </SummonerRankEmblemWrapper>
-          <SummonerRankWrapper>
-            <SummonerRankWithTier tier={summonerTier}>
-              {summonerTier} {summonerRank}
-            </SummonerRankWithTier>
-            <p>{leaguePoints} LP</p>
-            <p>
-              {wins}승 {losses}패 {winRate}%
-            </p>
-          </SummonerRankWrapper>
-        </BundleBlock>
+      {optionalSummonerInfoProps ? (
+        <RankedSummonerBlock
+          rankedSummonerBlockProps={optionalSummonerInfoProps}
+        />
       ) : (
-        <BundleBlock>
-          <SummonerRankEmblemWrapper>
-            <p>
-              랭크정보 <br /> 없음
-            </p>
-          </SummonerRankEmblemWrapper>
-        </BundleBlock>
+        <UnrankedSummonerBlock />
       )}
       {placementArray.length !== 0 && (
         <PlacementChart placementArray={placementArray} />
