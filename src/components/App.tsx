@@ -19,11 +19,19 @@ const Wrapper = styled.div`
 const App = (): ReactElement => {
   console.log("App 렌더링");
 
-  const { summonerInfo, matchInfoList, matchIds } = useSelector(
+  const {
+    summonerInfo,
+    matchInfoList,
+    matchIds,
+    summonerLoading,
+    matchLoading
+  } = useSelector(
     (state: RootState) => ({
       summonerInfo: state.summoner.summonerInfo,
       matchInfoList: state.match.matchInfoList,
-      matchIds: state.summoner.matchIds
+      matchIds: state.summoner.matchIds,
+      summonerLoading: state.summoner.loading,
+      matchLoading: state.match.loading
     }),
     shallowEqual
   );
@@ -39,15 +47,18 @@ const App = (): ReactElement => {
   return (
     <>
       <Search />
-      {summonerInfo && matchInfoList ? (
+      {summonerLoading || matchLoading ? (
         <Wrapper>
-          <SummonerInfo />
-          <MatchList />
+          <p>로딩 중...</p>
         </Wrapper>
       ) : (
-        <Wrapper>
-          <p>아직 아님</p>
-        </Wrapper>
+        summonerInfo &&
+        matchInfoList && (
+          <Wrapper>
+            <SummonerInfo />
+            <MatchList />
+          </Wrapper>
+        )
       )}
     </>
   );

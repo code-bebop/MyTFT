@@ -20,6 +20,7 @@ const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {
   );
 
   useEffect(() => {
+    setMatchDataSeparatedByDateDiff({});
     const _matchDataSeparatedByDateDiff = {};
     matchInfoList?.forEach(matchInfo => {
       const dateDiffOfMatch = Math.ceil(

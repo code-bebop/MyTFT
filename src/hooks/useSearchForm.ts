@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../modules";
+import { initialize } from "../modules/match";
 import { changeQuery, summonerAsync } from "../modules/summoner";
 
 const useSearchForm = (): {
@@ -25,6 +26,7 @@ const useSearchForm = (): {
       e.preventDefault();
       const summonerName = query;
       dispatch(summonerAsync.request({ summonerName }));
+      dispatch(initialize());
     },
     [dispatch, query]
   );
