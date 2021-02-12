@@ -29,8 +29,6 @@ const usePlacementArray = (): number[] => {
     });
 
     setPlacementArray(_placementArray);
-
-    console.log("usePlacementArray 실행");
   }, [matchInfoList]);
 
   return placementArray;

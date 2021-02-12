@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState, useEffect } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
 import MatchListItem from "./MatchListItem";
@@ -6,6 +6,13 @@ import useMatchDataSeparatedByDateDiff, {
   MatchDataSeparatedByDateDiffT
 } from "../hooks/useMatchDataSeparatedByDateDiff";
 import { RootState } from "../modules";
+import usePlacementArray from "../hooks/usePlacementArray";
+import { Participant } from "../types/types";
+import ensure from "../lib/ensure";
+import useSearchedSummoner from "../hooks/useSearchedSummoner";
+import usePlacementArraySeparatedByDateDiff, {
+  PlacementArraySeparatedByDateDiffT
+} from "../hooks/usePlacementArraySeparatedByDateDiff";
 
 const MatchListContainerBlock = styled.ul`
   padding: 30px 24px 0;
@@ -47,28 +54,40 @@ const MatchListContainer = (): ReactElement => {
     }),
     shallowEqual
   );
-  const MatchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
-  console.log(MatchDataSeparatedByDateDiff);
+
+  const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
+  console.log(matchDataSeparatedByDateDiff);
+  const placemntArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT = usePlacementArraySeparatedByDateDiff(
+    matchDataSeparatedByDateDiff
+  );
+  console.log(placemntArraySeparatedByDateDiff);
 
   return (
     <MatchListContainerBlock>
-      {Object.keys(MatchDataSeparatedByDateDiff).map(key => {
+      {Object.keys(matchDataSeparatedByDateDiff).map(key => {
         return (
           <MatchDateDiffItem key={key}>
             <MatchListProfile>
               <p>{key}일 전</p>
-              <p>{MatchDataSeparatedByDateDiff[key].length} 게임</p>
+              <p>{matchDataSeparatedByDateDiff[key].length} 게임</p>
+              <p>
+                평균 순위:
+                {(
+                  placemntArraySeparatedByDateDiff[key]?.reduce((acc, val) => {
+                    return acc + val;
+                  }) / placemntArraySeparatedByDateDiff[key]?.length
+                ).toFixed(1)}
+              </p>
             </MatchListProfile>
             <ul>
-              {MatchDataSeparatedByDateDiff[key].map((matchInfo, index) => {
+              {matchDataSeparatedByDateDiff[key].map((matchInfo, index) => {
                 if (summonerInfo?.puuid !== undefined) {
                   return (
-                    <li key={index}>
-                      <MatchListItem
-                        matchInfo={matchInfo}
-                        puuid={summonerInfo?.puuid}
-                      />
-                    </li>
+                    <MatchListItem
+                      key={index}
+                      matchInfo={matchInfo}
+                      puuid={summonerInfo?.puuid}
+                    />
                   );
                 }
               })}

@@ -1,5 +1,8 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import styled, { css } from "styled-components";
+import useActivatedTraits from "../hooks/useActivatedTratis";
+import useSearchedSummoner from "../hooks/useSearchedSummoner";
+import useSortUnits from "../hooks/useSortUnits";
 import ensure from "../lib/ensure";
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 
@@ -306,61 +309,9 @@ const MatchListItem = ({
   matchInfo,
   puuid
 }: MatchListItemPropsT): ReactElement => {
-  const searchedSummonerHook = () => {
-    const [searchedSummoner, setSearchedSummoner] = useState(
-      matchInfo.info.participants[0]
-    );
-
-    useEffect(() => {
-      const summoner = ensure<Participant>(
-        matchInfo.info.participants.find(participant => {
-          return participant.puuid === puuid;
-        })
-      );
-
-      if (summoner.units.length < 9) {
-        for (let i = summoner.units.length; i < 9; i++) {
-          summoner.units.push({
-            character_id: "",
-            items: [],
-            name: "",
-            rarity: 0,
-            tier: 0
-          });
-        }
-      }
-
-      summoner.units.sort((a, b) => {
-        return a.rarity < b.rarity ? 1 : a.rarity > b.rarity ? -1 : 0;
-      });
-
-      setSearchedSummoner(summoner);
-    }, [searchedSummoner, setSearchedSummoner, matchInfo]);
-
-    return searchedSummoner;
-  };
-
-  const traitHook = () => {
-    const [activatedTraits, setActivatedTraits] = useState(
-      searchedSummoner.traits
-    );
-
-    useEffect(() => {
-      const activatedTraits = searchedSummoner.traits
-        .filter(trait => trait.style)
-        .sort((a, b) => {
-          return a.style < b.style ? 1 : a.style > b.style ? -1 : 0;
-        })
-        .slice(0, 4);
-
-      setActivatedTraits(activatedTraits);
-    }, [searchedSummoner, matchInfo]);
-
-    return activatedTraits;
-  };
-
-  const searchedSummoner = searchedSummonerHook();
-  const activatedTraits = traitHook();
+  const searchedSummoner = useSearchedSummoner(matchInfo, puuid);
+  useSortUnits(searchedSummoner);
+  const activatedTraits = useActivatedTraits(searchedSummoner, matchInfo);
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>
