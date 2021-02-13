@@ -78,6 +78,22 @@ const MatchListContainer = (): ReactElement => {
                   }) / placemntArraySeparatedByDateDiff[key]?.length
                 ).toFixed(1)}
               </p>
+              <p>
+                승:
+                {
+                  placemntArraySeparatedByDateDiff[key]?.filter(
+                    placement => placement === 1
+                  ).length
+                }
+              </p>
+              <p>
+                4등 이상:
+                {
+                  placemntArraySeparatedByDateDiff[key]?.filter(
+                    placement => placement <= 4
+                  ).length
+                }
+              </p>
             </MatchListProfile>
             <ul>
               {matchDataSeparatedByDateDiff[key].map((matchInfo, index) => {
