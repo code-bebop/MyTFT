@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, useEffect } from "react";
+import React, { ReactElement } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
 import MatchListItem from "./MatchListItem";
@@ -6,10 +6,6 @@ import useMatchDataSeparatedByDateDiff, {
   MatchDataSeparatedByDateDiffT
 } from "../hooks/useMatchDataSeparatedByDateDiff";
 import { RootState } from "../modules";
-import usePlacementArray from "../hooks/usePlacementArray";
-import { Participant } from "../types/types";
-import ensure from "../lib/ensure";
-import useSearchedSummoner from "../hooks/useSearchedSummoner";
 import usePlacementArraySeparatedByDateDiff, {
   PlacementArraySeparatedByDateDiffT
 } from "../hooks/usePlacementArraySeparatedByDateDiff";

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useLayoutEffect } from "react";
 import ensure from "../lib/ensure";
 
 const useStrokeSummonerLpGui = (
@@ -6,7 +6,7 @@ const useStrokeSummonerLpGui = (
   leaguePoints: number,
   summonerTier: string
 ): void => {
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (canvasRef.current && leaguePoints && summonerTier) {
       const ctx = ensure<CanvasRenderingContext2D>(
         canvasRef.current.getContext("2d")

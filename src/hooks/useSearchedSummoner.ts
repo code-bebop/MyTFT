@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import ensure from "../lib/ensure";
 import { Participant, MatchInfoT } from "../types/types";
 
@@ -10,7 +10,7 @@ const useSearchedSummoner = (
     matchInfo.info.participants[0]
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const summoner = ensure<Participant>(
       matchInfo.info.participants.find(participant => {
         return participant.puuid === puuid;

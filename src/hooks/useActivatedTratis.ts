@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { MatchInfoT, Participant, Trait } from "../types/types";
 
 const useActivatedTraits = (
@@ -9,7 +9,7 @@ const useActivatedTraits = (
     searchedSummoner.traits
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const activatedTraits = searchedSummoner.traits
       .filter(trait => trait.style)
       .sort((a, b) => {

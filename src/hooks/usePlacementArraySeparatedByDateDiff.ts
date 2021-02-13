@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import findSearchedSummoner from "../lib/findSearchedSummoner";
 import { RootState } from "../modules";
@@ -22,7 +22,7 @@ const usePlacementArraySeparatedByDateDiff = (
     shallowEqual
   );
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const _placementSeparatedByDateDiff = {};
 
     Object.keys(matchDataSeparatedByDateDiff).map(key => {

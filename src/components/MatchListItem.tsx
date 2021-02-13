@@ -1,10 +1,10 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import styled, { css } from "styled-components";
 import useActivatedTraits from "../hooks/useActivatedTratis";
 import useSearchedSummoner from "../hooks/useSearchedSummoner";
 import useSortUnits from "../hooks/useSortUnits";
-import ensure from "../lib/ensure";
-import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
+
+import { MatchInfoT, Trait, Unit } from "../types/types";
 
 const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;

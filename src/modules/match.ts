@@ -67,7 +67,7 @@ const match = createReducer<MatchState, MatchActions>(initialState, {
     error,
     loading: false
   }),
-  [INITIALIZE]: state => ({
+  [INITIALIZE]: () => ({
     ...initialState
   })
 });
