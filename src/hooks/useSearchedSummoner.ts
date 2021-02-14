@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import ensure from "../lib/ensure";
 import { Participant, MatchInfoT } from "../types/types";
 
