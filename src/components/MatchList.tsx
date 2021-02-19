@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
 import MatchListItem from "./MatchListItem";
@@ -6,9 +6,6 @@ import useMatchDataSeparatedByDateDiff, {
   MatchDataSeparatedByDateDiffT
 } from "../hooks/useMatchDataSeparatedByDateDiff";
 import { RootState } from "../modules";
-import usePlacementArraySeparatedByDateDiff, {
-  PlacementArraySeparatedByDateDiffT
-} from "../hooks/usePlacementArraySeparatedByDateDiff";
 import usePlacementStats from "../hooks/usePlacementStats";
 
 const MatchListContainerBlock = styled.ul`
@@ -93,14 +90,7 @@ const MatchListContainer = (): ReactElement => {
 
   const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
   console.log(matchDataSeparatedByDateDiff);
-  const placemntArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT = usePlacementArraySeparatedByDateDiff(
-    matchDataSeparatedByDateDiff
-  );
-  console.log(placemntArraySeparatedByDateDiff);
-  const placementStats = usePlacementStats(
-    matchDataSeparatedByDateDiff,
-    placemntArraySeparatedByDateDiff
-  );
+  const placementStats = usePlacementStats(matchDataSeparatedByDateDiff);
   console.log(placementStats);
 
   return (

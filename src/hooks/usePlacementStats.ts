@@ -1,6 +1,10 @@
 import { useEffect, useState } from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import getPlacementArraySeparatedByDateDiff, {
+  PlacementArraySeparatedByDateDiffT
+} from "../lib/getPlacementArray";
+import { RootState } from "../modules";
 import { MatchDataSeparatedByDateDiffT } from "./useMatchDataSeparatedByDateDiff";
-import { PlacementArraySeparatedByDateDiffT } from "./usePlacementArraySeparatedByDateDiff";
 
 interface PlacementStatsT {
   [k: string]: {
@@ -11,37 +15,51 @@ interface PlacementStatsT {
 }
 
 const usePlacementStats = (
-  matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT,
-  placemntArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT
+  matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT
 ): PlacementStatsT => {
   const [placementStsts, setPlacementStats] = useState({});
+  const { summonerPuuid } = useSelector(
+    (state: RootState) => ({
+      summonerPuuid: state.summoner.summonerInfo?.puuid
+    }),
+    shallowEqual
+  );
 
   useEffect(() => {
-    const _placementStats = {};
-    Object.keys(matchDataSeparatedByDateDiff).map(key => {
-      const average = (
-        placemntArraySeparatedByDateDiff[key]?.reduce((acc, val) => {
-          return acc + val;
-        }) / placemntArraySeparatedByDateDiff[key]?.length
-      ).toFixed(1);
+    if (summonerPuuid !== undefined) {
+      const placemntArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT = getPlacementArraySeparatedByDateDiff(
+        matchDataSeparatedByDateDiff,
+        summonerPuuid
+      );
 
-      const wins = placemntArraySeparatedByDateDiff[key]?.filter(
-        placement => placement === 1
-      ).length;
+      const _placementStats = {};
+      Object.keys(matchDataSeparatedByDateDiff).map(dateDiffOfMatch => {
+        const average = (
+          placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.reduce(
+            (acc, val) => {
+              return acc + val;
+            }
+          ) / placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.length
+        ).toFixed(1);
 
-      const fourthOrHigher = placemntArraySeparatedByDateDiff[key]?.filter(
-        placement => placement <= 4
-      ).length;
+        const wins = placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.filter(
+          placement => placement === 1
+        ).length;
 
-      _placementStats[key] = {
-        average,
-        wins,
-        fourthOrHigher
-      };
-    });
+        const fourthOrHigher = placemntArraySeparatedByDateDiff[
+          dateDiffOfMatch
+        ]?.filter(placement => placement <= 4).length;
 
-    setPlacementStats(_placementStats);
-  }, [matchDataSeparatedByDateDiff, placemntArraySeparatedByDateDiff]);
+        _placementStats[dateDiffOfMatch] = {
+          average,
+          wins,
+          fourthOrHigher
+        };
+      });
+
+      setPlacementStats(_placementStats);
+    }
+  }, [matchDataSeparatedByDateDiff]);
 
   return placementStsts;
 };

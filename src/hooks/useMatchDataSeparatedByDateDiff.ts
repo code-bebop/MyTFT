@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { MatchInfoT } from "../types/types";
@@ -8,10 +8,9 @@ export interface MatchDataSeparatedByDateDiffT {
 }
 
 const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {
-  const [
-    matchDataSeparatedByDateDiff,
-    setMatchDataSeparatedByDateDiff
-  ] = useState({});
+  const matchDataSeparatedByDateDiff = useRef<MatchDataSeparatedByDateDiffT>(
+    {}
+  );
   const { matchInfoList } = useSelector(
     (state: RootState) => ({
       matchInfoList: state.match.matchInfoList
@@ -20,7 +19,6 @@ const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {
   );
 
   useEffect(() => {
-    setMatchDataSeparatedByDateDiff({});
     const _matchDataSeparatedByDateDiff = {};
     matchInfoList?.forEach(matchInfo => {
       const dateDiffOfMatch = Math.ceil(
@@ -38,10 +36,10 @@ const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {
       }
     });
 
-    setMatchDataSeparatedByDateDiff(_matchDataSeparatedByDateDiff);
+    matchDataSeparatedByDateDiff.current = _matchDataSeparatedByDateDiff;
   }, [matchInfoList]);
 
-  return matchDataSeparatedByDateDiff;
+  return matchDataSeparatedByDateDiff.current;
 };
 
 export default useMatchDataSeparatedByDateDiff;
