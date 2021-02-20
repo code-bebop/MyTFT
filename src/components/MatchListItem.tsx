@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import styled, { css } from "styled-components";
-import findSearchedSummoner from "../lib/findSearchedSummoner";
+import findSearchedSummonerInMatch from "../lib/findSearchedSummonerInMatch";
 
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 
@@ -327,7 +327,7 @@ const sortSummonerUnits = (summoner: Participant): void => {
   });
 };
 
-const getActivatedTraits = (summoner: Participant) => {
+const getFourActivatedTraits = (summoner: Participant) => {
   const activatedTraits = summoner.traits
     .filter(trait => trait.style)
     .sort((a, b) => {
@@ -342,10 +342,10 @@ const MatchListItem = ({
   matchInfo,
   puuid
 }: MatchListItemPropsT): ReactElement => {
-  const searchedSummoner = findSearchedSummoner(matchInfo, puuid);
+  const searchedSummoner = findSearchedSummonerInMatch(matchInfo, puuid);
   unifySummonerUnits(searchedSummoner);
   sortSummonerUnits(searchedSummoner);
-  const activatedTraits = getActivatedTraits(searchedSummoner);
+  const activatedTraits = getFourActivatedTraits(searchedSummoner);
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>

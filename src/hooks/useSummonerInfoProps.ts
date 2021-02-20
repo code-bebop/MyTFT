@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import {
   SummonerInfoPropsT,
@@ -11,11 +10,27 @@ import { RootState } from "../modules";
 import { RankEntryT } from "../types/types";
 import usePlacementArray from "./usePlacementArray";
 
+const getWinRate = (wins: number, losses: number): number =>
+  Number(((wins / (wins + losses)) * 100).toFixed(2));
+
+const getDateDiffBetweenRevisionDateAndPresent = (
+  revisionDate: number
+): number =>
+  Math.ceil(
+    (new Date().getTime() - new Date(revisionDate).getTime()) /
+      (1000 * 3600 * 24)
+  );
+
 const useSummonerInfoProps = (): SummonerInfoPropsT => {
-  const [
-    summonerInfoProps,
-    setSummonerInfoProps
-  ] = useState<SummonerInfoPropsT>({
+  const { summonerInfo, rankEntry } = useSelector(
+    (state: RootState) => ({
+      summonerInfo: state.summoner.summonerInfo,
+      rankEntry: state.summoner.rankEntry
+    }),
+    shallowEqual
+  );
+  const placementArray = usePlacementArray();
+  let summonerInfoProps: SummonerInfoPropsT = {
     requireSummonerInfoProps: {
       summonerName: "",
       profileIconId: 0,
@@ -23,67 +38,51 @@ const useSummonerInfoProps = (): SummonerInfoPropsT => {
       dateDiff: 0,
       placementArray: [0]
     }
-  });
-  const { summonerInfo, rankEntry, matchInfoList } = useSelector(
-    (state: RootState) => ({
-      summonerInfo: state.summoner.summonerInfo,
-      rankEntry: state.summoner.rankEntry,
-      matchInfoList: state.match.matchInfoList
-    }),
-    shallowEqual
-  );
-  const placementArray = usePlacementArray();
+  };
 
-  useEffect(() => {
-    if (summonerInfo && rankEntry && placementArray) {
+  if (summonerInfo && rankEntry && placementArray) {
+    const {
+      name: summonerName,
+      profileIconId,
+      summonerLevel,
+      revisionDate
+    } = ensure(summonerInfo);
+    const dateDiff = getDateDiffBetweenRevisionDateAndPresent(revisionDate);
+    const requireSummonerInfoProps: RequireSummonerInfoPropsT = {
+      summonerName,
+      profileIconId,
+      summonerLevel,
+      dateDiff,
+      placementArray
+    };
+
+    if (rankEntry?.length !== 0) {
       const {
-        name: summonerName,
-        profileIconId,
-        summonerLevel,
-        revisionDate
-      } = ensure(summonerInfo);
-      const dateDiff = Math.ceil(
-        (new Date().getTime() - new Date(revisionDate).getTime()) /
-          (1000 * 3600 * 24)
-      );
-      const requireSummonerInfoProps: RequireSummonerInfoPropsT = {
-        summonerName,
-        profileIconId,
-        summonerLevel,
-        dateDiff,
-        placementArray
+        tier: summonerTier,
+        rank: summonerRank,
+        leaguePoints,
+        wins,
+        losses
+      } = ensure<RankEntryT>(rankEntry[0]);
+      const winRate = getWinRate(wins, losses);
+      const optionalSummonerInfoProps: OptionalSummonerInfoPropsT = {
+        summonerTier,
+        summonerRank,
+        leaguePoints,
+        wins,
+        losses,
+        winRate
       };
-
-      if (rankEntry?.length !== 0) {
-        const {
-          tier: summonerTier,
-          rank: summonerRank,
-          leaguePoints,
-          wins,
-          losses
-        } = ensure<RankEntryT>(rankEntry[0]);
-        const winRate = Number(((wins / (wins + losses)) * 100).toFixed(2));
-        const optionalSummonerInfoProps: OptionalSummonerInfoPropsT = {
-          summonerTier,
-          summonerRank,
-          leaguePoints,
-          wins,
-          losses,
-          winRate
-        };
-        const _summonerInfoProps: SummonerInfoPropsT = {
-          requireSummonerInfoProps,
-          optionalSummonerInfoProps
-        };
-        setSummonerInfoProps(_summonerInfoProps);
-      } else {
-        const _summonerInfoProps: SummonerInfoPropsT = {
-          requireSummonerInfoProps
-        };
-        setSummonerInfoProps(_summonerInfoProps);
-      }
+      summonerInfoProps = {
+        requireSummonerInfoProps,
+        optionalSummonerInfoProps
+      };
+    } else {
+      summonerInfoProps = {
+        requireSummonerInfoProps
+      };
     }
-  }, [summonerInfo, rankEntry, matchInfoList, placementArray]);
+  }
 
   return summonerInfoProps;
 };

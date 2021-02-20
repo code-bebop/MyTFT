@@ -1,35 +1,28 @@
-import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import ensure from "../lib/ensure";
+import findSearchedSummonerInMatch from "../lib/findSearchedSummonerInMatch";
 import { RootState } from "../modules";
 import { Participant } from "../types/types";
 
 const usePlacementArray = (): number[] => {
-  const { summonerInfo, matchInfoList } = useSelector(
+  const { summonerPuuid, matchInfoList } = useSelector(
     (state: RootState) => ({
-      summonerInfo: state.summoner.summonerInfo,
+      summonerPuuid: state.summoner.summonerInfo?.puuid,
       matchInfoList: state.match.matchInfoList
     }),
     shallowEqual
   );
 
-  const [placementArray, setPlacementArray] = useState<number[]>([]);
-
-  useEffect(() => {
-    const _placementArray: number[] = [];
-
+  const placementArray: number[] = [];
+  if (summonerPuuid !== undefined) {
     matchInfoList?.forEach(matchInfo => {
-      _placementArray.push(
+      placementArray.push(
         ensure<Participant>(
-          matchInfo.info.participants.find(participant => {
-            return participant.puuid === summonerInfo?.puuid;
-          })
+          findSearchedSummonerInMatch(matchInfo, summonerPuuid)
         ).placement
       );
     });
-
-    setPlacementArray(_placementArray);
-  }, [matchInfoList]);
+  }
 
   return placementArray;
 };

@@ -6,7 +6,7 @@ import useMatchDataSeparatedByDateDiff, {
   MatchDataSeparatedByDateDiffT
 } from "../hooks/useMatchDataSeparatedByDateDiff";
 import { RootState } from "../modules";
-import usePlacementStats from "../hooks/usePlacementStats";
+import usePlacementStats, { PlacementStatsT } from "../hooks/usePlacementStats";
 
 const MatchListContainerBlock = styled.ul`
   padding: 30px 24px 0;
@@ -90,7 +90,9 @@ const MatchListContainer = (): ReactElement => {
 
   const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
   console.log(matchDataSeparatedByDateDiff);
-  const placementStats = usePlacementStats(matchDataSeparatedByDateDiff);
+  const placementStats: PlacementStatsT = usePlacementStats(
+    matchDataSeparatedByDateDiff
+  );
   console.log(placementStats);
 
   return (

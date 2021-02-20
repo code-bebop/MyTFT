@@ -1,7 +1,7 @@
 import { MatchInfoT, Participant } from "../types/types";
 import ensure from "./ensure";
 
-const findSearchedSummoner = (
+const findSearchedSummonerInMatch = (
   matchInfo: MatchInfoT,
   puuid: string
 ): Participant => {
@@ -14,4 +14,4 @@ const findSearchedSummoner = (
   return summoner;
 };
 
-export default findSearchedSummoner;
+export default findSearchedSummonerInMatch;
