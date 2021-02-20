@@ -217,7 +217,7 @@ const SummonerInfo = (): ReactElement => {
   } = requireSummonerInfoProps;
 
   if (summonerName === "" || summonerName === "Error") {
-    return <p>데이터 없음</p>;
+    return <p>존재하지 않는 소환사</p>;
   }
   return (
     <SummonerInfoBlock>

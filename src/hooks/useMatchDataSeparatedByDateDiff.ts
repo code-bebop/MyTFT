@@ -4,7 +4,7 @@ import { RootState } from "../modules";
 import { MatchInfoT } from "../types/types";
 
 export interface MatchDataSeparatedByDateDiffT {
-  [k: string]: MatchInfoT[];
+  [dateDiff: string]: MatchInfoT[];
 }
 
 const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {

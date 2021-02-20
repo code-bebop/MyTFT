@@ -16,6 +16,11 @@ const Wrapper = styled.div`
   justify-content: center;
 `;
 
+const isLoading = (...loading: boolean[]): boolean => loading.includes(true);
+const isNonexistent = (...args: any[]): boolean => {
+  return args.includes(null) || args.includes(undefined);
+};
+
 const App = (): ReactElement => {
   console.log("App 렌더링");
 
@@ -43,23 +48,32 @@ const App = (): ReactElement => {
     }
   }, [summonerInfo]);
 
-  console.log(summonerInfo && matchInfoList ? "true" : "false");
+  if (isLoading(summonerLoading, matchLoading)) {
+    return (
+      <Wrapper>
+        <p>로딩 중...</p>
+      </Wrapper>
+    );
+  }
+
+  if (isNonexistent(summonerInfo, matchInfoList)) {
+    return (
+      <>
+        <Search />
+        <Wrapper>
+          <p>데이터가 없는 상태</p>
+        </Wrapper>
+      </>
+    );
+  }
+
   return (
     <>
       <Search />
-      {summonerLoading || matchLoading ? (
-        <Wrapper>
-          <p>로딩 중...</p>
-        </Wrapper>
-      ) : (
-        summonerInfo &&
-        matchInfoList && (
-          <Wrapper>
-            <SummonerInfo />
-            <MatchList />
-          </Wrapper>
-        )
-      )}
+      <Wrapper>
+        <SummonerInfo />
+        <MatchList />
+      </Wrapper>
     </>
   );
 };

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import getPlacementArraySeparatedByDateDiff, {
   PlacementArraySeparatedByDateDiffT
-} from "../lib/getPlacementArray";
+} from "../lib/getPlacementArraySeparatedByDateDiff";
 import { RootState } from "../modules";
 import { MatchDataSeparatedByDateDiffT } from "./useMatchDataSeparatedByDateDiff";
 
@@ -25,30 +25,39 @@ const usePlacementStats = (
     shallowEqual
   );
 
+  const isPlacement1st = (placement: number): boolean => placement === 1;
+  const isPlacementFourthOrHigher = (placement: number): boolean =>
+    placement <= 4;
+  const getAveragePlacementArraySeparatedByDateDiff = (
+    placemntArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT,
+    dateDiffOfMatch: string
+  ): string => {
+    return (
+      placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.reduce((acc, val) => {
+        return acc + val;
+      }) / placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.length
+    ).toFixed(1);
+  };
+
   useEffect(() => {
     if (summonerPuuid !== undefined) {
-      const placemntArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT = getPlacementArraySeparatedByDateDiff(
+      const placementArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT = getPlacementArraySeparatedByDateDiff(
         matchDataSeparatedByDateDiff,
         summonerPuuid
       );
-
       const _placementStats = {};
+
       Object.keys(matchDataSeparatedByDateDiff).map(dateDiffOfMatch => {
-        const average = (
-          placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.reduce(
-            (acc, val) => {
-              return acc + val;
-            }
-          ) / placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.length
-        ).toFixed(1);
-
-        const wins = placemntArraySeparatedByDateDiff[dateDiffOfMatch]?.filter(
-          placement => placement === 1
-        ).length;
-
-        const fourthOrHigher = placemntArraySeparatedByDateDiff[
+        const average = getAveragePlacementArraySeparatedByDateDiff(
+          placementArraySeparatedByDateDiff,
           dateDiffOfMatch
-        ]?.filter(placement => placement <= 4).length;
+        );
+        const wins = placementArraySeparatedByDateDiff[dateDiffOfMatch]?.filter(
+          isPlacement1st
+        ).length;
+        const fourthOrHigher = placementArraySeparatedByDateDiff[
+          dateDiffOfMatch
+        ]?.filter(isPlacementFourthOrHigher).length;
 
         _placementStats[dateDiffOfMatch] = {
           average,
@@ -59,7 +68,7 @@ const usePlacementStats = (
 
       setPlacementStats(_placementStats);
     }
-  }, [matchDataSeparatedByDateDiff]);
+  }, [matchDataSeparatedByDateDiff, summonerPuuid]);
 
   return placementStsts;
 };

@@ -2,7 +2,7 @@ import { MatchDataSeparatedByDateDiffT } from "../hooks/useMatchDataSeparatedByD
 import findSearchedSummoner from "./findSearchedSummoner";
 
 export interface PlacementArraySeparatedByDateDiffT {
-  [k: string]: number[];
+  [dateDiff: string]: number[];
 }
 
 const getPlacementArraySeparatedByDateDiff = (
