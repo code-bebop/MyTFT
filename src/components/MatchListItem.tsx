@@ -1,10 +1,8 @@
 import React, { ReactElement } from "react";
 import styled, { css } from "styled-components";
-import useActivatedTraits from "../hooks/useActivatedTratis";
-import useSearchedSummoner from "../hooks/useSearchedSummoner";
-import useSortUnits from "../hooks/useSortUnits";
+import findSearchedSummoner from "../lib/findSearchedSummoner";
 
-import { MatchInfoT, Trait, Unit } from "../types/types";
+import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 
 const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;
@@ -305,13 +303,49 @@ export interface MatchListItemPropsT {
   puuid: string;
 }
 
+const unifySummonerUnits = (summoner: Participant): void => {
+  const units = summoner.units;
+
+  if (units.length < 9) {
+    for (let i = units.length; i < 9; i++) {
+      units.push({
+        character_id: "",
+        items: [],
+        name: "",
+        rarity: 0,
+        tier: 0
+      });
+    }
+  }
+};
+
+const sortSummonerUnits = (summoner: Participant): void => {
+  const units = summoner.units;
+
+  units.sort((a, b) => {
+    return a.rarity < b.rarity ? 1 : a.rarity > b.rarity ? -1 : 0;
+  });
+};
+
+const getActivatedTraits = (summoner: Participant) => {
+  const activatedTraits = summoner.traits
+    .filter(trait => trait.style)
+    .sort((a, b) => {
+      return a.style < b.style ? 1 : a.style > b.style ? -1 : 0;
+    })
+    .slice(0, 4);
+
+  return activatedTraits;
+};
+
 const MatchListItem = ({
   matchInfo,
   puuid
 }: MatchListItemPropsT): ReactElement => {
-  const searchedSummoner = useSearchedSummoner(matchInfo, puuid);
-  useSortUnits(searchedSummoner);
-  const activatedTraits = useActivatedTraits(searchedSummoner, matchInfo);
+  const searchedSummoner = findSearchedSummoner(matchInfo, puuid);
+  unifySummonerUnits(searchedSummoner);
+  sortSummonerUnits(searchedSummoner);
+  const activatedTraits = getActivatedTraits(searchedSummoner);
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>
