@@ -1,5 +1,5 @@
 import React, { ReactElement, useEffect } from "react";
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { hot } from "react-hot-loader";
 
 import Search from "../components/Search";
@@ -8,6 +8,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { matchAsync } from "../modules/match";
 import SummonerInfo from "./SummonerInfo";
+import theme from "../styled";
 
 const Wrapper = styled.div`
   width: 100%;
@@ -69,11 +70,13 @@ const App = (): ReactElement => {
 
   return (
     <>
-      <Search />
-      <Wrapper>
-        <SummonerInfo />
-        <MatchList />
-      </Wrapper>
+      <ThemeProvider theme={theme}>
+        <Search />
+        <Wrapper>
+          <SummonerInfo />
+          <MatchList />
+        </Wrapper>
+      </ThemeProvider>
     </>
   );
 };

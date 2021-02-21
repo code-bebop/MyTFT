@@ -15,16 +15,18 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   padding-right: 16px;
   border-left-width: 3px;
   border-left-style: solid;
-  border-left-color: ${props => {
-    switch (props.placement) {
+  border-left-color: ${({ placement, theme }) => {
+    switch (placement) {
       case 1:
-        return "#E7B767";
+        return theme.colors.placement.first;
       case 2:
-        return "#9DA2B1";
+        return theme.colors.placement.second;
       case 3:
-        return "#AD8866";
+        return theme.colors.placement.third;
+      case 4:
+        return theme.colors.placement.fourth;
       default:
-        return "#576480";
+        return theme.colors.placement.default;
     }
   }};
   border-radius: 5px;

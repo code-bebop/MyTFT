@@ -1,4 +1,4 @@
-import React, { ReactElement, useRef } from "react";
+import React, { ReactElement, useLayoutEffect, useRef } from "react";
 import styled from "styled-components";
 import useSummonerInfoProps from "../hooks/useSummonerInfoProps";
 import PlacementChart from "./PlacementChart";
@@ -111,20 +111,20 @@ const SummonerLPCanvas = styled.canvas`
 const SummonerRankWithTier = styled.h2<{ tier: string }>`
   font-size: 20px;
   font-weight: bold;
-  color: ${({ tier }) => {
+  color: ${({ tier, theme }) => {
     switch (tier) {
       case "IRON":
-        return "#325173";
+        return theme.colors.tier.iron;
       case "BRONZE":
-        return "#B97452";
+        return theme.colors.tier.bronze;
       case "SILVER":
-        return "#9FBDC3";
+        return theme.colors.tier.silver;
       case "GOLD":
-        return "#F1A64E";
+        return theme.colors.tier.gold;
       case "PLATINUM":
-        return "#63b7b4";
+        return theme.colors.tier.platinum;
       case "DIAMOND":
-        return "#6F88EE";
+        return theme.colors.tier.diamond;
       default:
         return "white";
     }
@@ -132,42 +132,51 @@ const SummonerRankWithTier = styled.h2<{ tier: string }>`
   margin: 0px;
 `;
 
-const strokeSummonerLpGui = (
+const useStrokeSummonerLpGui = (
   canvasRef: React.RefObject<HTMLCanvasElement>,
   leaguePoints: number,
   summonerTier: string
 ): void => {
-  if (canvasRef.current && leaguePoints && summonerTier) {
-    const ctx = ensure<CanvasRenderingContext2D>(
-      canvasRef.current.getContext("2d")
-    );
-    switch (summonerTier) {
-      case "IRON":
-        ctx.strokeStyle = "#325173";
-        break;
-      case "BRONZE":
-        ctx.strokeStyle = "#B97452";
-        break;
-      case "SILVER":
-        ctx.strokeStyle = "#9FBDC3";
-        break;
-      case "GOLD":
-        ctx.strokeStyle = "#F1A64E";
-        break;
-      case "PLATINUM":
-        ctx.strokeStyle = "#63b7b4";
-        break;
-      case "DIAMOND":
-        ctx.strokeStyle = "#6F88EE";
-        break;
-      default:
-        ctx.strokeStyle = "white";
+  useLayoutEffect(() => {
+    if (canvasRef.current && leaguePoints && summonerTier) {
+      console.log("strokeSummonerLpGui 실행");
+      const ctx = ensure<CanvasRenderingContext2D>(
+        canvasRef.current.getContext("2d")
+      );
+      switch (summonerTier) {
+        case "IRON":
+          ctx.strokeStyle = "#325173";
+          break;
+        case "BRONZE":
+          ctx.strokeStyle = "#B97452";
+          break;
+        case "SILVER":
+          ctx.strokeStyle = "#9FBDC3";
+          break;
+        case "GOLD":
+          ctx.strokeStyle = "#F1A64E";
+          break;
+        case "PLATINUM":
+          ctx.strokeStyle = "#63b7b4";
+          break;
+        case "DIAMOND":
+          ctx.strokeStyle = "#6F88EE";
+          break;
+        default:
+          ctx.strokeStyle = "white";
+      }
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(
+        114 / 2,
+        114 / 2,
+        110 / 2,
+        0,
+        Math.PI * ((2 * leaguePoints) / 100)
+      );
+      ctx.stroke();
     }
-    ctx.lineWidth = 4;
-    ctx.beginPath();
-    ctx.arc(114 / 2, 114 / 2, 110 / 2, 0, Math.PI * ((2 * leaguePoints) / 100));
-    ctx.stroke();
-  }
+  }, [canvasRef]);
 };
 
 const RankedSummonerBlock = ({
@@ -184,7 +193,7 @@ const RankedSummonerBlock = ({
     winRate
   } = rankedSummonerBlockProps;
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  strokeSummonerLpGui(canvasRef, leaguePoints, summonerTier);
+  useStrokeSummonerLpGui(canvasRef, leaguePoints, summonerTier);
 
   return (
     <BundleBlock>

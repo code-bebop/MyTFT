@@ -52,18 +52,18 @@ const ChartBar = styled.div<{
     return `${(frequent / frequentMax) * 100}%`;
   }};
   border-radius: 5px;
-  background-color: ${({ placement }) => {
+  background-color: ${({ placement, theme }) => {
     switch (placement) {
       case 1:
-        return "#E7B767";
+        return theme.colors.placement.first;
       case 2:
-        return "#9DA2B1";
+        return theme.colors.placement.second;
       case 3:
-        return "#AD8866";
+        return theme.colors.placement.third;
       case 4:
-        return "#778B9D";
+        return theme.colors.placement.fourth;
       default:
-        return "#576480";
+        return theme.colors.placement.default;
     }
   }};
 `;
@@ -76,18 +76,18 @@ const ChartAxisX = styled.div`
 `;
 
 const ChartAxisXEntry = styled.p<{ placement: number }>`
-  color: ${({ placement }) => {
+  color: ${({ placement, theme }) => {
     switch (placement) {
       case 1:
-        return "#E7B767";
+        return theme.colors.placement.first;
       case 2:
-        return "#9DA2B1";
+        return theme.colors.placement.second;
       case 3:
-        return "#AD8866";
+        return theme.colors.placement.third;
       case 4:
-        return "#778B9D";
+        return theme.colors.placement.fourth;
       default:
-        return "#576480";
+        return theme.colors.placement.default;
     }
   }};
 `;
