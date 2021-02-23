@@ -46,11 +46,31 @@ export const getSummoner = async (
   return summonerResponse;
 };
 
+// export const getMatch = async (
+//   matchIdList: MatchPayloadT
+// ): Promise<MatchResponseT[]> => {
+//   const matchResponse = await Promise.all(
+//     matchIdList.map(
+//       async (matchId): Promise<MatchResponseT> => {
+//         const response: AxiosResponse<MatchResponseT> = await TFT_API.get(
+//           `/match/v1/matches/${matchId}`
+//         );
+//         return response.data;
+//       }
+//     )
+//   );
+
+//   return matchResponse;
+// };
+
 export const getMatch = async (
   matchIdList: MatchPayloadT
 ): Promise<MatchResponseT[]> => {
+  let startIndex = 0;
+  let endIndex = 10;
+  const slicedMatchIdList = matchIdList.slice(startIndex, endIndex);
   const matchResponse = await Promise.all(
-    matchIdList.map(
+    slicedMatchIdList.map(
       async (matchId): Promise<MatchResponseT> => {
         const response: AxiosResponse<MatchResponseT> = await TFT_API.get(
           `/match/v1/matches/${matchId}`
@@ -59,6 +79,8 @@ export const getMatch = async (
       }
     )
   );
+  startIndex = endIndex;
+  endIndex += 20;
 
   return matchResponse;
 };

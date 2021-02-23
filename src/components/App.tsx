@@ -8,7 +8,7 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { matchAsync } from "../modules/match";
 import SummonerInfo from "./SummonerInfo";
-import theme from "../styled";
+import theme from "../style";
 
 const Wrapper = styled.div`
   width: 100%;
