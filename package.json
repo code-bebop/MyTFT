@@ -1,11 +1,13 @@
 {
+  "homepage": "https://code-bebop.github.io/MyTFT-app",
   "name": "LOL-App",
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
     "build": "webpack -w",
-    "start": "webpack serve"
+    "start": "webpack serve",
+    "deploy": "gh-pages -d dist"
   },
   "devDependencies": {
     "@babel/cli": "^7.12.10",
@@ -23,6 +25,7 @@
     "eslint-config-prettier": "^7.1.0",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-plugin-react": "^7.22.0",
+    "gh-pages": "3.0.0",
     "html-webpack-plugin": "^4.5.1",
     "mini-css-extract-plugin": "^1.3.3",
     "node-sass": "^5.0.0",
