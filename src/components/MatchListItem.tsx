@@ -3,6 +3,7 @@ import styled, { css } from "styled-components";
 import findSearchedSummonerInMatch from "../lib/findSearchedSummonerInMatch";
 
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
+import champions from "../../public/champions.json";
 
 const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;
@@ -173,6 +174,9 @@ const UnitListItem = React.memo(
         <img
           src={`../public/img/champions/${unit.character_id}.png`}
           alt={`${unit.character_id}`}
+          onClick={() => {
+            console.log(champions[unit.character_id]);
+          }}
         />
         <UnitItemList items={unit.items} />
       </UnitBox>
