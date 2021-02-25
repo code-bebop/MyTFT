@@ -1,9 +1,10 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import styled, { css } from "styled-components";
 import findSearchedSummonerInMatch from "../lib/findSearchedSummonerInMatch";
 
 import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
 import champions from "../../public/champions.json";
+import traits from "../../public/traits.json";
 
 const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;
@@ -32,6 +33,7 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   }};
   border-radius: 5px;
   box-sizing: border-box;
+  cursor: pointer;
 `;
 
 // Trait 관련 컴포넌트 시작
@@ -70,14 +72,57 @@ const TraitBg = styled.div<{ traitStyle: number }>`
   }};
 `;
 
+const HoverDes = styled.div`
+  width: auto;
+  height: 61px;
+  border-radius: 5px;
+  background-color: #070e1d;
+  position: absolute;
+  z-index: 2;
+  top: -81px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0 20px;
+  & > p {
+    color: #fff;
+    font-size: 16px;
+  }
+`;
+
 interface TraitListItemPropsT {
   trait: Trait;
 }
 
+const findTrait = (traitName: string): typeof trait[0] => {
+  const trait = traits.filter(trait => {
+    return trait.key === traitName;
+  });
+  return trait[0];
+};
+
 const TraitListItem = React.memo(
   ({ trait }: TraitListItemPropsT): ReactElement => {
+    const [isTraitHover, setIsTraitHover] = useState(false);
+    const traitInfo = findTrait(trait.name);
+
     return (
-      <TraitBox>
+      <TraitBox
+        onMouseOver={() => {
+          setIsTraitHover(true);
+        }}
+        onMouseOut={() => {
+          setIsTraitHover(false);
+        }}
+      >
+        {isTraitHover && (
+          <HoverDes>
+            <p>{traitInfo.name}</p>
+          </HoverDes>
+        )}
         <TraitBg className="traitBg" traitStyle={trait.style} />
         <img
           src={`../public/img/traits/${trait.name}.svg`}
@@ -159,12 +204,43 @@ const UnitBox = styled.li<UnitBoxProps>`
   }
 `;
 
+const UnitHoverDescription = styled.div`
+  width: auto;
+  height: 61px;
+  border-radius: 5px;
+  background-color: #070e1d;
+  position: absolute;
+  z-index: 2;
+  top: -81px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  padding: 0 20px;
+  & > p {
+    color: #fff;
+    font-size: 16px;
+  }
+`;
+
 interface UnitListItemPropsT {
   unit: Unit;
 }
 
+const findChampion = (characterId: string): typeof champion[0] => {
+  const champion = champions.filter(champion => {
+    return champion.championId === characterId;
+  });
+  return champion[0];
+};
+
 const UnitListItem = React.memo(
   ({ unit }: UnitListItemPropsT): ReactElement => {
+    const [isUnitHover, setIsUnitHover] = useState(false);
+    const champion = findChampion(unit.character_id);
+
     if (unit.character_id === "") {
       return <UnitBox rarity={unit.rarity} />;
     }
@@ -174,10 +250,18 @@ const UnitListItem = React.memo(
         <img
           src={`../public/img/champions/${unit.character_id}.png`}
           alt={`${unit.character_id}`}
-          onClick={() => {
-            console.log(champions[unit.character_id]);
+          onMouseOver={() => {
+            setIsUnitHover(true);
+          }}
+          onMouseOut={() => {
+            setIsUnitHover(false);
           }}
         />
+        {isUnitHover && (
+          <HoverDes>
+            <p>{champion.name}</p>
+          </HoverDes>
+        )}
         <UnitItemList items={unit.items} />
       </UnitBox>
     );
@@ -354,7 +438,12 @@ const MatchListItem = ({
   const activatedTraits = getFourActivatedTraits(searchedSummoner);
 
   return (
-    <MatchListItemBlock placement={searchedSummoner.placement}>
+    <MatchListItemBlock
+      placement={searchedSummoner.placement}
+      onClick={() => {
+        console.log(matchInfo.metadata.participants);
+      }}
+    >
       <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
       <MatchSummary>
         <Placement placement={searchedSummoner.placement}>
