@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
-import MatchListItem from "./MatchListItem";
+import MatchListItem from "./MatchListItem/MatchListItem";
 import useMatchDataSeparatedByDateDiff, {
   MatchDataSeparatedByDateDiffT
 } from "../hooks/useMatchDataSeparatedByDateDiff";

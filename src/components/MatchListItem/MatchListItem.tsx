@@ -1,8 +1,9 @@
 import React, { ReactElement } from "react";
 import styled, { css } from "styled-components";
-import findSearchedSummonerInMatch from "../lib/findSearchedSummonerInMatch";
+import findSearchedSummonerInMatch from "../../lib/findSearchedSummonerInMatch";
 
-import { MatchInfoT, Participant, Trait, Unit } from "../types/types";
+import { MatchInfoT, Participant, Trait, Unit } from "../../types/types";
+import TraitList from "./TraitList";
 
 const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;
@@ -32,64 +33,6 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   border-radius: 5px;
   box-sizing: border-box;
 `;
-
-// Trait 관련 컴포넌트 시작
-
-const TraitList = styled.div`
-  display: flex;
-  margin-left: auto;
-  margin-right: 8px;
-`;
-
-const TraitBox = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 20px;
-  height: 22px;
-  .traitImg {
-    z-index: 1;
-    width: 12px;
-    height: 15px;
-  }
-`;
-
-const TraitBg = styled.div<{ traitStyle: number }>`
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: no-repeat url(../public/img/traits/bg.png);
-  background-size: auto 22px;
-  width: 20px;
-  height: 22px;
-
-  background-position: ${props => {
-    return `${(props.traitStyle - 1) * -20}px`;
-  }};
-`;
-
-interface TraitListItemPropsT {
-  trait: Trait;
-}
-
-const TraitListItem = React.memo(
-  ({ trait }: TraitListItemPropsT): ReactElement => {
-    return (
-      <TraitBox>
-        <TraitBg className="traitBg" traitStyle={trait.style} />
-        <img
-          src={`../public/img/traits/${trait.name}.svg`}
-          alt={`${trait.name}`}
-          className="traitImg"
-        />
-      </TraitBox>
-    );
-  }
-);
-TraitListItem.displayName = "TraitListItem";
-
-// Trait 관련 컴포넌트 종료
 
 // Unit 관련 컴포넌트 시작
 
@@ -358,11 +301,7 @@ const MatchListItem = ({
         </Placement>
         <p>{matchInfo.info.queue_id === 1100 ? "랭크" : "일반"}</p>
       </MatchSummary>
-      <TraitList>
-        {activatedTraits.map((trait, index) => (
-          <TraitListItem trait={trait} key={index} />
-        ))}
-      </TraitList>
+      <TraitList activatedTraits={activatedTraits} />
       <UnitList>
         {searchedSummoner.units.map((unit, index) => (
           <UnitListItem unit={unit} key={index} />
