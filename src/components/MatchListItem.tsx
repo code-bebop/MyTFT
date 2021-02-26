@@ -74,7 +74,7 @@ const TraitBg = styled.div<{ traitStyle: number }>`
 
 const HoverDes = styled.div`
   width: auto;
-  height: 61px;
+  height: auto;
   border-radius: 5px;
   background-color: #070e1d;
   position: absolute;
@@ -83,13 +83,22 @@ const HoverDes = styled.div`
   left: 50%;
   transform: translateX(-50%);
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   white-space: nowrap;
-  padding: 0 20px;
+  padding: 20px;
   & > p {
     color: #fff;
     font-size: 16px;
+    margin: 0;
+    span:not(:last-child) {
+      &::after {
+        content: " · ";
+        display: inline;
+        color: #fff;
+      }
+    }
   }
 `;
 
@@ -97,17 +106,17 @@ interface TraitListItemPropsT {
   trait: Trait;
 }
 
-const findTrait = (traitName: string): typeof trait[0] => {
+const getTraitName = (traitName: string): string => {
   const trait = traits.filter(trait => {
     return trait.key === traitName;
   });
-  return trait[0];
+  return trait[0].name;
 };
 
 const TraitListItem = React.memo(
   ({ trait }: TraitListItemPropsT): ReactElement => {
     const [isTraitHover, setIsTraitHover] = useState(false);
-    const traitInfo = findTrait(trait.name);
+    const traitName = getTraitName(trait.name);
 
     return (
       <TraitBox
@@ -120,13 +129,13 @@ const TraitListItem = React.memo(
       >
         {isTraitHover && (
           <HoverDes>
-            <p>{traitInfo.name}</p>
+            <p>{traitName}</p>
           </HoverDes>
         )}
         <TraitBg className="traitBg" traitStyle={trait.style} />
         <img
           src={`../public/img/traits/${trait.name}.svg`}
-          alt={`${trait.name}`}
+          alt={`${traitName}`}
           className="traitImg"
         />
       </TraitBox>
@@ -225,6 +234,24 @@ const UnitHoverDescription = styled.div`
   }
 `;
 
+const HoverDesTrait = styled.span<{ isChosen: boolean }>`
+  ${props => {
+    if (props.isChosen) {
+      return css`
+        color: #b362ba;
+        &::before {
+          display: inline-block;
+          content: "";
+          width: 12px;
+          height: 13px;
+          margin-right: 5px;
+          background: url(../public/img/champions/TFT_Chosen_icon.svg);
+        }
+      `;
+    }
+  }}
+`;
+
 interface UnitListItemPropsT {
   unit: Unit;
 }
@@ -238,8 +265,9 @@ const findChampion = (characterId: string): typeof champion[0] => {
 
 const UnitListItem = React.memo(
   ({ unit }: UnitListItemPropsT): ReactElement => {
-    const [isUnitHover, setIsUnitHover] = useState(false);
+    const [isUnitHover, setIsUnitHover] = useState(true);
     const champion = findChampion(unit.character_id);
+    const isChosenUnit = unit.chosen ? true : false;
 
     if (unit.character_id === "") {
       return <UnitBox rarity={unit.rarity} />;
@@ -260,6 +288,23 @@ const UnitListItem = React.memo(
         {isUnitHover && (
           <HoverDes>
             <p>{champion.name}</p>
+            {isChosenUnit && (
+              <p>
+                {champion.traits.map(trait => {
+                  const traitName = getTraitName(trait);
+                  let isChosenTrait = false;
+                  if (isChosenUnit) {
+                    isChosenTrait =
+                      traitName === getTraitName(unit.chosen!) ? true : false;
+                  }
+                  return (
+                    <HoverDesTrait key={trait} isChosen={isChosenTrait}>
+                      {traitName}
+                    </HoverDesTrait>
+                  );
+                })}
+              </p>
+            )}
           </HoverDes>
         )}
         <UnitItemList items={unit.items} />
