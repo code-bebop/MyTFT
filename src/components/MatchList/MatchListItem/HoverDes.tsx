@@ -8,18 +8,18 @@ const HoverDesBlock = styled.div`
   background-color: #070e1d;
   position: absolute;
   z-index: 2;
-  top: -81px;
+  bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   white-space: nowrap;
   padding: 20px;
   & > p {
     color: #fff;
-    font-size: 16px;
+    font-size: 18px;
     margin: 0;
   }
 `;

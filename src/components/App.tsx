@@ -12,7 +12,7 @@ import theme from "../theme";
 
 const Wrapper = styled.div`
   width: 100%;
-  padding-top: 50px;
+  padding-top: 150px;
   display: flex;
   justify-content: center;
 `;

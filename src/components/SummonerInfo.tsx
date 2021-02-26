@@ -7,7 +7,6 @@ import ensure from "../lib/ensure";
 const SummonerInfoBlock = styled.div`
   width: 328px;
   height: 435px;
-  margin-top: 150px;
   background-color: #202b43;
   padding: 23px 20px;
 `;

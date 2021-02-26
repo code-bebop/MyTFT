@@ -4,6 +4,7 @@ import getChampion from "../../../lib/getChampion";
 import getTraitName from "../../../lib/getTraitName";
 import { Unit } from "../../../types/types";
 import HoverDes from "./HoverDes";
+import itemsJson from "../../../../public/items.json";
 
 const UnitItemListBlock = styled.div`
   position: absolute;
@@ -136,12 +137,14 @@ const UnitBox = styled.li<UnitBoxProps>`
   & + & {
     margin-left: 2px;
   }
-  img {
+  & > img {
     width: 100%;
     height: 100%;
   }
 `;
 const TraitInHoverDes = styled.span<{ isChosen: boolean }>`
+  margin-top: 10px;
+  font-size: 14px;
   &:not(:last-child) {
     &::after {
       content: " · ";
@@ -165,6 +168,30 @@ const TraitInHoverDes = styled.span<{ isChosen: boolean }>`
     }
   }}
 `;
+const ItemsInHoverDes = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin-top: 4px;
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 4px 0;
+    & > img {
+      width: 24px;
+      height: 24px;
+      border-radius: 5px;
+    }
+    & > p {
+      margin: 0;
+      margin-left: 8px;
+      font-size: 13px;
+      color: #8095a9;
+    }
+  }
+`;
 interface UnitListItemPropsT {
   unit: Unit;
 }
@@ -173,6 +200,7 @@ const UnitListItem = React.memo(
     const [isUnitBeHovered, setIsUnitBeHovered] = useState(false);
     const champion = getChampion(unit);
     const isUnitChosen = unit.chosen ? true : false;
+    const isUnitHaveItem = unit.items.length !== 0 ? true : false;
 
     if (unit.character_id === "") {
       return <UnitBox rarity={unit.rarity} />;
@@ -208,6 +236,27 @@ const UnitListItem = React.memo(
                   );
                 })}
               </p>
+            )}
+            {isUnitHaveItem && (
+              <ItemsInHoverDes>
+                {unit.items.map(item => {
+                  return (
+                    <div key={item}>
+                      <img
+                        src={`../public/img/items/${item}.png`}
+                        alt={`${item}`}
+                      />
+                      <p>
+                        {
+                          itemsJson.find(itemJson => {
+                            return itemJson.id === item;
+                          })?.name
+                        }
+                      </p>
+                    </div>
+                  );
+                })}
+              </ItemsInHoverDes>
             )}
           </HoverDes>
         )}
