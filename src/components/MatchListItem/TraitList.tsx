@@ -1,6 +1,8 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
+import getTraitName from "../../lib/getTraitName";
 import { Trait } from "../../types/types";
+import HoverDes from "./HoverDes";
 
 const TraitListBlock = styled.div`
   display: flex;
@@ -42,9 +44,24 @@ interface TraitListItemPropsT {
 
 const TraitListItem = React.memo(
   ({ trait }: TraitListItemPropsT): ReactElement => {
+    const [isTraitHover, setIsTraitHover] = useState(false);
+    const traitName = getTraitName(trait.name);
+
     return (
-      <TraitBox>
+      <TraitBox
+        onMouseOver={() => {
+          setIsTraitHover(true);
+        }}
+        onMouseOut={() => {
+          setIsTraitHover(false);
+        }}
+      >
         <TraitBg className="traitBg" traitStyle={trait.style} />
+        {isTraitHover && (
+          <HoverDes>
+            <p>{traitName}</p>
+          </HoverDes>
+        )}
         <img
           src={`../public/img/traits/${trait.name}.svg`}
           alt={`${trait.name}`}
