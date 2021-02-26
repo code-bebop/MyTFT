@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import styled, { css } from "styled-components";
 import findSearchedSummonerInMatch from "../../lib/findSearchedSummonerInMatch";
 
-import { MatchInfoT, Participant, Trait, Unit } from "../../types/types";
+import { MatchInfoT, Participant, Unit } from "../../types/types";
 import TraitList from "./TraitList";
 
 const MatchListItemBlock = styled.li<{ placement: number }>`
