@@ -21,13 +21,6 @@ const HoverDesBlock = styled.div`
     color: #fff;
     font-size: 16px;
     margin: 0;
-    span:not(:last-child) {
-      &::after {
-        content: " · ";
-        display: inline;
-        color: #fff;
-      }
-    }
   }
 `;
 

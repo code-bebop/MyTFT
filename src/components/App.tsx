@@ -3,7 +3,7 @@ import styled, { ThemeProvider } from "styled-components";
 import { hot } from "react-hot-loader";
 
 import Search from "../components/Search";
-import MatchList from "./MatchList";
+import MatchList from "./MatchList/MatchList";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { matchAsync } from "../modules/match";

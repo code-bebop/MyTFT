@@ -1,7 +1,7 @@
 import React, { ReactElement, useState } from "react";
 import styled from "styled-components";
-import getTraitName from "../../lib/getTraitName";
-import { Trait } from "../../types/types";
+import getTraitName from "../../../lib/getTraitName";
+import { Trait } from "../../../types/types";
 import HoverDes from "./HoverDes";
 
 const TraitListBlock = styled.div`

@@ -4,9 +4,11 @@ import styled from "styled-components";
 import MatchListItem from "./MatchListItem/MatchListItem";
 import useMatchDataSeparatedByDateDiff, {
   MatchDataSeparatedByDateDiffT
-} from "../hooks/useMatchDataSeparatedByDateDiff";
-import { RootState } from "../modules";
-import usePlacementStats, { PlacementStatsT } from "../hooks/usePlacementStats";
+} from "../../hooks/useMatchDataSeparatedByDateDiff";
+import { RootState } from "../../modules";
+import usePlacementStats, {
+  PlacementStatsT
+} from "../../hooks/usePlacementStats";
 
 const MatchListContainerBlock = styled.ul`
   padding: 30px 24px 0;
