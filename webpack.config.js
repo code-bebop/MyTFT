@@ -44,11 +44,6 @@ module.exports = {
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         exclude: /node_modules/
       }
-      // {
-      //   test: /\.json$/,
-      //   loader: "json-loader",
-      //   exclude: /node_modules/
-      // }
     ]
   },
   plugins: [
