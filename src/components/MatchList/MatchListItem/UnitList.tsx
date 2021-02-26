@@ -117,6 +117,11 @@ const UnitBox = styled.li<UnitBoxProps>`
         break;
     }
   }};
+  &:hover {
+    & > img {
+      filter: brightness(130%);
+    }
+  }
   ${props => {
     if (props.chosen) {
       return css`

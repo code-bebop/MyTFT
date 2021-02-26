@@ -6,6 +6,43 @@ import { MatchInfoT, Participant } from "../../../types/types";
 import TraitList from "./TraitList";
 import UnitList from "./UnitList";
 
+const Placement = styled.p<{ placement: number }>`
+  margin-bottom: 7px;
+  color: ${props => {
+    switch (props.placement) {
+      case 1:
+        return "#E7B767";
+      case 2:
+        return "#9DA2B1";
+      case 3:
+        return "#AD8866";
+      default:
+        return "#576480";
+    }
+  }};
+`;
+
+const MatchSummary = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  p {
+    margin: 0;
+    font-size: 13px;
+    &:nth-child(2) {
+      color: #6a7e92;
+    }
+  }
+`;
+
+const LittleLegendImg = styled.img`
+  width: 60px;
+  height: 100%;
+  object-fit: cover;
+  margin-right: 20px;
+`;
+
 const MatchListItemBlock = styled.li<{ placement: number }>`
   display: flex;
   align-items: center;
@@ -33,43 +70,13 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   }};
   border-radius: 5px;
   box-sizing: border-box;
-`;
-
-const LittleLegendImg = styled.img`
-  width: 60px;
-  height: 100%;
-  object-fit: cover;
-  margin-right: 20px;
-`;
-
-const MatchSummary = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  p {
-    margin: 0;
-    font-size: 13px;
-    &:nth-child(2) {
-      color: #6a7e92;
+  cursor: pointer;
+  &:hover {
+    transform: translateX(-5px);
+    ${LittleLegendImg} {
+      filter: brightness(130%);
     }
   }
-`;
-
-const Placement = styled.p<{ placement: number }>`
-  margin-bottom: 7px;
-  color: ${props => {
-    switch (props.placement) {
-      case 1:
-        return "#E7B767";
-      case 2:
-        return "#9DA2B1";
-      case 3:
-        return "#AD8866";
-      default:
-        return "#576480";
-    }
-  }};
 `;
 
 export interface MatchListItemPropsT {
