@@ -1,12 +1,12 @@
-import { MatchInfoT, Participant } from "../types/types";
+import { MatchT, Participant } from "../types/types";
 import ensure from "./ensure";
 
 const findSearchedSummonerInMatch = (
-  matchInfo: MatchInfoT,
+  match: MatchT,
   puuid: string
 ): Participant => {
   const summoner = ensure<Participant>(
-    matchInfo.info.participants.find(participant => {
+    match.info.participants.find(participant => {
       return participant.puuid === puuid;
     })
   );

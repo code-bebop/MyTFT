@@ -1,33 +1,32 @@
 import { shallowEqual, useSelector } from "react-redux";
 import { RootState } from "../modules";
-import { MatchInfoT } from "../types/types";
+import { MatchT } from "../types/types";
 
 export interface MatchDataSeparatedByDateDiffT {
-  [dateDiff: string]: MatchInfoT[];
+  [dateDiff: string]: MatchT[];
 }
 
 const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {
-  const { matchInfoList } = useSelector(
+  const { matches } = useSelector(
     (state: RootState) => ({
-      matchInfoList: state.matches.matches
+      matches: state.matches.matches
     }),
     shallowEqual
   );
   const matchDataSeparatedByDateDiff = {};
 
-  matchInfoList?.forEach(matchInfo => {
+  matches?.forEach(match => {
     const dateDiffOfMatch = Math.ceil(
-      (new Date().getTime() -
-        new Date(matchInfo.info.game_datetime).getTime()) /
+      (new Date().getTime() - new Date(match.info.game_datetime).getTime()) /
         (1000 * 3600 * 24)
     );
 
     if (!matchDataSeparatedByDateDiff[dateDiffOfMatch]) {
-      matchDataSeparatedByDateDiff[dateDiffOfMatch] = new Array(matchInfo);
+      matchDataSeparatedByDateDiff[dateDiffOfMatch] = new Array(match);
     } else {
       matchDataSeparatedByDateDiff[
         dateDiffOfMatch
-      ] = matchDataSeparatedByDateDiff[dateDiffOfMatch].concat(matchInfo);
+      ] = matchDataSeparatedByDateDiff[dateDiffOfMatch].concat(match);
     }
   });
 

@@ -8,7 +8,8 @@ import {
   SummonerResponseT,
   MatchIdsResponseT,
   MatchesResponseT,
-  MatchesPayloadT
+  MatchesPayloadT,
+  MatchT
 } from "../types/types";
 
 const TFT_API = axios.create({
@@ -48,23 +49,19 @@ export const getSummoner = async (
 
 export const getMatches = async (
   matchIds: MatchesPayloadT
-): Promise<MatchesResponseT[]> => {
+): Promise<MatchesResponseT> => {
   const matchResponse = await Promise.all(
-    matchIds.map(
-      async (matchId): Promise<MatchesResponseT> => {
-        const response: AxiosResponse<MatchesResponseT> = await TFT_API.get(
-          `/match/v1/matches/${matchId}`
-        );
-        return response.data;
-      }
-    )
+    matchIds.map(async matchId => {
+      const response = await getMatch(matchId);
+      return response;
+    })
   );
 
   return matchResponse;
 };
 
-export const getMatch = async (matchId: string): Promise<MatchesResponseT> => {
-  const response: AxiosResponse<MatchesResponseT> = await TFT_API.get(
+export const getMatch = async (matchId: string): Promise<MatchT> => {
+  const response: AxiosResponse<MatchT> = await TFT_API.get(
     `/match/v1/matches/${matchId}`
   );
   return response.data;

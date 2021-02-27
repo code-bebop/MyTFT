@@ -3,7 +3,7 @@ import styled from "styled-components";
 import findSearchedSummonerInMatch from "../../../lib/findSearchedSummonerInMatch";
 import { Link } from "react-router-dom";
 
-import { MatchInfoT, Participant } from "../../../types/types";
+import { MatchT, Participant } from "../../../types/types";
 import TraitList from "./TraitList";
 import UnitList from "./UnitList";
 
@@ -86,7 +86,7 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
 `;
 
 export interface MatchListItemPropsT {
-  matchInfo: MatchInfoT;
+  match: MatchT;
   puuid: string;
 }
 
@@ -125,24 +125,21 @@ const getFourActivatedTraits = (summoner: Participant) => {
   return activatedTraits;
 };
 
-const MatchListItem = ({
-  matchInfo,
-  puuid
-}: MatchListItemPropsT): ReactElement => {
-  const searchedSummoner = findSearchedSummonerInMatch(matchInfo, puuid);
+const MatchListItem = ({ match, puuid }: MatchListItemPropsT): ReactElement => {
+  const searchedSummoner = findSearchedSummonerInMatch(match, puuid);
   unifySummonerUnits(searchedSummoner);
   sortSummonerUnits(searchedSummoner);
   const activatedTraits = getFourActivatedTraits(searchedSummoner);
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>
-      <MatchListItemLink to={`/match/${matchInfo.metadata.match_id}`}>
+      <MatchListItemLink to={`/match/${match.metadata.match_id}`}>
         <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
         <MatchSummary>
           <Placement placement={searchedSummoner.placement}>
             {searchedSummoner.placement}위
           </Placement>
-          <p>{matchInfo.info.queue_id === 1100 ? "랭크" : "일반"}</p>
+          <p>{match.info.queue_id === 1100 ? "랭크" : "일반"}</p>
         </MatchSummary>
         <TraitList activatedTraits={activatedTraits} />
         <UnitList units={searchedSummoner.units} />

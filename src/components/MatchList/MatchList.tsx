@@ -131,12 +131,12 @@ const MatchListContainer = (): ReactElement => {
               </MatchListStats>
             </MatchListSummary>
             <ul>
-              {matchDataSeparatedByDateDiff[key].map((matchInfo, index) => {
+              {matchDataSeparatedByDateDiff[key].map((match, index) => {
                 if (summonerInfo?.puuid !== undefined) {
                   return (
                     <MatchListItem
                       key={index}
-                      matchInfo={matchInfo}
+                      match={match}
                       puuid={summonerInfo?.puuid}
                     />
                   );

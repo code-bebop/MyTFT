@@ -20,13 +20,13 @@ export const initialize = createAction(INITIALIZE)();
 
 export const matchesAsync = createAsyncAction(REQUEST, SUCCESS, FAILURE)<
   MatchesPayloadT,
-  MatchesResponseT[],
+  MatchesResponseT,
   AxiosError
 >();
 
 const getMatchesAsyncSaga = createAsyncSaga<
   MatchesPayloadT,
-  MatchesResponseT[],
+  MatchesResponseT,
   AxiosError
 >(matchesAsync, getMatches);
 
@@ -35,7 +35,7 @@ export const matchesSaga = function* (): Generator<ForkEffect<never>, void> {
 };
 
 type MatchesState = {
-  matches: MatchesResponseT[] | null;
+  matches: MatchesResponseT | null;
   error: AxiosError | null;
   loading: boolean;
 };
