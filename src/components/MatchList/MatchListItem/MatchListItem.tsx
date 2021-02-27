@@ -1,6 +1,7 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 import findSearchedSummonerInMatch from "../../../lib/findSearchedSummonerInMatch";
+import { Link } from "react-router-dom";
 
 import { MatchInfoT, Participant } from "../../../types/types";
 import TraitList from "./TraitList";
@@ -43,9 +44,15 @@ const LittleLegendImg = styled.img`
   margin-right: 20px;
 `;
 
-const MatchListItemBlock = styled.li<{ placement: number }>`
+const MatchListItemLink = styled(Link)`
   display: flex;
   align-items: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+`;
+
+const MatchListItemBlock = styled.li<{ placement: number }>`
   width: 624px;
   height: 68px;
   background-color: #182338;
@@ -70,7 +77,6 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   }};
   border-radius: 5px;
   box-sizing: border-box;
-  cursor: pointer;
   &:hover {
     transform: translateX(-5px);
     ${LittleLegendImg} {
@@ -130,15 +136,17 @@ const MatchListItem = ({
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>
-      <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
-      <MatchSummary>
-        <Placement placement={searchedSummoner.placement}>
-          {searchedSummoner.placement}위
-        </Placement>
-        <p>{matchInfo.info.queue_id === 1100 ? "랭크" : "일반"}</p>
-      </MatchSummary>
-      <TraitList activatedTraits={activatedTraits} />
-      <UnitList units={searchedSummoner.units} />
+      <MatchListItemLink to={`/match/${matchInfo.metadata.match_id}`}>
+        <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
+        <MatchSummary>
+          <Placement placement={searchedSummoner.placement}>
+            {searchedSummoner.placement}위
+          </Placement>
+          <p>{matchInfo.info.queue_id === 1100 ? "랭크" : "일반"}</p>
+        </MatchSummary>
+        <TraitList activatedTraits={activatedTraits} />
+        <UnitList units={searchedSummoner.units} />
+      </MatchListItemLink>
     </MatchListItemBlock>
   );
 };

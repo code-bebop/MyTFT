@@ -8,6 +8,7 @@ module.exports = {
   entry: ["./src/index.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
+    publicPath: "/",
     filename: "[name].js"
   },
   module: {
@@ -59,6 +60,7 @@ module.exports = {
     overlay: true,
     open: true,
     hot: true,
+    historyApiFallback: true,
     proxy: [
       {
         context: ["/tft/summoner", "/tft/league"],

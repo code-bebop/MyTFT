@@ -13,11 +13,16 @@ import "./index.css";
 
 const sagaMiddleware = createSagaMiddleware();
 
-const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(sagaMiddleware)));
+const store = createStore(
+  rootReducer,
+  composeWithDevTools(applyMiddleware(sagaMiddleware))
+);
 
 sagaMiddleware.run(rootSaga);
 
 ReactDOM.render(
-<Provider store={store}>
-  <App />
-</Provider>, document.getElementById("root"));
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);

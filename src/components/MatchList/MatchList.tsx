@@ -10,7 +10,7 @@ import usePlacementStats, {
   PlacementStatsT
 } from "../../hooks/usePlacementStats";
 
-const MatchListContainerBlock = styled.ul`
+const MatchListContainerBlock = styled.div`
   padding: 30px 24px 0;
   margin-left: 16px;
   background-color: #202b43;
