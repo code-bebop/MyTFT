@@ -11,8 +11,8 @@ import { createAsyncActionType } from "../lib/createAsnycActionType";
 import createAsyncSaga from "../lib/createAsyncSaga";
 import { MatchesPayloadT, MatchesResponseT } from "../types/types";
 
-const INITIALIZE = "match/INITIALIZE" as const;
-const GET_MATCHES = "match/GET_MATCHES" as const;
+const INITIALIZE = "matches/INITIALIZE" as const;
+const GET_MATCHES = "matches/GET_MATCHES" as const;
 
 const { REQUEST, SUCCESS, FAILURE } = createAsyncActionType(GET_MATCHES);
 

@@ -3,17 +3,19 @@ import { all, AllEffect, ForkEffect } from "redux-saga/effects";
 
 import summoner, { summonerSaga } from "./summoner";
 import matches, { matchesSaga } from "./matches";
+import match, { matchSaga } from "./match";
 
 const rootReducer = combineReducers({
   summoner,
-  matches
+  matches,
+  match
 });
 
 export function* rootSaga(): Generator<
   AllEffect<Generator<ForkEffect<never>, void, unknown>>,
   void
 > {
-  yield all([summonerSaga(), matchesSaga()]);
+  yield all([summonerSaga(), matchesSaga(), matchSaga()]);
 }
 
 export default rootReducer;
