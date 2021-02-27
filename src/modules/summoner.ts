@@ -14,7 +14,7 @@ import {
   SummonerResponseT,
   SummonerInfoResponseT,
   RankEntryResponseT,
-  MatchsResponseT
+  MatchIdsResponseT
 } from "../types/types";
 
 const CHANGE_QUERY = "search/CHANGE_QUERY" as const;
@@ -54,7 +54,7 @@ type SummonerState = {
   query: string;
   summonerInfo: SummonerInfoResponseT | null;
   rankEntry: RankEntryResponseT | null;
-  matchIds: MatchsResponseT;
+  matchIds: MatchIdsResponseT;
   error: AxiosError | null;
   loading: boolean;
 };

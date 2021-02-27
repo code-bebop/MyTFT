@@ -1,14 +1,9 @@
 import React, { ReactElement } from "react";
-import { RouteComponentProps } from "react-router-dom";
 
-interface MatchParams {
-  matchId: string;
-}
+import PostMatch from "../components/PostMatch/PostMatch";
 
-const MatchPage = ({
-  match
-}: RouteComponentProps<MatchParams>): ReactElement => {
-  return <p>{match.params.matchId}</p>;
+const MatchPage = (): ReactElement => {
+  return <PostMatch />;
 };
 
 export default MatchPage;

@@ -9,7 +9,7 @@ export interface MatchDataSeparatedByDateDiffT {
 const useMatchDataSeparatedByDateDiff = (): MatchDataSeparatedByDateDiffT => {
   const { matchInfoList } = useSelector(
     (state: RootState) => ({
-      matchInfoList: state.match.matchInfoList
+      matchInfoList: state.matches.matches
     }),
     shallowEqual
   );

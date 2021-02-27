@@ -6,9 +6,9 @@ import {
   SummonerPayloadT,
   SummonerInfoResponseT,
   SummonerResponseT,
-  MatchsResponseT,
-  MatchResponseT,
-  MatchPayloadT
+  MatchIdsResponseT,
+  MatchesResponseT,
+  MatchesPayloadT
 } from "../types/types";
 
 const TFT_API = axios.create({
@@ -33,26 +33,26 @@ export const getSummoner = async (
   const rankEntryResponse: AxiosResponse<RankEntryResponseT> = await TFT_API.get(
     `/league/v1/entries/by-summoner/${encryptedSummonerId}`
   );
-  const matchsResponse: AxiosResponse<MatchsResponseT> = await TFT_API.get(
+  const matchIdsResponse: AxiosResponse<MatchIdsResponseT> = await TFT_API.get(
     `/match/v1/matches/by-puuid/${puuid}/ids?count=20`
   );
 
   const summonerResponse: SummonerResponseT = {
     summonerInfo: summonerInfoResponse.data,
     rankEntry: rankEntryResponse.data,
-    matchIds: matchsResponse.data
+    matchIds: matchIdsResponse.data
   };
 
   return summonerResponse;
 };
 
-export const getMatch = async (
-  matchIdList: MatchPayloadT
-): Promise<MatchResponseT[]> => {
+export const getMatches = async (
+  matchIds: MatchesPayloadT
+): Promise<MatchesResponseT[]> => {
   const matchResponse = await Promise.all(
-    matchIdList.map(
-      async (matchId): Promise<MatchResponseT> => {
-        const response: AxiosResponse<MatchResponseT> = await TFT_API.get(
+    matchIds.map(
+      async (matchId): Promise<MatchesResponseT> => {
+        const response: AxiosResponse<MatchesResponseT> = await TFT_API.get(
           `/match/v1/matches/${matchId}`
         );
         return response.data;
@@ -61,6 +61,13 @@ export const getMatch = async (
   );
 
   return matchResponse;
+};
+
+export const getMatch = async (matchId: string): Promise<MatchesResponseT> => {
+  const response: AxiosResponse<MatchesResponseT> = await TFT_API.get(
+    `/match/v1/matches/${matchId}`
+  );
+  return response.data;
 };
 
 // export const getMatch = async (

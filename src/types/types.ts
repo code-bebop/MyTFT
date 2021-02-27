@@ -37,14 +37,14 @@ export interface RankEntryT {
 export interface SummonerResponseT {
   summonerInfo: SummonerInfoResponseT;
   rankEntry: RankEntryResponseT;
-  matchIds: MatchsResponseT;
+  matchIds: MatchIdsResponseT;
 }
 
-export type MatchsResponseT = string[];
+export type MatchIdsResponseT = string[];
 
-export type MatchPayloadT = string[];
+export type MatchesPayloadT = string[];
 
-export type MatchResponseT = MatchInfoT;
+export type MatchesResponseT = MatchInfoT;
 
 export interface MatchInfoT {
   metadata: Metadata;

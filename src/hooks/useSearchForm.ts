@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../modules";
-import { initialize } from "../modules/match";
+import { initialize } from "../modules/matches";
 import { changeQuery, summonerAsync } from "../modules/summoner";
 
 const useSearchForm = (): {

@@ -8,7 +8,7 @@ const usePlacementArray = (): number[] => {
   const { summonerPuuid, matchInfoList } = useSelector(
     (state: RootState) => ({
       summonerPuuid: state.summoner.summonerInfo?.puuid,
-      matchInfoList: state.match.matchInfoList
+      matchInfoList: state.matches.matches
     }),
     shallowEqual
   );

@@ -5,7 +5,7 @@ import Search from "../components/Search";
 import MatchList from "../components/MatchList/MatchList";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
-import { matchAsync } from "../modules/match";
+import { matchesAsync } from "../modules/matches";
 import SummonerInfo from "../components/SummonerInfo";
 import theme from "../theme";
 
@@ -24,17 +24,17 @@ const isNonexistent = (...args: any[]): boolean => {
 const MainPage = (): ReactElement => {
   const {
     summonerInfo,
-    matchInfoList,
+    matches,
     matchIds,
     summonerLoading,
     matchLoading
   } = useSelector(
     (state: RootState) => ({
       summonerInfo: state.summoner.summonerInfo,
-      matchInfoList: state.match.matchInfoList,
+      matches: state.matches.matches,
       matchIds: state.summoner.matchIds,
       summonerLoading: state.summoner.loading,
-      matchLoading: state.match.loading
+      matchLoading: state.matches.loading
     }),
     shallowEqual
   );
@@ -42,7 +42,7 @@ const MainPage = (): ReactElement => {
 
   useEffect(() => {
     if (summonerInfo) {
-      dispatch(matchAsync.request(matchIds));
+      dispatch(matchesAsync.request(matchIds));
     }
   }, [summonerInfo]);
 
@@ -54,7 +54,7 @@ const MainPage = (): ReactElement => {
     );
   }
 
-  if (isNonexistent(summonerInfo, matchInfoList)) {
+  if (isNonexistent(summonerInfo, matches)) {
     return (
       <>
         <Search />
