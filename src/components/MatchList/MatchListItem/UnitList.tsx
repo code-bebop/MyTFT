@@ -4,7 +4,7 @@ import getChampion from "../../../lib/getChampion";
 import getTraitName from "../../../lib/getTraitName";
 import { Unit } from "../../../types/types";
 import HoverDes from "./HoverDes";
-import itemsJson from "../../../../public/items.json";
+import itemsJson from "../../../../public/json/items/items_set4update.json";
 
 const UnitItemListBlock = styled.div`
   position: absolute;

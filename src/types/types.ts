@@ -50,7 +50,6 @@ export interface MatchT {
   metadata: Metadata;
   info: Info;
 }
-
 export interface Info {
   game_datetime: number;
   game_length: number;
@@ -59,7 +58,6 @@ export interface Info {
   queue_id: number;
   tft_set_number: number;
 }
-
 export interface Participant {
   companion: Companion;
   gold_left: number;
@@ -73,13 +71,11 @@ export interface Participant {
   traits: Trait[];
   units: Unit[];
 }
-
 export interface Companion {
   content_ID: string;
   skin_ID: number;
   species: string;
 }
-
 export interface Trait {
   name: string;
   num_units: number;
@@ -87,7 +83,6 @@ export interface Trait {
   tier_current: number;
   tier_total: number;
 }
-
 export interface Unit {
   character_id: string;
   items: number[];
@@ -96,7 +91,6 @@ export interface Unit {
   tier: number;
   chosen?: string;
 }
-
 export interface Metadata {
   data_version: string;
   match_id: string;
