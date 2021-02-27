@@ -1,20 +1,15 @@
 import React, { ReactElement, useEffect } from "react";
-import styled, { ThemeProvider } from "styled-components";
+import { ThemeProvider } from "styled-components";
 
 import Search from "../components/Search";
 import MatchList from "../components/MatchList/MatchList";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { RootState } from "../modules";
 import { matchesAsync } from "../modules/matches";
-import SummonerInfo from "../components/SummonerInfo";
+import SummonerProfile from "../components/SummonerProfile/SummonerProfile";
 import theme from "../theme";
-
-const Wrapper = styled.div`
-  width: 100%;
-  padding-top: 150px;
-  display: flex;
-  justify-content: center;
-`;
+import Wrapper from "../components/common/Wrapper";
+import { summonerAsync } from "../modules/summoner";
 
 const isLoading = (...loading: boolean[]): boolean => loading.includes(true);
 const isNonexistent = (...args: any[]): boolean => {
@@ -46,6 +41,10 @@ const MainPage = (): ReactElement => {
     }
   }, [summonerInfo]);
 
+  const onSearchMe = () => {
+    dispatch(summonerAsync.request({ summonerName: "불꽃남자임지웅" }));
+  };
+
   if (isLoading(summonerLoading, matchLoading)) {
     return (
       <Wrapper>
@@ -57,6 +56,13 @@ const MainPage = (): ReactElement => {
   if (isNonexistent(summonerInfo, matches)) {
     return (
       <>
+        <button
+          onClick={() => {
+            onSearchMe();
+          }}
+        >
+          나 검색
+        </button>
         <Search />
         <Wrapper>
           <p>데이터가 없는 상태</p>
@@ -69,7 +75,7 @@ const MainPage = (): ReactElement => {
     <ThemeProvider theme={theme}>
       <Search />
       <Wrapper>
-        <SummonerInfo />
+        <SummonerProfile />
         <MatchList />
       </Wrapper>
     </ThemeProvider>

@@ -1,7 +1,7 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import styled from "styled-components";
 
-const PlacementTribution = styled.div`
+const PlacementDistributionBlock = styled.div`
   display: flex;
   flex-direction: column;
   & > span {
@@ -15,7 +15,7 @@ const PlacementTribution = styled.div`
   }
 `;
 
-const PlacementTributonTable = styled.div`
+const PlacementDistributonTable = styled.div`
   display: flex;
 `;
 
@@ -92,13 +92,13 @@ const ChartAxisXEntry = styled.p<{ placement: number }>`
   }};
 `;
 
-export interface PlacementChartPropsT {
+export interface PlacementDistributionPropsT {
   placementArray: number[];
 }
 
-const PlacementChart = ({
+const PlacementDistribution = ({
   placementArray
-}: PlacementChartPropsT): ReactElement => {
+}: PlacementDistributionPropsT): ReactElement => {
   const UseFrequentArray = () => {
     const [frequentArray, setFrequentArary] = useState<number[]>([]);
 
@@ -134,9 +134,9 @@ const PlacementChart = ({
     <>
       {frequentArray.length !== 0 && (
         <>
-          <PlacementTribution>
+          <PlacementDistributionBlock>
             <span>최근 20게임 결과 통계표</span>
-            <PlacementTributonTable>
+            <PlacementDistributonTable>
               <ChartAxisY>
                 <p>{Math.max.apply(null, frequentArray)}</p>
                 <p>
@@ -170,12 +170,12 @@ const PlacementChart = ({
                   })}
                 </ChartAxisX>
               </CahrtRight>
-            </PlacementTributonTable>
-          </PlacementTribution>
+            </PlacementDistributonTable>
+          </PlacementDistributionBlock>
         </>
       )}
     </>
   );
 };
 
-export default PlacementChart;
+export default PlacementDistribution;

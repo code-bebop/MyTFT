@@ -1,9 +1,9 @@
 import { shallowEqual, useSelector } from "react-redux";
 import {
-  SummonerInfoPropsT,
-  RequireSummonerInfoPropsT,
-  OptionalSummonerInfoPropsT
-} from "../components/SummonerInfo";
+  SummonerProfilePropsT,
+  RequireSummonerProfilePropsT,
+  OptionalSummonerProfilePropsT
+} from "../components/SummonerProfile/SummonerProfile";
 
 import ensure from "../lib/ensure";
 import { RootState } from "../modules";
@@ -21,7 +21,7 @@ const getDateDiffBetweenRevisionDateAndPresent = (
       (1000 * 3600 * 24)
   );
 
-const useSummonerInfoProps = (): SummonerInfoPropsT => {
+const useSummonerProfileProps = (): SummonerProfilePropsT => {
   const { summonerInfo, rankEntry } = useSelector(
     (state: RootState) => ({
       summonerInfo: state.summoner.summonerInfo,
@@ -30,8 +30,8 @@ const useSummonerInfoProps = (): SummonerInfoPropsT => {
     shallowEqual
   );
   const placementArray = usePlacementArray();
-  let summonerInfoProps: SummonerInfoPropsT = {
-    requireSummonerInfoProps: {
+  let summonerInfoProps: SummonerProfilePropsT = {
+    requireSummonerProfileProps: {
       summonerName: "",
       profileIconId: 0,
       summonerLevel: 0,
@@ -48,7 +48,7 @@ const useSummonerInfoProps = (): SummonerInfoPropsT => {
       revisionDate
     } = ensure(summonerInfo);
     const dateDiff = getDateDiffBetweenRevisionDateAndPresent(revisionDate);
-    const requireSummonerInfoProps: RequireSummonerInfoPropsT = {
+    const requireSummonerInfoProps: RequireSummonerProfilePropsT = {
       summonerName,
       profileIconId,
       summonerLevel,
@@ -65,7 +65,7 @@ const useSummonerInfoProps = (): SummonerInfoPropsT => {
         losses
       } = ensure<RankEntryT>(rankEntry[0]);
       const winRate = getWinRate(wins, losses);
-      const optionalSummonerInfoProps: OptionalSummonerInfoPropsT = {
+      const optionalSummonerInfoProps: OptionalSummonerProfilePropsT = {
         summonerTier,
         summonerRank,
         leaguePoints,
@@ -74,12 +74,12 @@ const useSummonerInfoProps = (): SummonerInfoPropsT => {
         winRate
       };
       summonerInfoProps = {
-        requireSummonerInfoProps,
-        optionalSummonerInfoProps
+        requireSummonerProfileProps: requireSummonerInfoProps,
+        optionalSummonerProfileProps: optionalSummonerInfoProps
       };
     } else {
       summonerInfoProps = {
-        requireSummonerInfoProps
+        requireSummonerProfileProps: requireSummonerInfoProps
       };
     }
   }
@@ -87,4 +87,4 @@ const useSummonerInfoProps = (): SummonerInfoPropsT => {
   return summonerInfoProps;
 };
 
-export default useSummonerInfoProps;
+export default useSummonerProfileProps;
