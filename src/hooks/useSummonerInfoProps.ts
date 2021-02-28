@@ -6,20 +6,13 @@ import {
 } from "../components/SummonerProfile/SummonerProfile";
 
 import ensure from "../lib/ensure";
+import getDateDiffBetweenRevisionDateAndPresent from "../lib/getDateDiffBetweenRevisionDateAndPresent";
 import { RootState } from "../modules";
 import { RankEntryT } from "../types/types";
 import usePlacementArray from "./usePlacementArray";
 
 const getWinRate = (wins: number, losses: number): number =>
   Number(((wins / (wins + losses)) * 100).toFixed(2));
-
-const getDateDiffBetweenRevisionDateAndPresent = (
-  revisionDate: number
-): number =>
-  Math.ceil(
-    (new Date().getTime() - new Date(revisionDate).getTime()) /
-      (1000 * 3600 * 24)
-  );
 
 const useSummonerProfileProps = (): SummonerProfilePropsT => {
   const { summonerInfo, rankEntry } = useSelector(

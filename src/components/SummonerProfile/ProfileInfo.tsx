@@ -6,28 +6,29 @@ const ProfileInfoBlock = styled.div`
   margin-bottom: 40px;
 `;
 
-const SummonerIconWrapper = styled.div`
+export const SummonerIcon = styled.div`
   width: 56px;
   height: 56px;
-  border-radius: 28px;
+  border-radius: 100%;
   border: 2px solid #333e56;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
   margin-right: 15px;
+  padding: 2px;
+  background-color: #070e1d;
+  img {
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+  }
 `;
 
-const SummonerIcon = styled.img`
-  width: 46px;
-  height: 46px;
-  border-radius: 23px;
-`;
-
-const SummonerLevel = styled.p`
+export const SummonerLevel = styled.p`
   width: 28px;
   height: 28px;
-  border-radius: 14px;
+  border-radius: 100%;
   background-color: #131c2e;
   color: #fff;
   font-size: 12px;
@@ -74,12 +75,12 @@ const ProfileInfo = ({
 }: profileInfoPropsT): ReactElement => {
   return (
     <ProfileInfoBlock>
-      <SummonerIconWrapper>
-        <SummonerIcon
+      <SummonerIcon>
+        <img
           src={`http://ddragon.leagueoflegends.com/cdn/11.2.1/img/profileicon/${profileIconId}.png`}
         />
         <SummonerLevel>{summonerLevel}</SummonerLevel>
-      </SummonerIconWrapper>
+      </SummonerIcon>
       <ColumnFlexBlock>
         <SummonerName>{summonerName}</SummonerName>
         <SummonerDate>최근 플레이 날짜: {dateDiff}일 전</SummonerDate>
