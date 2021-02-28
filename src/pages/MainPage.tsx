@@ -42,7 +42,7 @@ const MainPage = (): ReactElement => {
   }, [summonerInfo]);
 
   const onSearchMe = () => {
-    dispatch(summonerAsync.request({ summonerName: "불꽃남자임지웅" }));
+    dispatch(summonerAsync.request("불꽃남자임지웅"));
   };
 
   if (isLoading(summonerLoading, matchLoading)) {

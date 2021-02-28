@@ -88,6 +88,7 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
 export interface MatchListItemPropsT {
   match: MatchT;
   puuid: string;
+  summonerName: string;
 }
 
 const unifySummonerUnits = (summoner: Participant): void => {
@@ -125,7 +126,11 @@ const getFourActivatedTraits = (summoner: Participant) => {
   return activatedTraits;
 };
 
-const MatchListItem = ({ match, puuid }: MatchListItemPropsT): ReactElement => {
+const MatchListItem = ({
+  match,
+  puuid,
+  summonerName
+}: MatchListItemPropsT): ReactElement => {
   const searchedSummoner = findSearchedSummonerInMatch(match, puuid);
   unifySummonerUnits(searchedSummoner);
   sortSummonerUnits(searchedSummoner);
@@ -133,7 +138,9 @@ const MatchListItem = ({ match, puuid }: MatchListItemPropsT): ReactElement => {
 
   return (
     <MatchListItemBlock placement={searchedSummoner.placement}>
-      <MatchListItemLink to={`/match/${match.metadata.match_id}`}>
+      <MatchListItemLink
+        to={`/match/${summonerName}/${match.metadata.match_id}`}
+      >
         <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
         <MatchSummary>
           <Placement placement={searchedSummoner.placement}>

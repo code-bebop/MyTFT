@@ -16,7 +16,7 @@ const App = (): ReactElement => {
       <Switch>
         <Route path="/" component={MainPage} exact />
         <Route path="/page1" component={test1} />
-        <Route path="/match/:matchId" component={MatchPage} />
+        <Route path="/match/:name/:matchId" component={MatchPage} />
         <Route component={() => <Redirect to="/" />} />
       </Switch>
     </BrowserRouter>

@@ -90,6 +90,10 @@ const MatchListContainer = (): ReactElement => {
     shallowEqual
   );
 
+  if (!summonerInfo) {
+    return <p>소환사 정보 없음</p>;
+  }
+
   const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
   console.log(matchDataSeparatedByDateDiff);
   const placementStats: PlacementStatsT = usePlacementStats(
@@ -137,7 +141,8 @@ const MatchListContainer = (): ReactElement => {
                     <MatchListItem
                       key={index}
                       match={match}
-                      puuid={summonerInfo?.puuid}
+                      puuid={summonerInfo.puuid}
+                      summonerName={summonerInfo.name}
                     />
                   );
                 }

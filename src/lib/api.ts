@@ -3,7 +3,6 @@ import axios, { AxiosResponse } from "axios";
 import { API_KEY } from "../config";
 import {
   RankEntryResponseT,
-  SummonerPayloadT,
   SummonerInfoResponseT,
   SummonerResponseT,
   MatchIdsResponseT,
@@ -19,13 +18,9 @@ const TFT_API = axios.create({
   }
 });
 
-export const getSummoner = async (
-  summonerPayload: SummonerPayloadT
-): Promise<SummonerResponseT> => {
-  const { summonerName } = summonerPayload;
-
+export const getSummoner = async (name: string): Promise<SummonerResponseT> => {
   const summonerInfoResponse: AxiosResponse<SummonerInfoResponseT> = await TFT_API.get(
-    `/summoner/v1/summoners/by-name/${summonerName}`
+    `/summoner/v1/summoners/by-name/${name}`
   );
 
   const encryptedSummonerId = summonerInfoResponse.data.id;

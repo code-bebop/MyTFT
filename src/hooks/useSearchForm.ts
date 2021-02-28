@@ -24,9 +24,8 @@ const useSearchForm = (): {
   const requestSummoner = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
-      const summonerName = query;
       dispatch(initialize());
-      dispatch(summonerAsync.request({ summonerName }));
+      dispatch(summonerAsync.request(query));
     },
     [dispatch, query]
   );

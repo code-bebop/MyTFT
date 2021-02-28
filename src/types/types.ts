@@ -1,7 +1,3 @@
-export interface SummonerPayloadT {
-  summonerName: string;
-}
-
 export interface RankEntryPayloadT {
   encryptedSummonerId: string;
 }

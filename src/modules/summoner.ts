@@ -10,7 +10,6 @@ import { getSummoner } from "../lib/api";
 import { createAsyncActionType } from "../lib/createAsnycActionType";
 import createAsyncSaga from "../lib/createAsyncSaga";
 import {
-  SummonerPayloadT,
   SummonerResponseT,
   SummonerInfoResponseT,
   RankEntryResponseT,
@@ -29,16 +28,15 @@ const GET_SUMMONER = "search/GET_SUMMONER" as const;
 const { REQUEST, SUCCESS, FAILURE } = createAsyncActionType(GET_SUMMONER);
 
 export const summonerAsync = createAsyncAction(REQUEST, SUCCESS, FAILURE)<
-  SummonerPayloadT,
+  string,
   SummonerResponseT,
   AxiosError
 >();
 
-const getSummonerSaga = createAsyncSaga<
-  SummonerPayloadT,
-  SummonerResponseT,
-  AxiosError
->(summonerAsync, getSummoner);
+const getSummonerSaga = createAsyncSaga<string, SummonerResponseT, AxiosError>(
+  summonerAsync,
+  getSummoner
+);
 
 export const summonerSaga = function* (): Generator<ForkEffect<never>, void> {
   yield takeLatest(REQUEST, getSummonerSaga);
