@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
-const WrapperBlock = styled.div`
+export const WrapperBlock = styled.div`
   width: 100%;
   padding-top: 150px;
   display: flex;
