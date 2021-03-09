@@ -8,6 +8,7 @@ import { matchAsync } from "../../modules/match";
 import { summonerAsync } from "../../modules/summoner";
 import { WrapperBlock } from "../common/Wrapper";
 import Header from "./Header";
+import Players from "./Players";
 import SortRow from "./SortRow";
 
 const PostMatchWrapper = styled(WrapperBlock)`
@@ -38,6 +39,7 @@ const PostMatch = (): ReactElement => {
     <PostMatchWrapper>
       <Header />
       <SortRow />
+      <Players />
     </PostMatchWrapper>
   );
 };

@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
 import styled from "styled-components";
 
-const getSortRowFlexGlow = () => {
+export const getSortRowFlexGlow = () => {
   const flexRateArray = [17, 41, 10, 8, 8, 8, 8];
 
   return flexRateArray.map((flexRate, index) => {
