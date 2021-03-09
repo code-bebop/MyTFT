@@ -44,6 +44,14 @@ module.exports = {
         test: /\.(scss|css)$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
         exclude: /node_modules/
+      },
+      {
+        test: /\.(png|svg)$/,
+        loader: "file-loader",
+        options: {
+          publicPath: "./dist/",
+          name: "[name].[ext]?[hash]"
+        }
       }
     ]
   },
