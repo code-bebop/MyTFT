@@ -20,23 +20,16 @@ const SortRowBlock = styled.div`
     margin: 0;
     text-align: center;
     ${getSortRowFlexGlow()}
-    &:first-child {
-      text-align: left;
-    }
   }
 `;
 
 const SortRow = (): ReactElement => {
   return (
     <SortRowBlock>
-      <p>Placement</p>
+      <p>순위</p>
       <p>챔피언</p>
       <p>직업과 종족</p>
-      <p>
-        Gold
-        <br />
-        Remaning
-      </p>
+      <p>남은 골드</p>
       <p>플레이어 처치</p>
       <p>가한 피해량</p>
       <p>최종 라운드</p>
