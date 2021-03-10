@@ -30,9 +30,13 @@ const PlayerApiRow = styled.div`
     color: #899cb1;
   }
   & > p {
+    width: 68px;
     margin: 0;
     font-size: 13px;
     color: #899cb1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   & > svg {
     width: 12px;
@@ -71,11 +75,15 @@ const sortUnits = participant => {
 };
 
 const Players = (): ReactElement => {
-  const { match } = useSelector((state: RootState) => ({
-    match: state.match.match
+  const { match, summonerInfoArray } = useSelector((state: RootState) => ({
+    match: state.match.match,
+    summonerInfoArray: state.summoners.summonersInfo
   }));
   if (match === null) {
     return <p>매치 데이터 없음</p>;
+  }
+  if (summonerInfoArray === null) {
+    return <p>소환사 정보 없음</p>;
   }
   match.info.participants.sort((a, b) => {
     return a.placement - b.placement;
@@ -89,19 +97,26 @@ const Players = (): ReactElement => {
     <PlayersBlock>
       <ol>
         {match.info.participants.map((participant, index) => {
+          const summonerInfo = summonerInfoArray.find(
+            summonerInfo => summonerInfo.puuid === participant.puuid
+          );
+          if (summonerInfo === undefined) {
+            return <p>소환사 없음</p>;
+          }
+
           return (
             <PlayerApi key={index}>
               <PlayerApiRow>
                 <span>{participant.placement}위</span>
                 <SmallSummonerIcon>
                   <img
-                    src={`http://ddragon.leagueoflegends.com/cdn/11.2.1/img/profileicon/15.png`}
+                    src={`http://ddragon.leagueoflegends.com/cdn/11.2.1/img/profileicon/${summonerInfo.profileIconId}.png`}
                     alt="임시 소환사 아이콘"
                   />
                   <SmallSummonerLevel>{participant.level}</SmallSummonerLevel>
                 </SmallSummonerIcon>
                 <p>
-                  <span>임시 닉네임</span>
+                  <span>{summonerInfo.name}</span>
                 </p>
               </PlayerApiRow>
               <PlayerApiRow>

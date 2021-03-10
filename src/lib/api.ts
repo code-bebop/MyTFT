@@ -8,7 +8,8 @@ import {
   MatchIdsResponseT,
   MatchesResponseT,
   MatchesPayloadT,
-  MatchT
+  MatchT,
+  Participant
 } from "../types/types";
 
 const TFT_API = axios.create({
@@ -40,6 +41,22 @@ export const getSummoner = async (name: string): Promise<SummonerResponseT> => {
   };
 
   return summonerResponse;
+};
+
+export const getSummoners = async (
+  participants: Participant[]
+): Promise<SummonerInfoResponseT[]> => {
+  const summonersInfoResponse: SummonerInfoResponseT[] = await Promise.all(
+    participants.map(async participant => {
+      const puuid = participant.puuid;
+      const summonerInfoResponse: AxiosResponse<SummonerInfoResponseT> = await TFT_API.get(
+        `/summoner/v1/summoners/by-puuid/${puuid}`
+      );
+      return summonerInfoResponse.data;
+    })
+  );
+
+  return summonersInfoResponse;
 };
 
 export const getMatches = async (

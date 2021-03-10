@@ -6,6 +6,8 @@ import styled from "styled-components";
 import { RootState } from "../../modules";
 import { matchAsync } from "../../modules/match";
 import { summonerAsync } from "../../modules/summoner";
+import { summonersAsync } from "../../modules/summoners";
+import { Participant } from "../../types/types";
 import { WrapperBlock } from "../common/Wrapper";
 import Header from "./Header";
 import Players from "./Players";
@@ -30,10 +32,18 @@ const PostMatch = (): ReactElement => {
   const dispatchSummonerRequest = (name: string): void => {
     dispatch(summonerAsync.request(name));
   };
+  const dispatchSummonersRequest = (participants: Participant[]) => {
+    dispatch(summonersAsync.request(participants));
+  };
   useEffect(() => {
     dispatchSummonerRequest(name);
     dispatchMatchRequest(matchId);
   }, [matchId]);
+  useEffect(() => {
+    if (match !== null) {
+      dispatchSummonersRequest(match.info.participants);
+    }
+  }, [match]);
 
   return (
     <PostMatchWrapper>
