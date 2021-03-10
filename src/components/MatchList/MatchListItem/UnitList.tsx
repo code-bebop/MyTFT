@@ -127,6 +127,7 @@ const UnitBox = styled.li<UnitBoxProps>`
           width: 12px;
           height: 13px;
           background: url(/public/img/champions/TFT_Chosen_icon.svg);
+          z-index: 1;
         }
       `;
     }
@@ -271,14 +272,35 @@ const UnitListItem = React.memo(
 );
 UnitListItem.displayName = "UnitListItem";
 
-const UnitListBlock = styled.ul`
+const UnitListBlock = styled.ul<{ big: boolean }>`
   display: flex;
   padding: 0;
   margin: 0;
+  ${props =>
+    props.big &&
+    css`
+      ${UnitBox} {
+        width: 38px;
+        height: 38px;
+      }
+      ${UnitItemListBlock} {
+        width: 38px;
+        & > img {
+          width: 12px;
+          height: 13px;
+        }
+      }
+    `};
 `;
-const UnitList = ({ units }: { units: Unit[] }): ReactElement => {
+const UnitList = ({
+  units,
+  isBig = false
+}: {
+  units: Unit[];
+  isBig?: boolean;
+}): ReactElement => {
   return (
-    <UnitListBlock>
+    <UnitListBlock big={isBig}>
       {units.map((unit, index) => (
         <UnitListItem unit={unit} key={index} />
       ))}

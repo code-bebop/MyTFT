@@ -1,14 +1,8 @@
 import React, { ReactElement, useState } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import getTraitName from "../../../lib/getTraitName";
 import { Trait } from "../../../types/types";
 import HoverDes from "./HoverDes";
-
-const TraitListBlock = styled.div`
-  display: flex;
-  margin-left: auto;
-  margin-right: 8px;
-`;
 
 const TraitBox = styled.div`
   position: relative;
@@ -28,7 +22,7 @@ const TraitBg = styled.div<{ traitStyle: number }>`
   position: absolute;
   top: 0;
   left: 0;
-  background: no-repeat url(../public/img/traits/bg.png);
+  background: no-repeat url(/public/img/traits/bg.png);
   background-size: auto 22px;
   width: 20px;
   height: 22px;
@@ -46,6 +40,9 @@ const TraitListItem = React.memo(
   ({ trait }: TraitListItemPropsT): ReactElement => {
     const [isTraitHover, setIsTraitHover] = useState(false);
     const traitName = getTraitName(trait.name);
+    if (trait.style === 0) {
+      return <></>;
+    }
 
     return (
       <TraitBox
@@ -63,7 +60,7 @@ const TraitListItem = React.memo(
           </HoverDes>
         )}
         <img
-          src={`../public/img/traits/${trait.name}.svg`}
+          src={`/public/img/traits/${trait.name}.svg`}
           alt={`${trait.name}`}
           className="traitImg"
         />
@@ -73,13 +70,30 @@ const TraitListItem = React.memo(
 );
 TraitListItem.displayName = "TraitListItem";
 
+const TraitListBlock = styled.div<{ isWrap: boolean }>`
+  display: flex;
+  margin-left: auto;
+  margin-right: 8px;
+  ${props =>
+    props.isWrap &&
+    css`
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 0;
+      padding: 0 16px;
+      min-width: 66px;
+    `}
+`;
+
 const TraitList = ({
-  activatedTraits
+  activatedTraits,
+  isWrap = false
 }: {
   activatedTraits: Trait[];
+  isWrap?: boolean;
 }): ReactElement => {
   return (
-    <TraitListBlock>
+    <TraitListBlock isWrap={isWrap}>
       {activatedTraits.map((trait, index) => (
         <TraitListItem trait={trait} key={index} />
       ))}

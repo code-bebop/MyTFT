@@ -3,8 +3,13 @@ import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { RootState } from "../../modules";
 import UnitList from "../MatchList/MatchListItem/UnitList";
+import {
+  unifySummonerUnits,
+  sortSummonerUnits
+} from "../MatchList/MatchListItem/MatchListItem";
 import { SummonerIcon, SummonerLevel } from "../SummonerProfile/ProfileInfo";
 import { getSortRowFlexGlow } from "./SortRow";
+import TraitList from "../MatchList/MatchListItem/TraitList";
 
 const SmallSummonerLevel = styled(SummonerLevel)`
   width: 18px;
@@ -18,6 +23,7 @@ const SmallSummonerIcon = styled(SummonerIcon)`
 const PlayerApiRow = styled.div`
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 88px;
   & > span {
     font-size: 12px;
@@ -33,6 +39,7 @@ const PlayerApi = styled.li`
   display: flex;
   justify-content: space-between;
   align-items: center;
+  cursor: pointer;
   & > div {
     ${getSortRowFlexGlow()}
   }
@@ -46,6 +53,13 @@ const PlayersBlock = styled.div`
   }
 `;
 
+const unifyUnits = participant => {
+  unifySummonerUnits(participant);
+};
+const sortUnits = participant => {
+  sortSummonerUnits(participant);
+};
+
 const Players = (): ReactElement => {
   const { match } = useSelector((state: RootState) => ({
     match: state.match.match
@@ -55,6 +69,10 @@ const Players = (): ReactElement => {
   }
   match.info.participants.sort((a, b) => {
     return a.placement - b.placement;
+  });
+  match.info.participants.forEach(participant => {
+    unifyUnits(participant);
+    sortUnits(participant);
   });
 
   return (
@@ -77,10 +95,10 @@ const Players = (): ReactElement => {
                 </p>
               </PlayerApiRow>
               <PlayerApiRow>
-                <UnitList units={participant.units} />
+                <UnitList units={participant.units} isBig />
               </PlayerApiRow>
               <PlayerApiRow>
-                <p>3</p>
+                <TraitList activatedTraits={participant.traits} isWrap />
               </PlayerApiRow>
               <PlayerApiRow>
                 <p>4</p>
@@ -90,6 +108,9 @@ const Players = (): ReactElement => {
               </PlayerApiRow>
               <PlayerApiRow>
                 <p>6</p>
+              </PlayerApiRow>
+              <PlayerApiRow>
+                <p>7</p>
               </PlayerApiRow>
             </PlayerApi>
           );

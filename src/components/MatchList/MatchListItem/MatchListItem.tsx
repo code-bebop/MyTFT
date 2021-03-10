@@ -77,6 +77,7 @@ const MatchListItemBlock = styled.li<{ placement: number }>`
   }};
   border-radius: 5px;
   box-sizing: border-box;
+  will-change: transform;
   &:hover {
     transform: translateX(-5px);
     ${LittleLegendImg} {
@@ -91,7 +92,7 @@ export interface MatchListItemPropsT {
   summonerName: string;
 }
 
-const unifySummonerUnits = (summoner: Participant): void => {
+export const unifySummonerUnits = (summoner: Participant): void => {
   const units = summoner.units;
 
   if (units.length < 9) {
@@ -107,7 +108,7 @@ const unifySummonerUnits = (summoner: Participant): void => {
   }
 };
 
-const sortSummonerUnits = (summoner: Participant): void => {
+export const sortSummonerUnits = (summoner: Participant): void => {
   const units = summoner.units;
 
   units.sort((a, b) => {
