@@ -17,9 +17,7 @@ const usePlacementArray = (): number[] => {
   if (summonerPuuid !== undefined) {
     matchInfoList?.forEach(matchInfo => {
       placementArray.push(
-        ensure<Participant>(
-          findSearchedSummonerInMatch(matchInfo, summonerPuuid)
-        ).placement
+        findSearchedSummonerInMatch(matchInfo, summonerPuuid).placement
       );
     });
   }

@@ -16,14 +16,16 @@ import {
   MatchIdsResponseT
 } from "../types/types";
 
-const CHANGE_QUERY = "search/CHANGE_QUERY" as const;
+const CHANGE_QUERY = "summoner/CHANGE_QUERY" as const;
+const INITIALIZE = "summoner/INITIALIZE" as const;
 
 export const changeQuery = createAction(
   CHANGE_QUERY,
   (query: string) => query
 )();
+export const initialize = createAction(INITIALIZE)();
 
-const GET_SUMMONER = "search/GET_SUMMONER" as const;
+const GET_SUMMONER = "summoner/GET_SUMMONER" as const;
 
 const { REQUEST, SUCCESS, FAILURE } = createAsyncActionType(GET_SUMMONER);
 
@@ -43,7 +45,8 @@ export const summonerSaga = function* (): Generator<ForkEffect<never>, void> {
 };
 
 const actions = {
-  changeQuery
+  changeQuery,
+  initialize
 };
 
 type SummonerActions = ActionType<typeof actions>;
@@ -86,6 +89,9 @@ const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
     ...state,
     error,
     loading: false
+  }),
+  [INITIALIZE]: () => ({
+    ...initialState
   })
 });
 

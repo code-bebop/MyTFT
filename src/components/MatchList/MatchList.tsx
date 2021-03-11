@@ -81,7 +81,7 @@ const MatchListAvgTypography = styled(MatchListTypography)<{ average: number }>`
 `;
 
 const MatchListContainer = (): ReactElement => {
-  console.log("MatchListContainer 렌더링");
+  console.log("MatchList 렌더링");
 
   const { summonerInfo } = useSelector(
     (state: RootState) => ({

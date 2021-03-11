@@ -2,6 +2,7 @@ import React, { ReactElement } from "react";
 import { hot } from "react-hot-loader";
 import { Link, Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import MainPage from "../pages/MainPage";
+import MatchListPage from "../pages/MatchListPage";
 import MatchPage from "../pages/MatchPage";
 
 const test1 = (): ReactElement => {
@@ -12,10 +13,10 @@ const App = (): ReactElement => {
 
   return (
     <BrowserRouter>
-      <Link to="/match/123">링크</Link>
       <Switch>
         <Route path="/" component={MainPage} exact />
         <Route path="/page1" component={test1} />
+        <Route path="/match/:summonerName" component={MatchListPage} exact />
         <Route path="/match/:name/:matchId" component={MatchPage} />
         <Route component={() => <Redirect to="/" />} />
       </Switch>

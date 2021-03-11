@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../modules";
 import { initialize } from "../modules/matches";
 import { changeQuery, summonerAsync } from "../modules/summoner";
+import { useHistory } from "react-router-dom";
 
 const useSearchForm = (): {
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,6 +13,7 @@ const useSearchForm = (): {
     query: state.summoner.query
   }));
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -20,12 +22,13 @@ const useSearchForm = (): {
     },
     [dispatch]
   );
-
+  // dispatch(initialize());
+  // dispatch(summonerAsync.request(query));
   const requestSummoner = useCallback(
     (e: React.FormEvent<HTMLFormElement>): void => {
       e.preventDefault();
-      dispatch(initialize());
-      dispatch(summonerAsync.request(query));
+      history.push(`/match/${query}`);
+      console.log("SearchForm Submit");
     },
     [dispatch, query]
   );
