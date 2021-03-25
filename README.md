@@ -1,6 +1,6 @@
 # MyTFT
 Riot Developer API를 이용한 TFT 전적 검색 웹사이트를 만드는 프로젝트
-
+디자인과 UI는 Blitz.gg 웹사이트를 참고했다.
 
 # 제공하는 기능
 
