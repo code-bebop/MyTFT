@@ -81,8 +81,6 @@ const MatchListAvgTypography = styled(MatchListTypography)<{ average: number }>`
 `;
 
 const MatchListContainer = (): ReactElement => {
-  console.log("MatchList 렌더링");
-
   const { summonerInfo } = useSelector(
     (state: RootState) => ({
       summonerInfo: state.summoner.summonerInfo
@@ -95,11 +93,9 @@ const MatchListContainer = (): ReactElement => {
   }
 
   const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
-  console.log(matchDataSeparatedByDateDiff);
   const placementStats: PlacementStatsT = usePlacementStats(
     matchDataSeparatedByDateDiff
   );
-  console.log(placementStats);
 
   return (
     <MatchListContainerBlock>

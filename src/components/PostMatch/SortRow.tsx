@@ -14,6 +14,7 @@ const SortRowBlock = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
+  margin-bottom: 20px;
   p {
     font-size: 12px;
     color: #89a0b5;

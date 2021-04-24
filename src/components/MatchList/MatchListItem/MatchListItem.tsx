@@ -142,7 +142,9 @@ const MatchListItem = ({
       <MatchListItemLink
         to={`/match/${summonerName}/${match.metadata.match_id}`}
       >
-        <LittleLegendImg src={`../public/img/champions/tempLittleLegend.png`} />
+        <LittleLegendImg
+          src={`/MyTFT/public/img/champions/tempLittleLegend.png`}
+        />
         <MatchSummary>
           <Placement placement={searchedSummoner.placement}>
             {searchedSummoner.placement}위

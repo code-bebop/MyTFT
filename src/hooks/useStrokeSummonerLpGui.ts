@@ -8,7 +8,6 @@ const useStrokeSummonerLpGui = (
 ): void => {
   useLayoutEffect(() => {
     if (canvasRef.current && leaguePoints && summonerTier) {
-      console.log("strokeSummonerLpGui 실행");
       const ctx = ensure<CanvasRenderingContext2D>(
         canvasRef.current.getContext("2d")
       );

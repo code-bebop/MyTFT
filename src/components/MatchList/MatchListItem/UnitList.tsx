@@ -27,7 +27,7 @@ const UnitItemList = ({ items }: { items?: number[] }): ReactElement | null => {
         {items.map((item, index) => {
           return (
             <img
-              src={`/public/img/items/${item}.png`}
+              src={`/MyTFT/public/img/items/${item}.png`}
               alt={`${item}`}
               key={index}
             />
@@ -55,11 +55,11 @@ const UnitTier = ({ tier }: { tier: number }): ReactElement | null => {
     return (
       <UnitTierBlock>
         <img
-          src="/public/img/champions/TFT-StarSilver.svg"
+          src="/MyTFT/public/img/champions/TFT-StarSilver.svg"
           alt="TFT-StarSilver"
         />
         <img
-          src="/public/img/champions/TFT-StarSilver.svg"
+          src="/MyTFT/public/img/champions/TFT-StarSilver.svg"
           alt="TFT-StarSilver"
         />
       </UnitTierBlock>
@@ -68,9 +68,18 @@ const UnitTier = ({ tier }: { tier: number }): ReactElement | null => {
   if (tier === 3) {
     return (
       <UnitTierBlock>
-        <img src="/public/img/champions/TFT-StarGold.svg" alt="TFT-StarGold" />
-        <img src="/public/img/champions/TFT-StarGold.svg" alt="TFT-StarGold" />
-        <img src="/public/img/champions/TFT-StarGold.svg" alt="TFT-StarGold" />
+        <img
+          src="/MyTFT/public/img/champions/TFT-StarGold.svg"
+          alt="TFT-StarGold"
+        />
+        <img
+          src="/MyTFT/public/img/champions/TFT-StarGold.svg"
+          alt="TFT-StarGold"
+        />
+        <img
+          src="/MyTFT/public/img/champions/TFT-StarGold.svg"
+          alt="TFT-StarGold"
+        />
       </UnitTierBlock>
     );
   }
@@ -91,6 +100,7 @@ const UnitBox = styled.li<UnitBoxProps>`
   border-radius: 5px;
   padding: 2px;
   box-sizing: border-box;
+  background-color: #182338;
   border-color: ${props => {
     if (props.chosen) {
       return "#ECF0F6";
@@ -126,7 +136,7 @@ const UnitBox = styled.li<UnitBoxProps>`
           content: "";
           width: 12px;
           height: 13px;
-          background: url(/public/img/champions/TFT_Chosen_icon.svg);
+          background: url(/MyTFT/public/img/champions/TFT_Chosen_icon.svg);
           z-index: 1;
         }
       `;
@@ -161,7 +171,7 @@ const TraitInHoverDes = styled.span<{ isChosen: boolean }>`
           width: 12px;
           height: 13px;
           margin-right: 5px;
-          background: url(/public/img/champions/TFT_Chosen_icon.svg);
+          background: url(/MyTFT/public/img/champions/TFT_Chosen_icon.svg);
         }
       `;
     }
@@ -244,7 +254,7 @@ const UnitListItem = React.memo(
                   return (
                     <div key={item}>
                       <img
-                        src={`/public/img/items/${item}.png`}
+                        src={`/MyTFT/public/img/items/${item}.png`}
                         alt={`${item}`}
                       />
                       <p>
@@ -262,7 +272,7 @@ const UnitListItem = React.memo(
           </HoverDes>
         )}
         <img
-          src={`/public/img/champions/${unit.character_id}.png`}
+          src={`/MyTFT/public/img/champions/${unit.character_id}.png`}
           alt={`${unit.character_id}`}
         />
         <UnitItemList items={unit.items} />

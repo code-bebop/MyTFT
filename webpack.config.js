@@ -2,13 +2,13 @@ const path = require("path");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const webpack = require("webpack");
 
 module.exports = {
   entry: ["./src/index.tsx"],
   output: {
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
     filename: "[name].js"
   },
   module: {
@@ -47,11 +47,7 @@ module.exports = {
       },
       {
         test: /\.(png|svg)$/,
-        loader: "file-loader",
-        options: {
-          publicPath: "./dist/",
-          name: "[name].[ext]?[hash]"
-        }
+        loader: "url-loader"
       }
     ]
   },
@@ -61,31 +57,34 @@ module.exports = {
     }),
     new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({ filename: "css/style.css" }),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new CopyWebpackPlugin({
+      patterns: [{ from: "public", to: "public" }]
+    })
   ],
   devServer: {
     port: 8000,
     overlay: true,
     open: true,
     hot: true,
-    historyApiFallback: true,
-    proxy: [
-      {
-        context: ["/tft/summoner", "/tft/league"],
-        target: "https://kr.api.riotgames.com",
-        changeOrigin: true
-      },
-      {
-        context: ["/tft/match"],
-        target: "https://asia.api.riotgames.com",
-        changeOrigin: true
-      },
-      {
-        context: ["/cdn"],
-        target: "http://ddragon.leagueoflegends.com",
-        changeOrigin: true
-      }
-    ]
+    historyApiFallback: true
+    // proxy: [
+    //   {
+    //     context: ["/tft/summoner", "/tft/league"],
+    //     target: "https://kr.api.riotgames.com",
+    //     changeOrigin: true
+    //   },
+    //   {
+    //     context: ["/tft/match"],
+    //     target: "https://asia.api.riotgames.com",
+    //     changeOrigin: true
+    //   },
+    //   {
+    //     context: ["/cdn"],
+    //     target: "http://ddragon.leagueoflegends.com",
+    //     changeOrigin: true
+    //   }
+    // ]
   },
   resolve: {
     extensions: [".tsx", ".ts", ".jsx", ".js"]

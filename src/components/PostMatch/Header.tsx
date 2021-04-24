@@ -4,8 +4,9 @@ import styled from "styled-components";
 import findSearchedSummonerInMatch from "../../lib/findSearchedSummonerInMatch";
 import { RootState } from "../../modules";
 import { SummonerIcon, SummonerLevel } from "../SummonerProfile/ProfileInfo";
+import { Link } from "react-router-dom";
 
-const PlacementWrapper = styled.div`
+const PlacementWrapper = styled.span`
   width: 45px;
   height: 32px;
   background: rgba(91, 104, 133, 0.15);
@@ -13,15 +14,17 @@ const PlacementWrapper = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-right: 10px;
 `;
 const BigSummonerIcon = styled(SummonerIcon)`
   width: 80px;
   height: 80px;
 `;
-const SummonerName = styled.p`
+const SummonerName = styled(Link)`
   color: #fff;
   font-weight: bold;
   font-size: 26px;
+  text-decoration: none;
 `;
 const MatchSummary = styled.p`
   margin: 0;
@@ -34,6 +37,13 @@ const MatchSummary = styled.p`
       content: "·";
       display: inline;
       margin: 0 8px;
+    }
+  }
+  & > span {
+    &:nth-child(2) {
+      &::before {
+        display: none;
+      }
     }
   }
 `;
@@ -108,12 +118,12 @@ const Header = (): ReactElement => {
     <HeaderBlock>
       <BigSummonerIcon>
         <img
-          src={`http://ddragon.leagueoflegends.com/cdn/11.2.1/img/profileicon/${profileIconId}.png`}
+          src={`http://ddragon.leagueoflegends.com/cdn/11.8.1/img/profileicon/${profileIconId}.png`}
         />
         <SummonerLevel>{summonerLevel}</SummonerLevel>
       </BigSummonerIcon>
       <PlayerInfo>
-        <SummonerName>{name}</SummonerName>
+        <SummonerName to={`/match/${name}`}>{name}</SummonerName>
         <MatchSummary>
           <PlacementWrapper>
             <span>{placement}위</span>

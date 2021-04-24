@@ -13,34 +13,31 @@ import {
 } from "../types/types";
 
 const TFT_API = axios.create({
-  baseURL: `/tft`,
-  headers: {
-    "X-Riot-Token": API_KEY
-  }
+  baseURL: `https://codebebop.tk/api/tft`
 });
 
 export const getSummoner = async (name: string): Promise<SummonerResponseT> => {
-  const summonerInfoResponse: AxiosResponse<SummonerInfoResponseT> = await TFT_API.get(
-    `/summoner/v1/summoners/by-name/${name}`
+  const summonerResponse: AxiosResponse<SummonerResponseT> = await TFT_API.get(
+    `/summoner?name=${name}`
   );
 
-  const encryptedSummonerId = summonerInfoResponse.data.id;
-  const puuid = summonerInfoResponse.data.puuid;
+  // const encryptedSummonerId = summonerInfoResponse.data.id;
+  // const puuid = summonerInfoResponse.data.puuid;
 
-  const rankEntryResponse: AxiosResponse<RankEntryResponseT> = await TFT_API.get(
-    `/league/v1/entries/by-summoner/${encryptedSummonerId}`
-  );
-  const matchIdsResponse: AxiosResponse<MatchIdsResponseT> = await TFT_API.get(
-    `/match/v1/matches/by-puuid/${puuid}/ids?count=20`
-  );
+  // const rankEntryResponse: AxiosResponse<RankEntryResponseT> = await TFT_API.get(
+  //   `/league/v1/entries/by-summoner/${encryptedSummonerId}`
+  // );
+  // const matchIdsResponse: AxiosResponse<MatchIdsResponseT> = await TFT_API.get(
+  //   `/match/v1/matches/by-puuid/${puuid}/ids?count=20`
+  // );
 
-  const summonerResponse: SummonerResponseT = {
-    summonerInfo: summonerInfoResponse.data,
-    rankEntry: rankEntryResponse.data,
-    matchIds: matchIdsResponse.data
-  };
+  // const summonerResponse: SummonerResponseT = {
+  //   summonerInfo: summonerInfoResponse.data,
+  //   rankEntry: rankEntryResponse.data,
+  //   matchIds: matchIdsResponse.data
+  // };
 
-  return summonerResponse;
+  return summonerResponse.data;
 };
 
 export const getSummoners = async (
@@ -50,7 +47,7 @@ export const getSummoners = async (
     participants.map(async participant => {
       const puuid = participant.puuid;
       const summonerInfoResponse: AxiosResponse<SummonerInfoResponseT> = await TFT_API.get(
-        `/summoner/v1/summoners/by-puuid/${puuid}`
+        `/summoners?puuid=${puuid}`
       );
       return summonerInfoResponse.data;
     })
@@ -74,7 +71,7 @@ export const getMatches = async (
 
 export const getMatch = async (matchId: string): Promise<MatchT> => {
   const response: AxiosResponse<MatchT> = await TFT_API.get(
-    `/match/v1/matches/${matchId}`
+    `/match?matchId=${matchId}`
   );
   return response.data;
 };

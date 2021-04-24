@@ -77,7 +77,7 @@ const ProfileInfo = ({
     <ProfileInfoBlock>
       <SummonerIcon>
         <img
-          src={`http://ddragon.leagueoflegends.com/cdn/11.2.1/img/profileicon/${profileIconId}.png`}
+          src={`http://ddragon.leagueoflegends.com/cdn/11.8.1/img/profileicon/${profileIconId}.png`}
         />
         <SummonerLevel>{summonerLevel}</SummonerLevel>
       </SummonerIcon>

@@ -17,12 +17,12 @@ const PostMatchWrapper = styled(WrapperBlock)`
   width: 1016px;
   flex-direction: column;
   margin: 0 auto;
+  padding-top: 70px;
 `;
 
 const PostMatch = (): ReactElement => {
   const { name, matchId } = useParams<{ name: string; matchId: string }>();
-  const { summonerInfo, match } = useSelector((state: RootState) => ({
-    summonerInfo: state.summoner.summonerInfo,
+  const { match } = useSelector((state: RootState) => ({
     match: state.match.match
   }));
   const dispatch = useDispatch();

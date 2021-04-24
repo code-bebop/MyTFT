@@ -1,8 +1,6 @@
 import { shallowEqual, useSelector } from "react-redux";
-import ensure from "../lib/ensure";
 import findSearchedSummonerInMatch from "../lib/findSearchedSummonerInMatch";
 import { RootState } from "../modules";
-import { Participant } from "../types/types";
 
 const usePlacementArray = (): number[] => {
   const { summonerPuuid, matchInfoList } = useSelector(

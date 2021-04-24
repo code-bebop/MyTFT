@@ -44,19 +44,17 @@ const MatchListPage = (): ReactElement => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(matchesInitialize());
-    dispatch(summonerInitialize());
-    dispatch(summonerAsync.request(summonerName));
+    if (summonerInfo?.name !== summonerName) {
+      dispatch(matchesInitialize());
+      dispatch(summonerInitialize());
+      dispatch(summonerAsync.request(summonerName));
+    }
   }, [dispatch, summonerName]);
   useEffect(() => {
     if (summonerInfo?.name === summonerName) {
       dispatch(matchesAsync.request(matchIds));
     }
   }, [summonerInfo]);
-
-  const onSearchMe = () => {
-    dispatch(summonerAsync.request("불꽃남자임지웅"));
-  };
 
   if (isLoading(summonerLoading, matchLoading)) {
     return (
@@ -69,13 +67,6 @@ const MatchListPage = (): ReactElement => {
   if (isNonexistent(summonerInfo, matches)) {
     return (
       <>
-        <button
-          onClick={() => {
-            onSearchMe();
-          }}
-        >
-          나 검색
-        </button>
         <Search />
         <Wrapper>
           <p>데이터가 없는 상태</p>

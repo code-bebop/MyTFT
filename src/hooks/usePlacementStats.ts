@@ -39,14 +39,12 @@ const usePlacementStats = (
     shallowEqual
   );
   const placementStsts: PlacementStatsT = {};
-  console.log(matchDataSeparatedByDateDiff);
 
   if (summonerPuuid !== undefined) {
     const placementArraySeparatedByDateDiff: PlacementArraySeparatedByDateDiffT = getPlacementArraySeparatedByDateDiff(
       matchDataSeparatedByDateDiff,
       summonerPuuid
     );
-    console.log(placementArraySeparatedByDateDiff);
 
     Object.keys(matchDataSeparatedByDateDiff).map(dateDiffOfMatch => {
       const average = getAveragePlacementArraySeparatedByDateDiff(
@@ -67,8 +65,6 @@ const usePlacementStats = (
       };
     });
   }
-
-  console.log(placementStsts);
 
   return placementStsts;
 };

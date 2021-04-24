@@ -12,7 +12,7 @@ const App = (): ReactElement => {
   console.log("App 렌더링");
 
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/MyTFT">
       <Switch>
         <Route path="/" component={MainPage} exact />
         <Route path="/page1" component={test1} />

@@ -22,7 +22,7 @@ const TraitBg = styled.div<{ traitStyle: number }>`
   position: absolute;
   top: 0;
   left: 0;
-  background: no-repeat url(/public/img/traits/bg.png);
+  background: no-repeat url(/MyTFT/public/img/traits/bg.png);
   background-size: auto 22px;
   width: 20px;
   height: 22px;
@@ -60,7 +60,7 @@ const TraitListItem = React.memo(
           </HoverDes>
         )}
         <img
-          src={`/public/img/traits/${trait.name}.svg`}
+          src={`/MyTFT/public/img/traits/${trait.name}.svg`}
           alt={`${trait.name}`}
           className="traitImg"
         />
