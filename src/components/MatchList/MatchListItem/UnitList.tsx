@@ -252,9 +252,9 @@ const UnitListItem = React.memo(
             )}
             {isUnitHaveItem && (
               <ItemsInHoverDes>
-                {unit.items.map(item => {
+                {unit.items.map((item, index) => {
                   return (
-                    <div key={item}>
+                    <div key={index}>
                       <img
                         src={`${process.env.IMG_PUBLIC_PATH}/public/img/items/${item}.png`}
                         alt={`${item}`}
