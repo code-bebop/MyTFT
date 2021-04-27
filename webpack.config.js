@@ -60,6 +60,9 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new CopyWebpackPlugin({
       patterns: [{ from: "public", to: "public" }]
+    }),
+    new webpack.EnvironmentPlugin({
+      IMG_PUBLIC_PATH: ""
     })
   ],
   devServer: {

@@ -1,11 +1,8 @@
 import axios, { AxiosResponse } from "axios";
 
-import { API_KEY } from "../config";
 import {
-  RankEntryResponseT,
   SummonerInfoResponseT,
   SummonerResponseT,
-  MatchIdsResponseT,
   MatchesResponseT,
   MatchesPayloadT,
   MatchT,

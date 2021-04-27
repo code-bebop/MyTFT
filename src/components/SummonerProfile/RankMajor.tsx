@@ -107,7 +107,7 @@ const RankMajor = ({ rankProfile }: RankMajorPropsT): ReactElement => {
       <SummonerRankEmblemWrapper>
         <SummonerLPCanvas ref={canvasRef} width="114px" height="114px" />
         <SummonerRankEmblem
-          src={`/MyTFT/public/img/rank/Emblem_${
+          src={`${process.env.IMG_PUBLIC_PATH}/public/img/rank/Emblem_${
             summonerTier[0].toUpperCase() + summonerTier.substr(1).toLowerCase()
           }.png`}
         />
