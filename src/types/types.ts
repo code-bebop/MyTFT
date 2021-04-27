@@ -30,6 +30,11 @@ export interface RankEntryT {
   wins: number;
 }
 
+export interface SummonerPayloadT {
+  name: string;
+  count: number;
+}
+
 export interface SummonerResponseT {
   summonerInfo: SummonerInfoResponseT;
   rankEntry: RankEntryResponseT;

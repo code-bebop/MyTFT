@@ -13,7 +13,8 @@ import {
   SummonerResponseT,
   SummonerInfoResponseT,
   RankEntryResponseT,
-  MatchIdsResponseT
+  MatchIdsResponseT,
+  SummonerPayloadT
 } from "../types/types";
 
 const CHANGE_QUERY = "summoner/CHANGE_QUERY" as const;
@@ -30,15 +31,16 @@ const GET_SUMMONER = "summoner/GET_SUMMONER" as const;
 const { REQUEST, SUCCESS, FAILURE } = createAsyncActionType(GET_SUMMONER);
 
 export const summonerAsync = createAsyncAction(REQUEST, SUCCESS, FAILURE)<
-  string,
+  SummonerPayloadT,
   SummonerResponseT,
   AxiosError
 >();
 
-const getSummonerSaga = createAsyncSaga<string, SummonerResponseT, AxiosError>(
-  summonerAsync,
-  getSummoner
-);
+const getSummonerSaga = createAsyncSaga<
+  SummonerPayloadT,
+  SummonerResponseT,
+  AxiosError
+>(summonerAsync, getSummoner);
 
 export const summonerSaga = function* (): Generator<ForkEffect<never>, void> {
   yield takeLatest(REQUEST, getSummonerSaga);
@@ -58,6 +60,7 @@ type SummonerState = {
   matchIds: MatchIdsResponseT;
   error: AxiosError | null;
   loading: boolean;
+  count: number;
 };
 
 const initialState: SummonerState = {
@@ -66,7 +69,8 @@ const initialState: SummonerState = {
   rankEntry: null,
   matchIds: [""],
   error: null,
-  loading: false
+  loading: false,
+  count: 0
 };
 
 const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
@@ -83,7 +87,8 @@ const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
     summonerInfo,
     rankEntry,
     matchIds,
-    loading: false
+    loading: false,
+    count: state.count + 15
   }),
   [FAILURE]: (state, { payload: error }) => ({
     ...state,

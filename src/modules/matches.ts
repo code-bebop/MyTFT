@@ -59,7 +59,7 @@ const matches = createReducer<MatchesState, MatchesActions>(initialState, {
   }),
   [SUCCESS]: (state, { payload: matches }) => ({
     ...state,
-    matches,
+    matches: state.matches === null ? matches : [...state.matches, ...matches],
     loading: false
   }),
   [FAILURE]: (state, { payload: error }) => ({

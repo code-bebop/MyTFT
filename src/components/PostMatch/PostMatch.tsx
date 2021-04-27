@@ -30,7 +30,7 @@ const PostMatch = (): ReactElement => {
     dispatch(matchAsync.request(matchId));
   };
   const dispatchSummonerRequest = (name: string): void => {
-    dispatch(summonerAsync.request(name));
+    dispatch(summonerAsync.request({ name, count: 15 }));
   };
   const dispatchSummonersRequest = (participants: Participant[]) => {
     dispatch(summonersAsync.request(participants));

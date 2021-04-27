@@ -6,16 +6,20 @@ import {
   MatchesResponseT,
   MatchesPayloadT,
   MatchT,
-  Participant
+  Participant,
+  SummonerPayloadT
 } from "../types/types";
 
 const TFT_API = axios.create({
   baseURL: `https://codebebop.tk/api/tft`
 });
 
-export const getSummoner = async (name: string): Promise<SummonerResponseT> => {
+export const getSummoner = async ({
+  name,
+  count
+}: SummonerPayloadT): Promise<SummonerResponseT> => {
   const summonerResponse: AxiosResponse<SummonerResponseT> = await TFT_API.get(
-    `/summoner?name=${name}&count=${15}`
+    `/summoner?name=${name}&count=${count}`
   );
 
   return summonerResponse.data;
