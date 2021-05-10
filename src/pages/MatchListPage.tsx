@@ -44,6 +44,7 @@ const MatchListPage = (): ReactElement => {
     shallowEqual
   );
   const dispatch = useDispatch();
+  console.log(matches);
 
   const useMatchListScrollHandler = () => {
     const getDocumentHeight = () => {
@@ -69,9 +70,7 @@ const MatchListPage = (): ReactElement => {
       const scrollHandler = async () => {
         if (getScrollTop() >= getDocumentHeight() - window.innerHeight) {
           console.log("scrollHandler 실행");
-          dispatch(
-            summonerAsync.request({ name: summonerName, count: count + 15 })
-          );
+          dispatch(summonerAsync.request({ name: summonerName, count: count }));
         }
       };
 
@@ -80,7 +79,7 @@ const MatchListPage = (): ReactElement => {
       return () => {
         window.removeEventListener("scroll", scrollHandler);
       };
-    }, []);
+    }, [count]);
   };
   useMatchListScrollHandler();
 
@@ -95,7 +94,6 @@ const MatchListPage = (): ReactElement => {
   useEffect(() => {
     if (summonerInfo?.name === summonerName) {
       const _matchIds = matchIds.slice(-15);
-      console.log(_matchIds);
       dispatch(matchesAsync.request(_matchIds));
     }
   }, [summonerInfo, dispatch]);

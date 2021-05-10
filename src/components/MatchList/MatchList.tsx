@@ -97,6 +97,8 @@ const MatchListContainer = (): ReactElement => {
     matchDataSeparatedByDateDiff
   );
 
+  console.log(matchDataSeparatedByDateDiff);
+
   return (
     <MatchListContainerBlock>
       {Object.keys(matchDataSeparatedByDateDiff).map(key => {
