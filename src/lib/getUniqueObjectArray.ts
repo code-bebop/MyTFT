@@ -1,18 +1,33 @@
 interface NameWise {
   name: string;
+  key?: string;
+  type?: string;
   championId?: string;
 }
 
-const hasChampionId = <T extends NameWise>(array: T[]) => {
+const isChampionsArray = <T extends NameWise>(array: T[]) => {
   return array[0].championId !== undefined;
+};
+const isTraitsArray = <T extends NameWise>(array: T[]) => {
+  return array[0].type !== undefined;
 };
 
 const getUniqueObjectArray = <T extends NameWise>(array: T[]): T[] => {
-  if (!hasChampionId(array)) {
+  if (isChampionsArray(array)) {
     return array.filter((item, i) => {
       return (
         array.findIndex(item2 => {
-          return item.name === item2.name;
+          return item.championId === item2.championId;
+        }) === i
+      );
+    });
+  }
+
+  if (isTraitsArray(array)) {
+    return array.filter((item, i) => {
+      return (
+        array.findIndex(item2 => {
+          return item.key === item2.key;
         }) === i
       );
     });
@@ -21,7 +36,7 @@ const getUniqueObjectArray = <T extends NameWise>(array: T[]): T[] => {
   return array.filter((item, i) => {
     return (
       array.findIndex(item2 => {
-        return item.championId === item2.championId;
+        return item.name === item2.name;
       }) === i
     );
   });

@@ -94,8 +94,8 @@ const MatchListPage = (): ReactElement => {
   }, [dispatch, summonerName]);
   useEffect(() => {
     if (summonerInfo?.name === summonerName) {
-      console.log("matches 요청");
       const _matchIds = matchIds.slice(-15);
+      console.log(_matchIds);
       dispatch(matchesAsync.request(_matchIds));
     }
   }, [summonerInfo, dispatch]);

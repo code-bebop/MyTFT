@@ -4,8 +4,9 @@ import getChampion from "../../../lib/getChampion";
 import getTraitName from "../../../lib/getTraitName";
 import { Unit } from "../../../types/types";
 import HoverDes from "./HoverDes";
-import itemsSet4 from "../../../../public/json/items/items_set4.json";
-import itemsSet4Update from "../../../../public/json/items/items_set4update.json";
+import itemsSet4Json from "../../../../public/json/items/items_set4.json";
+import itemsSet4UpdateJson from "../../../../public/json/items/items_set4update.json";
+import itemsSet5 from "../../../../public/json/items/items_set5.json";
 import getUniqueObjectArray from "../../../lib/getUniqueObjectArray";
 
 const UnitItemListBlock = styled.div`
@@ -212,7 +213,11 @@ const UnitListItem = React.memo(
     const champion = getChampion(unit);
     const isUnitChosen = unit.chosen ? true : false;
     const isUnitHaveItem = unit.items.length !== 0 ? true : false;
-    const itemsJsonArray = [...itemsSet4Update, ...itemsSet4];
+    const itemsJsonArray = [
+      ...itemsSet5,
+      ...itemsSet4UpdateJson,
+      ...itemsSet4Json
+    ];
     const itemsUniqueJsonArray = getUniqueObjectArray(itemsJsonArray);
 
     if (unit.character_id === "") {
