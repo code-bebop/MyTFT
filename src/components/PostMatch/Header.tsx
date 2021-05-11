@@ -118,7 +118,7 @@ const Header = (): ReactElement => {
     <HeaderBlock>
       <BigSummonerIcon>
         <img
-          src={`http://ddragon.leagueoflegends.com/cdn/11.8.1/img/profileicon/${profileIconId}.png`}
+          src={`http://ddragon.leagueoflegends.com/cdn/${process.env.RIOT_DDRAGON_CURRENT_VER}/img/profileicon/${profileIconId}.png`}
         />
         <SummonerLevel>{summonerLevel}</SummonerLevel>
       </BigSummonerIcon>

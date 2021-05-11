@@ -62,7 +62,8 @@ module.exports = {
       patterns: [{ from: "public", to: "public" }]
     }),
     new webpack.EnvironmentPlugin({
-      IMG_PUBLIC_PATH: ""
+      IMG_PUBLIC_PATH: "",
+      RIOT_DDRAGON_CURRENT_VER: "11.10.1"
     })
   ],
   devServer: {

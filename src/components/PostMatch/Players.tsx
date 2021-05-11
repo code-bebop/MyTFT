@@ -133,7 +133,7 @@ const Players = (): ReactElement => {
                   <span>{participant.placement}위</span>
                   <SmallSummonerIcon>
                     <img
-                      src={`http://ddragon.leagueoflegends.com/cdn/11.8.1/img/profileicon/${summonerInfo.profileIconId}.png`}
+                      src={`http://ddragon.leagueoflegends.com/cdn/${process.env.RIOT_DDRAGON_CURRENT_VER}/img/profileicon/${summonerInfo.profileIconId}.png`}
                       alt="임시 소환사 아이콘"
                     />
                     <SmallSummonerLevel>{participant.level}</SmallSummonerLevel>

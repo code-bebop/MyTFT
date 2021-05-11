@@ -117,6 +117,8 @@ const UnitBox = styled.li<UnitBoxProps>`
         return "#CB11B1";
       case 4:
         return "#D9A929";
+      case 5:
+        return "#D9A929";
       default:
         break;
     }
