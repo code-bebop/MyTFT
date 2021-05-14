@@ -10,7 +10,7 @@ const MainPage = (): ReactElement => {
     <ThemeProvider theme={theme}>
       <Search />
       <Wrapper>
-        <p>데이터가 없는 상태</p>
+        <p>TFT 전적 검색 사이트입니다.</p>
       </Wrapper>
     </ThemeProvider>
   );

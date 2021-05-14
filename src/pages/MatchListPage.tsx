@@ -109,23 +109,30 @@ const MatchListPage = (): ReactElement => {
     );
   }
 
-  if (isNonexistent(summonerInfo, matches)) {
-    return (
-      <>
-        <Search />
-        <Wrapper>
-          <p>데이터가 없습니다.</p>
-        </Wrapper>
-      </>
-    );
-  }
-
-  if (!isNonexistent(summonerError, matchesError)) {
+  if (!summonerInfo?.name) {
     return (
       <>
         <Search />
         <Wrapper>
           <p>존재하지 않는 소환사 이름입니다.</p>
+        </Wrapper>
+      </>
+    );
+  }
+
+  if (matchesError) {
+    return (
+      <>
+        <Search />
+        <Wrapper>
+          <p>
+            데이터 요쳥량이 너무 많습니다.
+            <br />본 TFT 전적 사이트는 포트폴리오용으로 제작되어 Riot API중
+            무료로 사용 가능한 personal API를 사용하고 있습니다. 그러므로 혀용된
+            API 요청량(2분당 100회의 요청 가능)을 넘으면 오류가 반환됩니다.{" "}
+            <br /> 최대 2분동안 기다리신 뒤 전적 검색을 시도하시면 정상적으로
+            이용 가능합니다.
+          </p>
         </Wrapper>
       </>
     );

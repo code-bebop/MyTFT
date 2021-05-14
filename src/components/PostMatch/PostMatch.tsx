@@ -13,6 +13,14 @@ import Header from "./Header";
 import Players from "./Players";
 import SortRow from "./SortRow";
 
+const LoadingMessage = styled.p`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 72px;
+  font-weight: bold;
+`;
 const PostMatchWrapper = styled(WrapperBlock)`
   width: 1016px;
   flex-direction: column;
@@ -22,9 +30,13 @@ const PostMatchWrapper = styled(WrapperBlock)`
 
 const PostMatch = (): ReactElement => {
   const { name, matchId } = useParams<{ name: string; matchId: string }>();
-  const { match } = useSelector((state: RootState) => ({
-    match: state.match.match
-  }));
+  const { match, matchLoading, summonerInfoArray } = useSelector(
+    (state: RootState) => ({
+      match: state.match.match,
+      matchLoading: state.match.loading,
+      summonerInfoArray: state.summoners.summonersInfo
+    })
+  );
   const dispatch = useDispatch();
   const dispatchMatchRequest = (matchId: string): void => {
     dispatch(matchAsync.request(matchId));
@@ -44,6 +56,19 @@ const PostMatch = (): ReactElement => {
       dispatchSummonersRequest(match.info.participants);
     }
   }, [match]);
+
+  match?.info.participants.map((participant, index) => {
+    const summonerInfo = summonerInfoArray?.find(
+      summonerInfo => summonerInfo.puuid === participant.puuid
+    );
+    if (summonerInfo === undefined) {
+      return <></>;
+    }
+  });
+
+  if (matchLoading) {
+    return <LoadingMessage>. . .</LoadingMessage>;
+  }
 
   return (
     <PostMatchWrapper>

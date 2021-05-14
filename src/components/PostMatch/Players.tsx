@@ -102,10 +102,10 @@ const Players = (): ReactElement => {
     summonerInfoArray: state.summoners.summonersInfo
   }));
   if (match === null) {
-    return <p>매치 데이터 없음</p>;
+    return <p>. . .</p>;
   }
   if (summonerInfoArray === null) {
-    return <p>소환사 정보 없음</p>;
+    return <p>. . .</p>;
   }
   match.info.participants.sort((a, b) => {
     return a.placement - b.placement;
@@ -123,7 +123,7 @@ const Players = (): ReactElement => {
             summonerInfo => summonerInfo.puuid === participant.puuid
           );
           if (summonerInfo === undefined) {
-            return <p>소환사 없음</p>;
+            return <></>;
           }
 
           return (
