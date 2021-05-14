@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { ThemeProvider } from "styled-components";
 
 import Search from "../components/Search";
@@ -25,26 +25,30 @@ const isNonexistent = (...args: any[]): boolean => {
 
 const MatchListPage = (): ReactElement => {
   const { summonerName } = useParams<{ summonerName: string }>();
+  const [firstLoading, setFirstLoading] = useState<boolean>(true);
   const {
     summonerInfo,
     matches,
     matchIds,
+    count,
     summonerLoading,
-    matchLoading,
-    count
+    matchesLoading,
+    summonerError,
+    matchesError
   } = useSelector(
     (state: RootState) => ({
       summonerInfo: state.summoner.summonerInfo,
       matches: state.matches.matches,
       matchIds: state.summoner.matchIds,
+      count: state.summoner.count + 15,
       summonerLoading: state.summoner.loading,
-      matchLoading: state.matches.loading,
-      count: state.summoner.count + 15
+      matchesLoading: state.matches.loading,
+      summonerError: state.summoner.error,
+      matchesError: state.matches.error
     }),
     shallowEqual
   );
   const dispatch = useDispatch();
-  console.log(matches);
 
   const useMatchListScrollHandler = () => {
     const getDocumentHeight = () => {
@@ -69,7 +73,7 @@ const MatchListPage = (): ReactElement => {
     useEffect(() => {
       const scrollHandler = async () => {
         if (getScrollTop() >= getDocumentHeight() - window.innerHeight) {
-          console.log("scrollHandler 실행");
+          setFirstLoading(false);
           dispatch(summonerAsync.request({ name: summonerName, count: count }));
         }
       };
@@ -85,7 +89,6 @@ const MatchListPage = (): ReactElement => {
 
   useEffect(() => {
     if (summonerInfo?.name !== summonerName) {
-      console.log("state 초기화 및 summoner 요청");
       dispatch(matchesInitialize());
       dispatch(summonerInitialize());
       dispatch(summonerAsync.request({ name: summonerName, count: count }));
@@ -98,20 +101,31 @@ const MatchListPage = (): ReactElement => {
     }
   }, [summonerInfo, dispatch]);
 
-  // if (isLoading(summonerLoading, matchLoading)) {
-  //   return (
-  //     <Wrapper>
-  //       <p>로딩 중...</p>
-  //     </Wrapper>
-  //   );
-  // }
+  if (isLoading(summonerLoading, matchesLoading) && firstLoading) {
+    return (
+      <Wrapper>
+        <p>로딩 중...</p>
+      </Wrapper>
+    );
+  }
 
   if (isNonexistent(summonerInfo, matches)) {
     return (
       <>
         <Search />
         <Wrapper>
-          <p>데이터가 없는 상태</p>
+          <p>데이터가 없습니다.</p>
+        </Wrapper>
+      </>
+    );
+  }
+
+  if (!isNonexistent(summonerError, matchesError)) {
+    return (
+      <>
+        <Search />
+        <Wrapper>
+          <p>존재하지 않는 소환사 이름입니다.</p>
         </Wrapper>
       </>
     );
