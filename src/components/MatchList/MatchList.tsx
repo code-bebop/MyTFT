@@ -11,8 +11,9 @@ import usePlacementStats, {
 } from "../../hooks/usePlacementStats";
 
 const MatchListContainerBlock = styled.div`
-  padding: 30px 24px 0;
+  padding: 30px 0 0;
   margin-left: 16px;
+  margin-bottom: 100px;
   background-color: #202b43;
   button {
     color: black;
@@ -20,6 +21,7 @@ const MatchListContainerBlock = styled.div`
 `;
 
 const MatchDateDiffItem = styled.li`
+  padding: 0 24px;
   margin-bottom: 25px;
 `;
 
@@ -80,10 +82,21 @@ const MatchListAvgTypography = styled(MatchListTypography)<{ average: number }>`
   }};
 `;
 
+const LoadingBlock = styled.div`
+  background-color: #1a2233;
+  padding: 10px 0;
+  text-align: center;
+  & > p {
+    font-size: 72px;
+    font-weight: bold;
+  }
+`;
+
 const MatchListContainer = (): ReactElement => {
-  const { summonerInfo } = useSelector(
+  const { summonerInfo, matchesLoading } = useSelector(
     (state: RootState) => ({
-      summonerInfo: state.summoner.summonerInfo
+      summonerInfo: state.summoner.summonerInfo,
+      matchesLoading: state.matches.loading
     }),
     shallowEqual
   );
@@ -92,7 +105,8 @@ const MatchListContainer = (): ReactElement => {
     return <p>소환사 정보 없음</p>;
   }
 
-  const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT = useMatchDataSeparatedByDateDiff();
+  const matchDataSeparatedByDateDiff: MatchDataSeparatedByDateDiffT =
+    useMatchDataSeparatedByDateDiff();
   const placementStats: PlacementStatsT = usePlacementStats(
     matchDataSeparatedByDateDiff
   );
@@ -149,6 +163,7 @@ const MatchListContainer = (): ReactElement => {
           </MatchDateDiffItem>
         );
       })}
+      {matchesLoading ? <LoadingBlock>. . .</LoadingBlock> : <></>}
     </MatchListContainerBlock>
   );
 };
