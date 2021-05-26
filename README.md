@@ -342,7 +342,7 @@ const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
 });
 ```
 
-4. 이후 사용자가 스크롤을 끝까지 내리면 MatchListPage 컴포넌트에서 state에 저장된 count 값에 15를 더하여 가져오게된다(현재 count state가 15니까 30으로 가져온다.). 그럼 30개의 matchIds를 요청하여 얻게 되는데, 이 matchIds 중 뒤에서부터 15개만 match data를 요청한다. 그럼 matches state에는 총 30개의 최신 전적이 저장되어 화면에 나타나게 된다. 이를 반복하면 무한히 스크롤하여 시간순으로 전적을 볼 수 있다.
+4. 이후 사용자가 스크롤을 끝까지 내리면 MatchListPage 컴포넌트에서 state에 저장된 count 값에 15를 더하여 가져오게된다(현재 count state가 15니까 30으로 가져온다.). 그럼 최신순으로 정렬된 30개의 matchIds를 요청하여 얻게 되는데, 이 matchIds 중 뒤에서부터 15개만 match data를 요청한다. 그럼 matches state에는 총 30개의 최신 전적 데이터가 저장되고, 그것들이 화면에 나타나게 된다. 이를 반복하면 무한히 스크롤하여 시간순으로 전적을 볼 수 있다.
 ```js
 // MatchListPage.tsx
 
