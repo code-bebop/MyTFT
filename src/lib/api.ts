@@ -11,7 +11,7 @@ import {
 } from "../types/types";
 
 const TFT_API = axios.create({
-  baseURL: `https://codebebop.tk/api/tft`
+  baseURL: `https://codebebop.xyz/api/tft`
 });
 
 export const getSummoner = async ({
@@ -31,9 +31,8 @@ export const getSummoners = async (
   const summonersInfoResponse: SummonerInfoResponseT[] = await Promise.all(
     participants.map(async participant => {
       const puuid = participant.puuid;
-      const summonerInfoResponse: AxiosResponse<SummonerInfoResponseT> = await TFT_API.get(
-        `/summoners?puuid=${puuid}`
-      );
+      const summonerInfoResponse: AxiosResponse<SummonerInfoResponseT> =
+        await TFT_API.get(`/summoners?puuid=${puuid}`);
       return summonerInfoResponse.data;
     })
   );
