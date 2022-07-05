@@ -9,6 +9,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 import App from "./components/App";
 import rootReducer, { rootSaga } from "./modules";
 
+import "./scrollbar.css";
 import "./index.css";
 
 const sagaMiddleware = createSagaMiddleware();
