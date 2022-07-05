@@ -30,6 +30,7 @@ const InfoWrapper = styled.div`
 const InfoLink = styled(Link)`
   text-decoration: none;
   color: #c9d19b;
+  font-weight: bold;
 `;
 
 const MainPage = (): ReactElement => {
@@ -37,23 +38,19 @@ const MainPage = (): ReactElement => {
     <ThemeProvider theme={theme}>
       <Search />
       <Wrapper>
-        <p>
-          TFT 전적 검색 사이트입니다.
-          <br />
-          <Info>
-            <InfoImg
-              src={`${process.env.IMG_PUBLIC_PATH}/public/img/Infomation.png`}
-            />
-            <InfoWrapper>
-              <span>현재 시즌 5.5까지의 전적만 검색이 가능합니다.</span>
-              <span>
-                원활한 검색을 위해{" "}
-                <InfoLink to={`/match/불꽃남자임지웅`}>여기</InfoLink>를
-                클릭하여 검색해주세요.
-              </span>
-            </InfoWrapper>
-          </Info>
-        </p>
+        <Info>
+          <InfoImg
+            src={`${process.env.IMG_PUBLIC_PATH}/public/img/Infomation.png`}
+          />
+          <InfoWrapper>
+            <span>현재 시즌 5.5까지의 전적만 검색이 가능합니다.</span>
+            <span>
+              원활한 검색을 위해{" "}
+              <InfoLink to={`/match/불꽃남자임지웅`}>여기</InfoLink>를 클릭하여
+              검색해주세요.
+            </span>
+          </InfoWrapper>
+        </Info>
       </Wrapper>
     </ThemeProvider>
   );
