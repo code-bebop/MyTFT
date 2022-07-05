@@ -251,6 +251,118 @@ ChartBar styled component에게 해당 순위의 카운트인 frequent를 props�
 
 이 프로젝트를 진행하며 commit에 대해 깊게 생각하게 되었다.
 
+### 무한 스크롤 기능
+
+이 프로젝트에도 무한 스크롤 기능이 적용되었다. 그러나 앞선 프로젝트(책 검색 사이트)보다 훨씬 까다로웠다.
+
+Naver API에서는 책 데이터를 요청 할 때에 파라미터에 몇 개의 책 데이터를 받을 것인지 정해주기만 하면 되었는데,  Riot API는 1차적으로 소환사의 summoner data를 요청해서 받아온 다음, 해당 summoner data 안에 담긴 matchId를 파라미터로 한 요청을 다시 보내어 매치 데이터를 받아오는 구조였기에 좀 더 복잡했다. 처음엔 막막했으나 어떻게든 기능을 구현할 수 있었다.
+
+1. 우선 matchIds가 저장된 redux state(여기선 summoner state)에 count라는 state를 만든다. count는 matchIds를 몇 개 받아올 것인지를 나타내는 number type state이다. count의 initialState는 0이다.
+2. 전적이 나타나는 matchListPage 컴포넌트에 들어서면 useSelector로 summoner state에 저장된 state들을 받아 오고, 이후 useEffect에 의해 summoner data를 요청한다. useSelector에서 count state를 가져 올 때 15를 더해주고 summoner data를 받아오는 API에 파라미터로 넘겨준다. 
+```js
+// MatchListPage.tsx
+
+const MatchListPage = (): ReactElement => {
+  const { summonerName } = useParams<{ summonerName: string }>();
+  const [firstLoading, setFirstLoading] = useState<boolean>(true);
+  const {
+    summonerInfo,
+    matches,
+    matchIds,
+    count,
+    summonerLoading,
+    matchesLoading,
+    summonerError,
+    matchesError
+  } = useSelector(
+    (state: RootState) => ({
+      summonerInfo: state.summoner.summonerInfo,
+      matches: state.matches.matches,
+      matchIds: state.summoner.matchIds,
+      count: state.summoner.count + 15, // count state를 불러올 때에 15를 더해준다.
+      summonerLoading: state.summoner.loading,
+      matchesLoading: state.matches.loading,
+      summonerError: state.summoner.error,
+      matchesError: state.matches.error
+    }),
+    shallowEqual
+  );
+    
+  ...
+  
+  // 스크롤을 전부 내렸을 때 전적 요청
+  useEffect(() => {
+    const scrollHandler = async () => {
+      if (getScrollTop() >= getDocumentHeight() - window.innerHeight) {
+        setFirstLoading(false);
+        dispatch(summonerAsync.request({ name: summonerName, count: count }));
+      }
+    };
+
+    window.addEventListener("scroll", scrollHandler);
+
+    return () => {
+      window.removeEventListener("scroll", scrollHandler);
+    };
+  }, [count]);
+  
+  // 최초 전적 요청
+  useEffect(() => {
+    if (summonerInfo?.name !== summonerName) {
+      dispatch(matchesInitialize());
+      dispatch(summonerInitialize());
+      dispatch(summonerAsync.request({ name: summonerName, count: count }));
+    }
+  }, [dispatch, summonerName]);
+    
+  ...
+  
+};
+```
+
+3. matchIds가 담긴 summoner data 요청에 성공하면 count state에 15를 더해준다. 
+```js
+// summoner.ts
+
+const summoner = createReducer<SummonerState, SummonerActions>(initialState, {
+ 
+  ...
+    
+  [SUCCESS]: (state, { payload: { summonerInfo, rankEntry, matchIds } }) => ({
+    ...state,
+    summonerInfo,
+    rankEntry,
+    matchIds,
+    loading: false,
+    count: state.count + 15
+  }),
+
+  ...
+    
+});
+```
+
+4. 이후 사용자가 스크롤을 끝까지 내리면 MatchListPage 컴포넌트에서 state에 저장된 count 값에 15를 더하여 가져오게된다(현재 count state가 15니까 30으로 가져온다.). 그럼 최신순으로 정렬된 30개의 matchIds를 요청하여 얻게 되는데, 이 matchIds 중 뒤에서부터 15개만 match data를 요청한다. 그럼 matches state에는 총 30개의 최신 전적 데이터가 저장되고, 그것들이 화면에 나타나게 된다. 이를 반복하면 무한히 스크롤하여 시간순으로 전적을 볼 수 있다.
+```js
+// MatchListPage.tsx
+
+...
+
+useEffect(() => {
+  if (summonerInfo?.name === summonerName) {
+    const _matchIds = matchIds.slice(-15);
+    dispatch(matchesAsync.request(_matchIds));
+  }
+}, [summonerInfo, dispatch]);
+
+...
+```
+
+좀 더 쉽고 깔끔한 방법이 있으리라 짐작되지만, 이것이 내가 찾은 최선의 방법이다.
+
+조잡하게나마 구현된 기능이지만, 어려웠던 만큼 뿌듯함도 컸다.
+
+
 # 아쉬웠던 부분들
 
 ## TypeScript의 type 분리
@@ -265,3 +377,7 @@ TypeScript를 쓰면서 고민한 것이 사용되는 사용자 정의 type 혹�
 이 프로젝트를 처음 진행할 때에는 생각이 너무 많았다. 처음부터 좋은 코드를 짜기 위해 너무 노력한 것이다.
 그러다 프로젝트 중반에 CleanCode에 관한 글을 읽었다. 거기서 특히 주목한 부분이 "우선 workable한 코드를 만들 것"이다. 우선 작동하는 코드를 만들고 나서 리팩터링을 하라는 이야기였다.
 그 대목을 읽고나서 바로 실행에 옮겼고, 확실히 그 때 부터 개발속도에 유의미한 변화가 있었다고 생각한다.
+
+## TFT 전적 검색을 주제로 한 것
+이 게임이 업데이트가 꽤나 잦은데, 업데이트가 될 때마다 코드를 업데이트해야 하고 로직을 아예 뜯어 고쳐야 할 수도 있다.
+만드는 과정에서 배운 것은 많았으나, 포트폴리오에 싣기에는 부적절하지 않았나 생각이 든다.
