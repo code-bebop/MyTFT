@@ -7,7 +7,8 @@ import Wrapper from "../components/common/Wrapper";
 import { Link } from "react-router-dom";
 
 const Info = styled.section`
-  width: 1080px;
+  width: 60%;
+  max-width: 1080px;
   height: 200px;
   display: flex;
   justify-content: center;
